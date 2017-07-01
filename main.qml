@@ -7,7 +7,8 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("Sound Maps")
+
 
     header: ToolBar {
         id: toolBar;
@@ -17,12 +18,12 @@ ApplicationWindow {
             ToolButton {
                 text: qsTr("‹")
                 onClicked: {
-                    if (navigationDrawer.visible) {
-                        navigationDrawer.close()
+                    if (drawer.visible) {
+                        drawer.close()
                     } else {
-                        navigationDrawer.open()
+                        drawer.open()
                     }
-                    navigationDrawerOption.currentIndex = -1
+                    drawerList.currentIndex = -1
                 }
             }
             Label {
@@ -36,7 +37,7 @@ ApplicationWindow {
 
             }
             ToolButton {
-                text: qsTr("⋮")
+                text: "&#xE06F"
                 onClicked: optionsMenu.open()
 
                 Menu {
@@ -55,13 +56,13 @@ ApplicationWindow {
     }
 
     Drawer {
-        id: navigationDrawer
-        width: Math.min(window.width, window.height) / 3 * 2
+        id: drawer
+        width: 0.75 * Math.min(window.width, window.height)
         height: window.height - header.height
-        y: toolBar.height
+        y: header.height
 
         ListView {
-            id: navigationDrawerOption
+            id: drawerList
             focus: true
             currentIndex: -1
             anchors.fill: parent
@@ -87,7 +88,7 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Page {
+        AudioWaveChartFragment {
         }
 
         Page {

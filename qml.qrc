@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>AudioWaveChartFragment.qml</file>
+        <file>AudioWaveChartFragmentForm.ui.qml</file>
     </qresource>
 </RCC>
