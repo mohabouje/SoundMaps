@@ -9,10 +9,6 @@ ApplicationWindow {
     height: 480
     title: qsTr("Sound Maps")
 
-    FontLoader { id: androidFont; name: "Material Icons"; source: Qt.resolvedUrl("android-fonts/iconfont/MaterialIcons-Regular.ttf"); }
-    FontLoader { id: uwpFont; name: "FontUIP"; source: Qt.resolvedUrl("uwp-fonts/Symbols/winjs-symbols.ttf"); }
-    FontLoader { id: fontAwesome; name: "FontAwesome"; source: Qt.resolvedUrl(":/Font-Awesome/fonts/fontawesome-webfont.ttf"); }
-
     header: ToolBar {
         id: toolBar;
         position: ToolBar.Header
@@ -108,9 +104,8 @@ ApplicationWindow {
         position: TabBar.Footer
         TabButton {
             font.pixelSize: 24
-            font.pointSize: 100
-            font.family: fontAwesome
-            text: "\uf20e"
+            font.pointSize: 15
+            text: "\uf1ba"
         }
         TabButton {
             text: qsTr("Second")
