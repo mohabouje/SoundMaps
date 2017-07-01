@@ -3,10 +3,84 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
 ApplicationWindow {
+    id: window
     visible: true
     width: 640
     height: 480
     title: qsTr("Hello World")
+
+    header: ToolBar {
+        id: toolBar;
+        position: ToolBar.Header
+        RowLayout {
+            anchors.fill: parent
+            ToolButton {
+                text: qsTr("‹")
+                onClicked: {
+                    if (navigationDrawer.visible) {
+                        navigationDrawer.close()
+                    } else {
+                        navigationDrawer.open()
+                    }
+                    navigationDrawerOption.currentIndex = -1
+                }
+            }
+            Label {
+                id: toolbarTitle
+                text: tabBar.itemAt(tabBar.currentIndex).text
+                font.pixelSize: 20
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+
+            }
+            ToolButton {
+                text: qsTr("⋮")
+                onClicked: optionsMenu.open()
+
+                Menu {
+                    id: optionsMenu
+                    x: parent.width - width
+                    transformOrigin: Menu.TopRight
+                    MenuItem {
+                        text: "Settings"
+                    }
+                    MenuItem {
+                        text: "About"
+                    }
+                }
+            }
+        }
+    }
+
+    Drawer {
+        id: navigationDrawer
+        width: Math.min(window.width, window.height) / 3 * 2
+        height: window.height - header.height
+        y: toolBar.height
+
+        ListView {
+            id: navigationDrawerOption
+            focus: true
+            currentIndex: -1
+            anchors.fill: parent
+
+            delegate: ItemDelegate {
+                width: parent.width
+                text: model.title
+                highlighted: ListView.isCurrentItem
+                onClicked: {
+                    listView.currentIndex = index
+                    drawer.close()
+                }
+            }
+            model: ListModel {
+            }
+            ScrollIndicator.vertical: ScrollIndicator { }
+        }
+    }
+
 
     SwipeView {
         id: swipeView
@@ -27,6 +101,7 @@ ApplicationWindow {
     footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
+        position: TabBar.Footer
         TabButton {
             text: qsTr("First")
         }
