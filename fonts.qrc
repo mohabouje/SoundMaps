@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>resources/fonts/fontawesome-webfont.ttf</file>
-    </qresource>
-</RCC>
