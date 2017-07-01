@@ -1,0 +1,6 @@
+[submodule "uwp-fonts"]
+	path = uwp-fonts
+	url = https://github.com/Microsoft/fonts.git
+[submodule "android-fonts"]
+	path = android-fonts
+	url = https://github.com/google/material-design-icons.git
