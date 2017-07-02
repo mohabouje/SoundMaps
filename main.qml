@@ -4,17 +4,17 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
+import com.mohabouje.soundmaps 1.0
 
 ApplicationWindow {
     id: window
     visible: true
-    width: 640
-    height: 480
+    width: 400
+    height: 600
     title: qsTr("Sound Maps")
 
     property real screenDensity: Screen.pixelDensity
     property real toolBarIconSize: 4 * screenDensity;
-    property real tabBarIconSize: 7.5 * screenDensity;
 
     header: ToolBar {
         id: toolBar;
@@ -49,7 +49,7 @@ ApplicationWindow {
             }
             Label {
                 id: toolbarTitle
-                text: tabBar.itemAt(tabBar.currentIndex).text
+                //text: tabBar.itemAt(tabBar.currentIndex).text
                 font.pixelSize: 20
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
@@ -120,30 +120,16 @@ ApplicationWindow {
         }
     }
 
-    footer: TabBar {
+    TabBarModel {
+        id: tabBarModel
+    }
+
+
+    footer: MainTabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
         position: TabBar.Footer
-        TabButton {
-            id: papa
-            Image {
-                id: bug
-                anchors.centerIn: parent
-                source: "qrc:/icon/access-point.svg"
-                sourceSize: Qt.size(tabBarIconSize, tabBarIconSize)
-                smooth: true
-                visible: false
-            }
-
-            ColorOverlay {
-                anchors.fill: bug
-                source: bug
-                color: (tabBar.currentItem == papa) ? Material.accent : Material.foreground;
-            }
-
-        }
-        TabButton {
-            text: qsTr("Second")
-        }
+        hightlightColor: Material.accent
+        normalColor: Material.foreground
     }
 }
