@@ -4,7 +4,7 @@
         <file>qtquickcontrols2.conf</file>
         <file>AudioWaveChartFragment.qml</file>
         <file>AudioWaveChartFragmentForm.ui.qml</file>
-        <file>ImageTabButton.qml</file>
+        <file>MainTabButton.qml</file>
         <file>MainTabBar.qml</file>
     </qresource>
 </RCC>

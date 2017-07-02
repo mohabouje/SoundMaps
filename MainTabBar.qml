@@ -14,7 +14,7 @@ TabBar {
 
     Repeater {
         model: tabBarModel
-        ImageTabButton {
+        MainTabButton {
             name: model.name
             counter: model.counter
             icon: model.icon

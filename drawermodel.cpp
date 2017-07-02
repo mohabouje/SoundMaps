@@ -1,31 +1,31 @@
 #include "drawermodel.h"
 
-
-
-
-
-
-void DrawerItem::setName(const QString &name)
-{
+void DrawerItem::setName(const QString &name) {
     _name = name;
 }
 
-
-
-void DrawerItem::setIcon(const QString &icon)
-{
+void DrawerItem::setIcon(const QString &icon) {
     _icon = icon;
 }
 
-
-
-void DrawerItem::setCounter(int counter)
-{
+void DrawerItem::setCounter(int counter) {
     _counter = counter;
 }
+
 DrawerModel::DrawerModel(QObject *parent)
     : QAbstractListModel(parent)
 {
+    appendTab("Data Base", "qrc:/icon/database.svg");
+    appendTab("Help", "qrc:/icon/help-circle.svg");
+    appendTab("About", "qrc:/icon/contact-mail.svg");
+}
+
+void DrawerModel::appendTab(const QString &name, const QString &icon, int counter) {
+    DrawerItem* item = new DrawerItem(this);
+    item->setName(name);
+    item->setIcon(icon);
+    item->setCounter(counter);
+    _drawerItems.append(item);
 }
 
 
