@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.1
+import QtQuick.Window 2.2
 
 ApplicationWindow {
     id: window
@@ -11,13 +12,32 @@ ApplicationWindow {
     height: 480
     title: qsTr("Sound Maps")
 
+    property real screenDensity: Screen.pixelDensity
+    property real toolBarIconSize: 4 * screenDensity;
+    property real tabBarIconSize: 7.5 * screenDensity;
+
     header: ToolBar {
         id: toolBar;
         position: ToolBar.Header
         RowLayout {
             anchors.fill: parent
             ToolButton {
-                text: qsTr("‹")
+                text: ""
+                Image {
+                    id: homeIcon
+                    anchors.centerIn: parent
+                    source: "qrc:/icon/menu.svg"
+                    sourceSize: Qt.size(toolBarIconSize, toolBarIconSize)
+                    smooth: true
+                    visible: false
+                }
+
+                ColorOverlay {
+                    anchors.fill: homeIcon
+                    source: homeIcon
+                    color: Material.background;
+                }
+
                 onClicked: {
                     if (drawer.visible) {
                         drawer.close()
@@ -110,7 +130,7 @@ ApplicationWindow {
                 id: bug
                 anchors.centerIn: parent
                 source: "qrc:/icon/access-point.svg"
-                sourceSize: Qt.size(parent.width, parent.height)
+                sourceSize: Qt.size(tabBarIconSize, tabBarIconSize)
                 smooth: true
                 visible: false
             }
