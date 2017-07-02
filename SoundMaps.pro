@@ -3,7 +3,8 @@ QT += qml quick
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    tabbarmodel.cpp
+    tabbarmodel.cpp \
+    drawermodel.cpp
 
 RESOURCES += qml.qrc \
     resources/resources.qrc
@@ -32,4 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     config.h \
-    tabbarmodel.h
+    tabbarmodel.h \
+    drawermodel.h

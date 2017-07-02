@@ -24,17 +24,17 @@ TabBarModel::TabBarModel(QObject *parent) : QAbstractListModel(parent) {
     appendTab("Settings", "qrc:/icon/settings.svg", 6);
 }
 
+int TabBarModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
+    return _tabBarItems.size();
+}
+
 QHash<int, QByteArray> TabBarModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[IconRole] = "icon";
     roles[CounterRole] = "counter";
     return roles;
-}
-
-int TabBarModel::rowCount(const QModelIndex &parent) const {
-    Q_UNUSED(parent);
-    return _tabBarItems.size();
 }
 
 QVariant TabBarModel::data(const QModelIndex &index, int role) const {
