@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>android-fonts/iconfont/MaterialIcons-Regular.svg</file>
-        <file>android-fonts/iconfont/MaterialIcons-Regular.ttf</file>
-        <file>uwp-fonts/Symbols/winjs-symbols.svg</file>
-        <file>uwp-fonts/Symbols/winjs-symbols.ttf</file>
-    </qresource>
-</RCC>

@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/access-point.svg</file>
+        <file>icon/chart-areaspline.svg</file>
+        <file>icon/chart-bar.svg</file>
+        <file>icon/chevron-left.svg</file>
+        <file>icon/contact-mail.svg</file>
+        <file>icon/database.svg</file>
+        <file>icon/database-minus.svg</file>
+        <file>icon/database-plus.svg</file>
+        <file>icon/filter.svg</file>
+        <file>icon/filter-outline.svg</file>
+        <file>icon/filter-remove.svg</file>
+        <file>icon/help-circle.svg</file>
+        <file>icon/map-marker-radius.svg</file>
+        <file>icon/menu.svg</file>
+        <file>icon/microphone.svg</file>
+        <file>icon/microphone-off.svg</file>
+        <file>icon/settings.svg</file>
+    </qresource>
+</RCC>

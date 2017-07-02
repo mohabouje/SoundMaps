@@ -1,6 +1,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
+import QtQuick.Controls.Material 2.1
 
 ApplicationWindow {
     id: window
@@ -103,9 +105,22 @@ ApplicationWindow {
         currentIndex: swipeView.currentIndex
         position: TabBar.Footer
         TabButton {
-            font.pixelSize: 24
-            font.pointSize: 15
-            text: "\uf1ba"
+            id: papa
+            Image {
+                id: bug
+                anchors.centerIn: parent
+                source: "qrc:/icon/access-point.svg"
+                sourceSize: Qt.size(parent.width, parent.height)
+                smooth: true
+                visible: false
+            }
+
+            ColorOverlay {
+                anchors.fill: bug
+                source: bug
+                color: (tabBar.currentItem == papa) ? Material.accent : Material.foreground;
+            }
+
         }
         TabButton {
             text: qsTr("Second")
