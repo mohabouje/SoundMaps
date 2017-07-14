@@ -1,4 +1,4 @@
-QT += qml quick
+QT += qml quick multimedia
 
 CONFIG += c++11
 
@@ -31,6 +31,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+include(audio/audio.pri)
 HEADERS += \
     config.h \
     tabbarmodel.h \
