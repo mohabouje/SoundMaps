@@ -1,10 +1,8 @@
 #include "audiorecorder.h"
 
 #include <QAudioInput>
-#include <QAudioBuffer>
 #include <QAudioFormat>
 #include <QAudioDeviceInfo>
-#include <QAudioInputSelectorControl>
 #include <QDebug>
 
 class AudioRecorderPrivate : public QSharedData {
@@ -12,15 +10,7 @@ class AudioRecorderPrivate : public QSharedData {
     Q_DECLARE_PUBLIC(AudioRecorder)
 public:
     AudioRecorderPrivate(AudioRecorder* parent) :
-        q_ptr(parent),
-        _audioInput(new QAudioInput(_audioFormat, parent)) {
-        _audioDeviceInfo = QAudioDeviceInfo::defaultInputDevice();
-
-        Q_Q(AudioRecorder);
-        QObject::connect(_audioInputSelector, &QAudioInputSelectorControl::activeInputChanged, q, &AudioRecorder::activeInputDeviceChanged);
-        QObject::connect(_audioInputSelector, &QAudioInputSelectorControl::availableInputsChanged, [&](){
-            emit q->activeInputsDevicesChanged(_audioInputSelector->availableInputs());
-        });
+        q_ptr(parent) {
     }
     ~AudioRecorderPrivate() {}
 
@@ -45,21 +35,46 @@ public:
         return _audioFormat;
     }
 
+    inline void setDevice(const QString& name, bool updateFormatIfNeeded = true) {
+        const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+        foreach(const QAudioDeviceInfo& device, devices) {
+            if (QString::compare(name, device.deviceName(), Qt::CaseInsensitive) == 0) {
+                setDevice(device, updateFormatIfNeeded);
+                return;
+            }
+        }
+        qWarning() << "Device not found: " << name;
+    }
+
+    inline void setDevice(const QAudioDeviceInfo& deviceInfo, bool updateFormatIfNeeded = true) {
+        Q_Q(AudioRecorder);
+        _audioDeviceInfo = deviceInfo;
+        if (updateFormatIfNeeded && !_audioDeviceInfo.isFormatSupported(_audioFormat)) {
+            _audioFormat = _audioDeviceInfo.nearestFormat(_audioFormat);
+            emit q->audioFormatChanged(_audioFormat);
+        }
+        emit q->audioInputDeviceChanged(_audioDeviceInfo);
+    }
+
     inline bool isActive() const {
         return _audioDevice->isOpen() && (_audioInput->state() == QAudio::ActiveState);
     }
 
-    QAudio::Error initialize() {
+    inline QAudio::Error initialize() {
         if (_audioInput != nullptr) {
             _audioInput->stop();
             delete _audioInput;
         }
 
         _audioInput = new QAudioInput(_audioDeviceInfo, _audioFormat);
+        QObject::connect(_audioInput, &QAudioInput::stateChanged, [&](QAudio::State state) {
+            Q_Q(AudioRecorder);
+            emit q->audioRecorderStateChanged(state);
+        });
         return _audioInput->error();
     }
 
-    QAudio::Error record() {
+    inline QAudio::Error record() {
         Q_Q(AudioRecorder);
         if (isActive()) {
             qWarning() << "Trying to initialize an active device";
@@ -72,11 +87,10 @@ public:
     }
 
     AudioRecorder * const  q_ptr;
-    QAudioDeviceInfo _audioDeviceInfo;
-    QAudioInput*     _audioInput;
-    QAudioInputSelectorControl* _audioInputSelector;
-    QIODevice*       _audioDevice;
-    QAudioFormat     _audioFormat;
+    QAudioInput*                _audioInput{nullptr};
+    QIODevice*                  _audioDevice{nullptr};
+    QAudioDeviceInfo            _audioDeviceInfo;
+    QAudioFormat                _audioFormat;
 };
 
 AudioRecorder::AudioRecorder(QObject *parent) :
@@ -90,3 +104,38 @@ AudioRecorder::~AudioRecorder() {
 
 }
 
+void AudioRecorder::setFormat(const QAudioFormat &format, FormatEngine engine) {
+    Q_D(AudioRecorder);
+    switch (engine) {
+    case Default:
+        d->setFormat(format);
+        break;
+    case Nearest:
+        d->setNearestFormat(format);
+        break;
+    case Prefered:
+        d->setPreferredFormatForDevice(d->_audioDeviceInfo);
+        break;
+    }
+}
+
+void AudioRecorder::setDevice(const QString &name, bool updateFormatIfNeeded) {
+    Q_D(AudioRecorder);
+    return d->setDevice(name, updateFormatIfNeeded);
+}
+
+bool AudioRecorder::isActive() const {
+    Q_D(const AudioRecorder);
+    return d->isActive();
+}
+
+QAudio::Error AudioRecorder::initialize() {
+    Q_D(AudioRecorder);
+    return d->initialize();
+
+}
+
+QAudio::Error AudioRecorder::record() {
+    Q_D(AudioRecorder);
+    return d->record();
+}
