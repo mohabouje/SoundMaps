@@ -5,6 +5,7 @@
 #include <QAudioFormat>
 #include <QAudioDeviceInfo>
 #include <QAudioInputSelectorControl>
+#include <QDebug>
 
 class AudioRecorderPrivate : public QSharedData {
     Q_DISABLE_COPY(AudioRecorderPrivate)
@@ -23,25 +24,51 @@ public:
     }
     ~AudioRecorderPrivate() {}
 
-    bool setFormat(const QAudioFormat& format) {
+    inline bool setFormat(const QAudioFormat& format) {
         Q_Q(AudioRecorder);
         _audioFormat = format;
         q->audioFormatChanged(_audioFormat);
         return _audioDeviceInfo.isFormatSupported(format);
     }
 
-    QAudioFormat setNearestFormat(const QAudioFormat& format) {
+    inline QAudioFormat setNearestFormat(const QAudioFormat& format) {
         Q_Q(AudioRecorder);
         _audioFormat = (_audioDeviceInfo.isFormatSupported(format)) ? format : _audioDeviceInfo.nearestFormat(format);
         emit q->audioFormatChanged(_audioFormat);
         return _audioFormat;
     }
 
-    QAudioFormat setPreferredFormatForDevice(const QAudioDeviceInfo& device) {
+    inline QAudioFormat setPreferredFormatForDevice(const QAudioDeviceInfo& device) {
         Q_Q(AudioRecorder);
         _audioFormat = device.preferredFormat();
         emit q->audioFormatChanged(_audioFormat);
         return _audioFormat;
+    }
+
+    inline bool isActive() const {
+        return _audioDevice->isOpen() && (_audioInput->state() == QAudio::ActiveState);
+    }
+
+    QAudio::Error initialize() {
+        if (_audioInput != nullptr) {
+            _audioInput->stop();
+            delete _audioInput;
+        }
+
+        _audioInput = new QAudioInput(_audioDeviceInfo, _audioFormat);
+        return _audioInput->error();
+    }
+
+    QAudio::Error record() {
+        Q_Q(AudioRecorder);
+        if (isActive()) {
+            qWarning() << "Trying to initialize an active device";
+            return QAudio::NoError;
+        }
+        _audioInput->start(_audioDevice);
+        const QAudio::Error error = _audioInput->error();
+        emit q->audioRecorderStarted(error);
+        return error;
     }
 
     AudioRecorder * const  q_ptr;

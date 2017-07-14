@@ -12,6 +12,7 @@ public:
     explicit AudioRecorder(QObject *parent = nullptr);
     ~AudioRecorder();
 signals:
+    void audioRecorderStarted(QAudio::Error error);
     void audioFormatNotSupported(const QAudioFormat& format);
     void audioFormatChanged(const QAudioFormat& format);
     void activeInputDeviceChanged(const QString& name);
