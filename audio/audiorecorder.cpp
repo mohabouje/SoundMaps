@@ -1,8 +1,6 @@
 #include "audiorecorder.h"
 
-#include <QAudioInput>
-#include <QAudioFormat>
-#include <QAudioDeviceInfo>
+#include <QAudioInputSelectorControl>
 #include <QDebug>
 
 class AudioRecorderPrivate : public QSharedData {
@@ -10,87 +8,82 @@ class AudioRecorderPrivate : public QSharedData {
     Q_DECLARE_PUBLIC(AudioRecorder)
 public:
     AudioRecorderPrivate(AudioRecorder* parent) :
-        q_ptr(parent) {
-    }
+        q_ptr(parent)
+    {}
     ~AudioRecorderPrivate() {}
 
     inline bool setFormat(const QAudioFormat& format) {
         Q_Q(AudioRecorder);
-        _audioFormat = format;
-        q->audioFormatChanged(_audioFormat);
-        return _audioDeviceInfo.isFormatSupported(format);
+        audioFormat = format;
+        q->formatChanged(audioFormat);
+        return audioDeviceInfo.isFormatSupported(format);
     }
 
-    inline QAudioFormat setNearestFormat(const QAudioFormat& format) {
-        Q_Q(AudioRecorder);
-        _audioFormat = (_audioDeviceInfo.isFormatSupported(format)) ? format : _audioDeviceInfo.nearestFormat(format);
-        emit q->audioFormatChanged(_audioFormat);
-        return _audioFormat;
-    }
 
-    inline QAudioFormat setPreferredFormatForDevice(const QAudioDeviceInfo& device) {
-        Q_Q(AudioRecorder);
-        _audioFormat = device.preferredFormat();
-        emit q->audioFormatChanged(_audioFormat);
-        return _audioFormat;
-    }
-
-    inline void setDevice(const QString& name, bool updateFormatIfNeeded = true) {
+    inline void setDevice(const QString& name) {
         const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
         foreach(const QAudioDeviceInfo& device, devices) {
-            if (QString::compare(name, device.deviceName(), Qt::CaseInsensitive) == 0) {
-                setDevice(device, updateFormatIfNeeded);
+            if (QString::compare(name, device.deviceName(), Qt::CaseInsensitive) == 0
+                    && QString::compare(name, device.deviceName(), Qt::CaseInsensitive) != 0) {
+                setDevice(device);
                 return;
             }
         }
         qWarning() << "Device not found: " << name;
     }
 
-    inline void setDevice(const QAudioDeviceInfo& deviceInfo, bool updateFormatIfNeeded = true) {
+    inline void setDevice(const QAudioDeviceInfo& deviceInfo) {
         Q_Q(AudioRecorder);
-        _audioDeviceInfo = deviceInfo;
-        if (updateFormatIfNeeded && !_audioDeviceInfo.isFormatSupported(_audioFormat)) {
-            _audioFormat = _audioDeviceInfo.nearestFormat(_audioFormat);
-            emit q->audioFormatChanged(_audioFormat);
+        audioDeviceInfo = deviceInfo;
+        if (!audioDeviceInfo.isFormatSupported(audioFormat)) {
+            audioFormat = audioDeviceInfo.nearestFormat(audioFormat);
+            emit q->formatChanged(audioFormat);
         }
-        emit q->audioInputDeviceChanged(_audioDeviceInfo);
+        emit q->deviceChanged(audioDeviceInfo.deviceName());
     }
 
     inline bool isActive() const {
-        return _audioDevice->isOpen() && (_audioInput->state() == QAudio::ActiveState);
+        return audioBuffer->isOpen() && (audioInput->state() == QAudio::ActiveState);
     }
 
     inline QAudio::Error initialize() {
-        if (_audioInput != nullptr) {
-            _audioInput->stop();
-            delete _audioInput;
+        if (audioInput != nullptr) {
+            audioInput->stop();
+            delete audioInput;
         }
 
-        _audioInput = new QAudioInput(_audioDeviceInfo, _audioFormat);
-        QObject::connect(_audioInput, &QAudioInput::stateChanged, [&](QAudio::State state) {
+        audioInput = new QAudioInput(audioDeviceInfo, audioFormat);
+        QObject::connect(audioInput, &QAudioInput::stateChanged, [&](QAudio::State state) {
             Q_Q(AudioRecorder);
-            emit q->audioRecorderStateChanged(state);
+            emit q->stateChanged(state);
         });
-        return _audioInput->error();
+        return audioInput->error();
     }
 
     inline QAudio::Error record() {
-        Q_Q(AudioRecorder);
         if (isActive()) {
             qWarning() << "Trying to initialize an active device";
             return QAudio::NoError;
         }
-        _audioInput->start(_audioDevice);
-        const QAudio::Error error = _audioInput->error();
-        emit q->audioRecorderStarted(error);
-        return error;
+        audioInput->start(audioBuffer);
+        return audioInput->error();
+    }
+
+    inline void setBufferDuration(int speed) {
+        Q_Q(AudioRecorder);
+        audioBufferDuration = speed;
+        const int sampleSizeInBytes = audioFormat.sampleSize() / 8;
+        const int samples = audioFormat.sampleRate() * audioBufferDuration / 1000;
+        audioInput->setBufferSize(samples * sampleSizeInBytes);
+        emit q->bufferDurationChanged(audioBufferDuration);
     }
 
     AudioRecorder * const  q_ptr;
-    QAudioInput*                _audioInput{nullptr};
-    QIODevice*                  _audioDevice{nullptr};
-    QAudioDeviceInfo            _audioDeviceInfo;
-    QAudioFormat                _audioFormat;
+    QAudioInput*                                audioInput{nullptr};
+    QIODevice*                                  audioBuffer{nullptr};
+    QAudioDeviceInfo                            audioDeviceInfo;
+    QAudioFormat                                audioFormat;
+    int                                         audioBufferDuration;
 };
 
 AudioRecorder::AudioRecorder(QObject *parent) :
@@ -111,18 +104,28 @@ void AudioRecorder::setFormat(const QAudioFormat &format, FormatEngine engine) {
         d->setFormat(format);
         break;
     case Nearest:
-        d->setNearestFormat(format);
+        d->setFormat(d->audioDeviceInfo.nearestFormat(format));
         break;
     case Prefered:
-        d->setPreferredFormatForDevice(d->_audioDeviceInfo);
+        d->setFormat(d->audioDeviceInfo.preferredFormat());
         break;
     }
 }
 
-void AudioRecorder::setDevice(const QString &name, bool updateFormatIfNeeded) {
+void AudioRecorder::setDevice(const QString &name) {
     Q_D(AudioRecorder);
-    return d->setDevice(name, updateFormatIfNeeded);
+    if (QString::compare(d->audioDeviceInfo.deviceName(), name, Qt::CaseInsensitive) != 0) {
+        d->setDevice(name);
+    }
 }
+
+void AudioRecorder::setBufferDuration(int duration) {
+    Q_D(AudioRecorder);
+    if (d->audioBufferDuration != duration ) {
+        d->setBufferDuration(duration);
+    }
+}
+
 
 bool AudioRecorder::isActive() const {
     Q_D(const AudioRecorder);
@@ -138,4 +141,64 @@ QAudio::Error AudioRecorder::initialize() {
 QAudio::Error AudioRecorder::record() {
     Q_D(AudioRecorder);
     return d->record();
+}
+
+QStringList AudioRecorder::availableDevices() const {
+    QStringList list;
+    const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+    foreach(const QAudioDeviceInfo& device, devices) {
+        list << device.deviceName();
+    }
+    return list;
+}
+
+QAudio::State AudioRecorder::state() const {
+    Q_D(const AudioRecorder);
+    return d->audioInput->state();
+}
+
+int AudioRecorder::channelCount() const {
+    Q_D(const AudioRecorder);
+    return d->audioFormat.channelCount();
+}
+
+int AudioRecorder::sampleRate() const {
+    Q_D(const AudioRecorder);
+    return d->audioFormat.sampleRate();
+}
+
+
+QAudioFormat AudioRecorder::format() const {
+    Q_D(const AudioRecorder);
+    return d->audioFormat;
+}
+
+QString AudioRecorder::device() const {
+    Q_D(const AudioRecorder);
+    return d->audioDeviceInfo.deviceName();
+}
+
+int AudioRecorder::bufferDuration() const {
+    Q_D(const AudioRecorder);
+    return d->audioBufferDuration;
+}
+
+void AudioRecorder::setSampleRate(int sampleRate) {
+    Q_D(AudioRecorder);
+    QAudioFormat format = d->audioFormat;
+    if (format.sampleRate() != sampleRate) {
+        format.setSampleRate(sampleRate);
+        setFormat(format);
+        emit sampleRateChanged(sampleRate);
+    }
+}
+
+void AudioRecorder::setChannelCount(int channelCount) {
+    Q_D(AudioRecorder);
+    QAudioFormat format = d->audioFormat;
+    if (format.channelCount() != channelCount) {
+        format.setChannelCount(channelCount);
+        setFormat(format);
+        emit channelCountChanged(channelCount);
+    }
 }
