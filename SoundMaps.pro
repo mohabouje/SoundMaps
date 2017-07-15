@@ -1,11 +1,17 @@
-QT += qml quick multimedia svg
-QTPLUGIN += qsvg
+QT += qml quick multimedia
+
+android {
+    QT += svg
+    QTPLUGIN += qsvg
+}
 
 CONFIG += c++11
 
+HEADERS += \
+    config.h \
+    appdelegate.h
+
 SOURCES += main.cpp \
-    tabbarmodel.cpp \
-    drawermodel.cpp \
     appdelegate.cpp
 
 RESOURCES += qml.qrc \
@@ -34,8 +40,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 include(audio/audio.pri)
-HEADERS += \
-    config.h \
-    tabbarmodel.h \
-    drawermodel.h \
-    appdelegate.h
+include(components/components.pri);
+

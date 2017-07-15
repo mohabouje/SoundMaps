@@ -2,7 +2,5 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>TabImageButton.qml</file>
-        <file>MainTabBar.qml</file>
     </qresource>
 </RCC>

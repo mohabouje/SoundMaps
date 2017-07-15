@@ -6,7 +6,6 @@ import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
 import QtLocation 5.9
 import com.mohabouje.soundmaps 1.0
-
 ApplicationWindow {
     id: window
     visible: true
@@ -16,8 +15,6 @@ ApplicationWindow {
 
     property real screenDensity: Screen.pixelDensity
     property real toolBarIconSize: 4 * screenDensity;
-
-
 
     header: ToolBar {
         id: toolBar;

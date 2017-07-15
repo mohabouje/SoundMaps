@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>TabImageButton.qml</file>
+        <file>MainTabBar.qml</file>
+    </qresource>
+</RCC>
