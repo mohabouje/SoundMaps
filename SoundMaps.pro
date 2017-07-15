@@ -4,7 +4,8 @@ CONFIG += c++11
 
 SOURCES += main.cpp \
     tabbarmodel.cpp \
-    drawermodel.cpp
+    drawermodel.cpp \
+    appdelegate.cpp
 
 RESOURCES += qml.qrc \
     resources/resources.qrc
@@ -35,4 +36,5 @@ include(audio/audio.pri)
 HEADERS += \
     config.h \
     tabbarmodel.h \
-    drawermodel.h
+    drawermodel.h \
+    appdelegate.h
