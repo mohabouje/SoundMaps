@@ -1,31 +1,52 @@
 #include "appdelegate.h"
+#include "config.h"
 
-AppDelegate::AppDelegate(QObject *parent) : QObject(parent)
-{
+#include <audio/audiorecorder.h>
+
+class AppDelegatePrivate : QSharedData {
+    Q_DISABLE_COPY(AppDelegatePrivate)
+    Q_DECLARE_PUBLIC(AppDelegate)
+public:
+    AppDelegatePrivate(AppDelegate* parent) :
+        q_ptr(parent),
+        audioRecorder(new AudioRecorder(parent)) {
+
+    }
+    ~AppDelegatePrivate() {}
+
+
+    void setAudioRecorder(AudioRecorder* tmp) {
+        Q_Q(AppDelegate);
+        if (tmp != audioRecorder) {
+            audioRecorder = tmp;
+            q->audioRecorderChanged(audioRecorder);
+        }
+    }
+
+
+    AppDelegate* const  q_ptr;
+    AudioRecorder*   audioRecorder;
+};
+
+AppDelegate::AppDelegate(QObject *parent) : QObject(parent) {
+
+    qmlRegisterType<AudioRecorder>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioRecorder");
 
 }
 
-AudioRecorder *AppDelegate::audioRecorder() const
-{
-    return _audioRecorder;
+AudioRecorder *AppDelegate::audioRecorder() const {
+    Q_D(const AppDelegate);
+    return d->audioRecorder;
 }
 
 QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
-    AppDelegate* appDelegate = new AppDelegate();
-    appDelegate->setQmlEngine(engine);
-    appDelegate->setJsEngine(scriptEngine);
-    return appDelegate;
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+    return new AppDelegate();
 }
 
-void AppDelegate::setAudioRecorder(AudioRecorder *audioRecorder)
-{
-    _audioRecorder = audioRecorder;
+void AppDelegate::setAudioRecorder(AudioRecorder *audioRecorder) {
+    Q_D(AppDelegate);
+    d->setAudioRecorder(audioRecorder);
 }
 
-void AppDelegate::setJsEngine(QJSEngine *jsEngine) {
-    _jsEngine = jsEngine;
-}
-
-void AppDelegate::setQmlEngine(QQmlEngine *qmlEngine) {
-    _qmlEngine = qmlEngine;
-}

@@ -143,6 +143,11 @@ QAudio::Error AudioRecorder::record() {
     return d->record();
 }
 
+void AudioRecorder::stop() {
+    Q_D(AudioRecorder);
+    d->audioInput->stop();
+}
+
 QStringList AudioRecorder::availableDevices() const {
     QStringList list;
     const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);

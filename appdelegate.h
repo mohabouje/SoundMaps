@@ -4,13 +4,12 @@
 #include <QObject>
 #include <QQmlEngine>
 
-#include "config.h"
-#include <audio/audiorecorder.h>
+class AudioRecorder;
+class AppDelegatePrivate;
 class AppDelegate : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(AppDelegate)
-    Q_PROPERTY(AudioRecorder* audioRecorder READ audioRecorder WRITE setAudioRecorder NOTIFY audioRecorderChanged)
+    Q_PROPERTY(AudioRecorder* audioRecorder READ audioRecorder NOTIFY audioRecorderChanged)
 public:
     explicit AppDelegate(QObject *parent = nullptr);
     static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
@@ -19,13 +18,10 @@ signals:
     void audioRecorderChanged(AudioRecorder* audioRecorder);
 public slots:
     void setAudioRecorder(AudioRecorder *audioRecorder);
-protected:
-    void setQmlEngine(QQmlEngine *qmlEngine);
-    void setJsEngine(QJSEngine *jsEngine);
 private:
-    AudioRecorder*   _audioRecorder;
-    QQmlEngine*      _qmlEngine{nullptr};
-    QJSEngine*       _jsEngine{nullptr};
+    Q_DECLARE_PRIVATE(AppDelegate)
+    Q_DISABLE_COPY(AppDelegate)
+    AppDelegatePrivate* d_ptr;
 };
 
 #endif // APPDELEGATE_H

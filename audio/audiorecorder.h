@@ -17,6 +17,7 @@ public:
     Q_INVOKABLE bool isActive() const;
     Q_INVOKABLE QAudio::Error initialize();
     Q_INVOKABLE QAudio::Error record();
+    Q_INVOKABLE void stop();
     Q_INVOKABLE QStringList availableDevices() const;
 
     QAudio::State state() const;
