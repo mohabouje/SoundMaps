@@ -74,3 +74,6 @@ Thumbs.db
 # Compilation folder
 
 compilation
+
+#qpm vendor 
+/vendor
