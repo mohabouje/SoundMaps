@@ -9,15 +9,11 @@ TabBar {
     property color normalColor: Qt.black
 
     Repeater {
-        model: tabBarModel
+        model: AppDelegate.componentsManager.tabBarModel
         TabImageButton {
             icon: model.icon
             highlightColor: tabBar.hightlightColor
             normalColor: tabBar.normalColor
         }
-    }
-
-    TabBarModel {
-        id: tabBarModel
     }
 }
