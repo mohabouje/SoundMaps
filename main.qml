@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
+import QtLocation 5.9
 import com.mohabouje.soundmaps 1.0
 
 ApplicationWindow {
@@ -15,6 +16,8 @@ ApplicationWindow {
 
     property real screenDensity: Screen.pixelDensity
     property real toolBarIconSize: 4 * screenDensity;
+
+
 
     header: ToolBar {
         id: toolBar;
@@ -44,7 +47,6 @@ ApplicationWindow {
                     } else {
                         drawer.open()
                     }
-                    drawerList.currentIndex = -1
                 }
             }
             Label {
@@ -82,25 +84,6 @@ ApplicationWindow {
         height: window.height - header.height
         y: header.height
 
-        ListView {
-            id: drawerList
-            focus: true
-            currentIndex: -1
-            anchors.fill: parent
-
-            delegate: ItemDelegate {
-                width: parent.width
-                text: model.title
-                highlighted: ListView.isCurrentItem
-                onClicked: {
-                    listView.currentIndex = index
-                    drawer.close()
-                }
-            }
-            model: ListModel {
-            }
-            ScrollIndicator.vertical: ScrollIndicator { }
-        }
     }
 
 
@@ -109,21 +92,7 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        AudioWaveChartFragment {
-        }
-
-        Page {
-            Label {
-                text: qsTr("Second page")
-                anchors.centerIn: parent
-            }
-        }
     }
-
-    TabBarModel {
-        id: tabBarModel
-    }
-
 
     footer: MainTabBar {
         id: tabBar

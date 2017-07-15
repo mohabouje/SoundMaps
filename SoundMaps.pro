@@ -1,4 +1,5 @@
-QT += qml quick multimedia
+QT += qml quick multimedia svg
+QTPLUGIN += qsvg
 
 CONFIG += c++11
 

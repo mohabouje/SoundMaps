@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
+    engine.addImportPath("qrc:///");
     if (engine.rootObjects().isEmpty())
         return -1;
 
