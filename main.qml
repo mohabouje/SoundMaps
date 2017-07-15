@@ -89,6 +89,10 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
+        AudioSettings {
+
+        }
+
     }
 
     footer: MainTabBar {

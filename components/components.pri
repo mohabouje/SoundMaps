@@ -10,7 +10,8 @@ SOURCES += \
 
 DISTFILES += \
     $$PWD/MainTabBar.qml \
-    $$PWD/TabImageButton.qml
+    $$PWD/TabImageButton.qml \
+    $$PWD/AudioSettings.qml
 
 RESOURCES += \
     $$PWD/components.qrc

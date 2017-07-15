@@ -5,8 +5,7 @@
 class TabBarModel;
 class DrawerModel;
 class ComponentsManagerPrivate;
-class ComponentsManager : public QObject
-{
+class ComponentsManager : public QObject {
     Q_OBJECT
     Q_PROPERTY(DrawerModel* drawerModel READ drawerModel WRITE setDrawerModel NOTIFY drawerModelChanged)
     Q_PROPERTY(TabBarModel* tabBarModel READ tabBarModel WRITE setTabBarModel NOTIFY tabBarModelChanged)

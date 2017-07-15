@@ -24,7 +24,7 @@ public:
         const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
         foreach(const QAudioDeviceInfo& device, devices) {
             if (QString::compare(name, device.deviceName(), Qt::CaseInsensitive) == 0
-                    && QString::compare(name, device.deviceName(), Qt::CaseInsensitive) != 0) {
+                    && QString::compare(name, audioDeviceInfo.deviceName(), Qt::CaseInsensitive) != 0) {
                 setDevice(device);
                 return;
             }
@@ -40,6 +40,16 @@ public:
             emit q->formatChanged(audioFormat);
         }
         emit q->deviceChanged(audioDeviceInfo.deviceName());
+        emit q->supportedSampleRatesChanged(supportedSampleRates());
+    }
+
+    inline QStringList supportedSampleRates() const {
+        QStringList list;
+        const QList<int> sampleRates = audioDeviceInfo.supportedSampleRates();
+        foreach(const int sampleRate, sampleRates) {
+            list << QString::number(sampleRate);
+        }
+        return  list;
     }
 
     inline bool isActive() const {
@@ -90,7 +100,11 @@ AudioRecorder::AudioRecorder(QObject *parent) :
     QObject(parent),
     d_ptr(new AudioRecorderPrivate(this))
 {
-
+    Q_D(AudioRecorder);
+    d->setDevice(QAudioDeviceInfo::defaultInputDevice());
+    d->initialize();
+    d->setBufferDuration(DefaultBufferSize::Medium);
+    availableDevices();
 }
 
 AudioRecorder::~AudioRecorder() {
@@ -149,12 +163,28 @@ void AudioRecorder::stop() {
 }
 
 QStringList AudioRecorder::availableDevices() const {
-    QStringList list;
-    const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-    foreach(const QAudioDeviceInfo& device, devices) {
-        list << device.deviceName();
+    static bool firstRun = true;
+    static QStringList list;
+    if (firstRun) {
+        const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+        foreach(const QAudioDeviceInfo& device, devices) {
+            if (device.supportedSampleRates().size() > 3) {
+                list << device.deviceName();
+            }
+        }
+        firstRun = false;
     }
     return list;
+}
+
+int AudioRecorder::indexForSampleRate(int sampleRate) const {
+    Q_D(const AudioRecorder);
+    return d->audioDeviceInfo.supportedSampleRates().indexOf(sampleRate);
+}
+
+QStringList AudioRecorder::supportedSampleRates() const{
+    Q_D(const AudioRecorder);
+    return d->supportedSampleRates();
 }
 
 QAudio::State AudioRecorder::state() const {
