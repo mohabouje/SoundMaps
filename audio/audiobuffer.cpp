@@ -51,11 +51,11 @@ AudioBuffer::~AudioBuffer() {
 }
 
 void AudioBuffer::start() {
-    open(QIODevice::WriteOnly);
+    QIODevice::open(QIODevice::WriteOnly);
 }
 
 void AudioBuffer::stop() {
-    close();
+    QIODevice::close();
 }
 
 qint64 AudioBuffer::readData(char *data, qint64 maxlen) {
@@ -65,7 +65,7 @@ qint64 AudioBuffer::readData(char *data, qint64 maxlen) {
 }
 
 qint64 AudioBuffer::writeData(const char *data, qint64 len) {
-    Q_D(AudioBuffer);
-    d->writeData(data, len);
+    //Q_D(AudioBuffer);
+    //d->writeData(data, len);
     return len;
 }
