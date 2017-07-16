@@ -40,11 +40,11 @@ ApplicationWindow {
             }
 
             ImageToolButton {
-                iconSource: (AppDelegate.audioRecorder.state === AppDelegate.audioRecorder.ActiveState) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
+                iconSource: (AppDelegate.audioRecorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
                 iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
                 iconColor: "white"
                 onClicked: {
-                    if (AppDelegate.audioRecorder.isActive()) {
+                    if (AppDelegate.audioRecorder.active) {
                         AppDelegate.audioRecorder.stop()
                     } else {
                         AppDelegate.audioRecorder.record()
