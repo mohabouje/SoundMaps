@@ -9,7 +9,7 @@ class AudioRecorder : public QObject {
     Q_PROPERTY(int channelCount READ channelCount WRITE setChannelCount NOTIFY channelCountChanged)
     Q_PROPERTY(int bufferDuration READ bufferDuration WRITE setBufferDuration NOTIFY bufferDurationChanged)
     Q_PROPERTY(QString device READ device WRITE setDevice NOTIFY deviceChanged)
-    Q_PROPERTY(QAudio::State state READ state NOTIFY stateChanged)
+    Q_PROPERTY(AudioRecorder::State state READ state NOTIFY stateChanged)
     Q_PROPERTY(QStringList supportedSampleRates READ supportedSampleRates NOTIFY supportedSampleRatesChanged)
 public:
     explicit AudioRecorder(QObject *parent = nullptr);
@@ -26,16 +26,23 @@ public:
     };
     Q_ENUMS(DefaultBufferSize)
 
+    enum State {
+        ActiveState = QAudio::ActiveState,
+        SuspendedState = QAudio::SuspendedState,
+        StoppedState = QAudio::StoppedState,
+        IdleState = QAudio::IdleState
+    };
+    Q_ENUMS(State)
+
     ~AudioRecorder();
     Q_INVOKABLE bool isActive() const;
-    Q_INVOKABLE QAudio::Error initialize();
     Q_INVOKABLE QAudio::Error record();
     Q_INVOKABLE void stop();
     Q_INVOKABLE QStringList availableDevices() const;
     Q_INVOKABLE int indexForSampleRate(int sampleRate) const;
 
     QStringList supportedSampleRates() const;
-    QAudio::State state() const;
+    AudioRecorder::State state() const;
     int channelCount() const;
     int sampleRate() const;
     QAudioFormat format() const;
@@ -48,7 +55,7 @@ public slots:
     void setFormat(const QAudioFormat& format, FormatEngine engine = Default);
     void setBufferDuration(int duration);
 signals:
-    void stateChanged(QAudio::State state);
+    void stateChanged(AudioRecorder::State state);
     void formatChanged(const QAudioFormat& format);
     void sampleRateChanged(int sampleRate);
     void channelCountChanged(int numChannels);

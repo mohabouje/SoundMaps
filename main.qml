@@ -31,7 +31,6 @@ ApplicationWindow {
             }
             Label {
                 id: toolbarTitle
-                text: tabBar.itemAt(tabBar.currentIndex).text
                 font.pixelSize: 20
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
@@ -39,6 +38,20 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
             }
+
+            ImageToolButton {
+                iconSource: (AppDelegate.audioRecorder.state === AppDelegate.audioRecorder.ActiveState) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
+                iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
+                iconColor: "white"
+                onClicked: {
+                    if (AppDelegate.audioRecorder.isActive()) {
+                        AppDelegate.audioRecorder.stop()
+                    } else {
+                        AppDelegate.audioRecorder.record()
+                    }
+                }
+            }
+
             ImageToolButton {
                 iconSource:  "qrc:/icon/navigation_more_vert.svg"
                 iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
@@ -52,6 +65,7 @@ ApplicationWindow {
                     MenuItem {
                         text: "Settings"
                         onClicked: {
+                            AppDelegate.audioRecorder.stop()
                             audioSettingsDialog.show()
                         }
                     }

@@ -2,7 +2,6 @@
 #define DRAWERMODEL_H
 
 #include <QAbstractItemModel>
-
 class DrawerItem : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
