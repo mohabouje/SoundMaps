@@ -1,12 +1,12 @@
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-
 #include <config.h>
 #include "appdelegate.h"
+
+#include <QApplication>
+#include <QQmlApplicationEngine>
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
 
     // Singletone Elements
@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
-    engine.addImportPath("qrc:///");
     if (engine.rootObjects().isEmpty())
         return -1;
 

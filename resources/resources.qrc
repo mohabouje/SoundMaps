@@ -17,5 +17,11 @@
         <file>icon/microphone.svg</file>
         <file>icon/microphone-off.svg</file>
         <file>icon/settings.svg</file>
+        <file>icon/navigation_arrow_back.svg</file>
+        <file>icon/navigation_chevron_left.svg</file>
+        <file>icon/navigation_chevron_right.svg</file>
+        <file>icon/navigation_close.svg</file>
+        <file>icon/navigation_menu.svg</file>
+        <file>icon/navigation_more_vert.svg</file>
     </qresource>
 </RCC>

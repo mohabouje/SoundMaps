@@ -1,4 +1,4 @@
-QT += qml quick multimedia
+QT += qml quick multimedia charts
 
 android {
     QT += svg
@@ -41,5 +41,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 include(audio/audio.pri)
 include(components/components.pri);
-include(vendor/vendor.pri);
 

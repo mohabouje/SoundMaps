@@ -1,10 +1,9 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+import QtLocation 5.9
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.1
-import QtQuick.Window 2.2
-import QtLocation 5.9
 import com.mohabouje.soundmaps 1.0
 ApplicationWindow {
     id: window
@@ -13,31 +12,15 @@ ApplicationWindow {
     height: 600
     title: qsTr("Sound Maps")
 
-    property real screenDensity: Screen.pixelDensity
-    property real toolBarIconSize: 4 * screenDensity;
-
     header: ToolBar {
         id: toolBar;
         position: ToolBar.Header
         RowLayout {
             anchors.fill: parent
-            ToolButton {
-                text: ""
-                Image {
-                    id: homeIcon
-                    anchors.centerIn: parent
-                    source: "qrc:/icon/menu.svg"
-                    sourceSize: Qt.size(toolBarIconSize, toolBarIconSize)
-                    smooth: true
-                    visible: false
-                }
-
-                ColorOverlay {
-                    anchors.fill: homeIcon
-                    source: homeIcon
-                    color: Material.background;
-                }
-
+            ImageToolButton {
+                iconSource:  "qrc:/icon/navigation_menu.svg"
+                iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
+                iconColor: "white"
                 onClicked: {
                     if (drawer.visible) {
                         drawer.close()
@@ -48,7 +31,7 @@ ApplicationWindow {
             }
             Label {
                 id: toolbarTitle
-                //text: tabBar.itemAt(tabBar.currentIndex).text
+                text: tabBar.itemAt(tabBar.currentIndex).text
                 font.pixelSize: 20
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
@@ -56,8 +39,10 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
             }
-            ToolButton {
-                text: ":"
+            ImageToolButton {
+                iconSource:  "qrc:/icon/navigation_more_vert.svg"
+                iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
+                iconColor: "white"
                 onClicked: optionsMenu.open()
 
                 Menu {
@@ -66,6 +51,9 @@ ApplicationWindow {
                     transformOrigin: Menu.TopRight
                     MenuItem {
                         text: "Settings"
+                        onClicked: {
+                            audioSettingsDialog.show()
+                        }
                     }
                     MenuItem {
                         text: "About"
@@ -73,6 +61,13 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    AudioSettings {
+        id: audioSettingsDialog
+        anchors.centerIn: parent
+        width: parent.width * 0.75
+        height: parent.height * 0.9
     }
 
     Drawer {
@@ -89,10 +84,11 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        AudioSettings {
-
+        Repeater {
+            model: tabBar.count
+            ShortTimeAnalysisChart {
+            }
         }
-
     }
 
     footer: MainTabBar {
