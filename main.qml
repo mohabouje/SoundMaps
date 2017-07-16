@@ -104,6 +104,7 @@ ApplicationWindow {
         }
     }
 
+
     footer: MainTabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex

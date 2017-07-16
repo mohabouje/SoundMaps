@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.0
 import com.mohabouje.soundmaps 1.0
 Item {
     anchors.centerIn: parent
@@ -10,7 +11,6 @@ Item {
         id: dialog
         width: parent.width
         height: parent.height
-        title: qsTr("Audio Settings")
         standardButtons: Dialog.Ok
         modal: true
         onAccepted: {
@@ -24,6 +24,14 @@ Item {
         }
 
         padding: 10
+
+        header: Rectangle {
+            visible: false
+            color: Material.primary
+            width: parent.width
+            height: 40
+        }
+
         Rectangle {
             id: groupBox
             width: parent.width
@@ -50,7 +58,7 @@ Item {
                     Layout.fillWidth: true
                 }
                 Label {
-                    text: qsTr("Buffer Size")
+                    text: qsTr("Frame Rate")
                 }
                 ColumnLayout {
                     id: slider
@@ -59,20 +67,20 @@ Item {
                         id : lowProcessing
                         checked: AppDelegate.audioRecorder.bufferDuration == AudioRecorder.Low
                         onClicked: AppDelegate.audioRecorder.setBufferDuration(AudioRecorder.Low)
-                        text: qsTr("Low")
+                        text: qsTr("Low (10 FPS)")
                     }
                     RadioButton {
                         id : mediumProcessing
                         checked: AppDelegate.audioRecorder.bufferDuration == AudioRecorder.Medium
                         onClicked: AppDelegate.audioRecorder.setBufferDuration(AudioRecorder.Medium)
-                        text: qsTr("Medium")
+                        text: qsTr("Medium (20 FPS)")
                     }
 
                     RadioButton {
                         id : highProcessing
                         checked: AppDelegate.audioRecorder.bufferDuration == AudioRecorder.High
                         onClicked: AppDelegate.audioRecorder.setBufferDuration(AudioRecorder.High)
-                        text: qsTr("Hight")
+                        text: qsTr("Hight (40 FPS)")
                     }
                 }
             }

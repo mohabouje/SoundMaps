@@ -11,6 +11,7 @@ Page {
     RowLayout {
         anchors.fill: parent
         ChartView {
+            anchors.fill: parent
             width: parent.width
             height: parent.height
             title: qsTr("Short Time Analysis")

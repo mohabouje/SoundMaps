@@ -78,6 +78,9 @@ public:
             emit q->stateChanged(state);
             emit q->activeChanged(state == QAudio::ActiveState);
         });
+
+        Q_Q(AudioRecorder);
+        emit q->errorChanged(audioInput->error());
         return audioInput->error();
     }
 
@@ -145,7 +148,6 @@ void AudioRecorder::setBufferDuration(int duration) {
     }
 }
 
-
 bool AudioRecorder::active() const {
     Q_D(const AudioRecorder);
     return d->isActive();
@@ -181,9 +183,14 @@ int AudioRecorder::indexForSampleRate(int sampleRate) const {
     return d->audioDeviceInfo.supportedSampleRates().indexOf(sampleRate);
 }
 
-void AudioRecorder::initialize() {
+QAudio::Error AudioRecorder::initialize() {
     Q_D(AudioRecorder);
-    d->initialize();
+    return d->initialize();
+}
+
+QAudio::Error AudioRecorder::error() const {
+    Q_D(const AudioRecorder);
+    return d->audioInput->error();
 }
 
 QStringList AudioRecorder::supportedSampleRates() const{

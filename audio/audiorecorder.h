@@ -11,6 +11,7 @@ class AudioRecorder : public QObject {
     Q_PROPERTY(int bufferDuration READ bufferDuration WRITE setBufferDuration NOTIFY bufferDurationChanged)
     Q_PROPERTY(QString device READ device WRITE setDevice NOTIFY deviceChanged)
     Q_PROPERTY(QStringList supportedSampleRates READ supportedSampleRates NOTIFY supportedSampleRatesChanged)
+    Q_PROPERTY(QAudio::Error error READ error NOTIFY errorChanged)
 public:
     explicit AudioRecorder(QObject *parent = nullptr);
     enum FormatEngine {
@@ -25,13 +26,15 @@ public:
         High = 25
     };
     Q_ENUMS(DefaultBufferSize)
+
     ~AudioRecorder();
     Q_INVOKABLE QAudio::Error record();
     Q_INVOKABLE void stop();
     Q_INVOKABLE QStringList availableDevices() const;
     Q_INVOKABLE int indexForSampleRate(int sampleRate) const;
-    Q_INVOKABLE void initialize();
+    Q_INVOKABLE QAudio::Error initialize();
 
+    QAudio::Error error() const;
     bool active() const;
     QStringList supportedSampleRates() const;
     QAudio::State state() const;
@@ -50,6 +53,7 @@ signals:
     void bufferDurationChanged(int duration);
     void supportedSampleRatesChanged(const QStringList&);
     void activeChanged(bool);
+    void errorChanged(QAudio::Error);
 private:
     Q_DECLARE_PRIVATE(AudioRecorder)
     Q_DISABLE_COPY(AudioRecorder)
