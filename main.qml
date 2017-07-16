@@ -65,7 +65,6 @@ ApplicationWindow {
                     MenuItem {
                         text: "Settings"
                         onClicked: {
-                            AppDelegate.audioRecorder.stop()
                             audioSettingsDialog.show()
                         }
                     }

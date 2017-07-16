@@ -2,11 +2,11 @@
 #define AUDIODEVICE_H
 
 #include <QAudioInput>
+class AudioBuffer;
 class AudioRecorderPrivate;
 class AudioRecorder : public QObject {
     Q_OBJECT
     Q_PROPERTY(int sampleRate READ sampleRate WRITE setSampleRate NOTIFY sampleRateChanged)
-    Q_PROPERTY(int channelCount READ channelCount WRITE setChannelCount NOTIFY channelCountChanged)
     Q_PROPERTY(int bufferDuration READ bufferDuration WRITE setBufferDuration NOTIFY bufferDurationChanged)
     Q_PROPERTY(QString device READ device WRITE setDevice NOTIFY deviceChanged)
     Q_PROPERTY(AudioRecorder::State state READ state NOTIFY stateChanged)
@@ -40,25 +40,20 @@ public:
     Q_INVOKABLE void stop();
     Q_INVOKABLE QStringList availableDevices() const;
     Q_INVOKABLE int indexForSampleRate(int sampleRate) const;
-
+    Q_INVOKABLE void initialize();
     QStringList supportedSampleRates() const;
     AudioRecorder::State state() const;
-    int channelCount() const;
+    AudioBuffer* buffer() const;
     int sampleRate() const;
-    QAudioFormat format() const;
-    QString device() const;
     int bufferDuration() const;
+    QString device() const;
 public slots:
     void setSampleRate(int sampleRate);
-    void setChannelCount(int channels);
     void setDevice(const QString& name);
-    void setFormat(const QAudioFormat& format, FormatEngine engine = Default);
     void setBufferDuration(int duration);
 signals:
     void stateChanged(AudioRecorder::State state);
-    void formatChanged(const QAudioFormat& format);
     void sampleRateChanged(int sampleRate);
-    void channelCountChanged(int numChannels);
     void deviceChanged(const QString& decive);
     void bufferDurationChanged(int duration);
     void supportedSampleRatesChanged(const QStringList&);

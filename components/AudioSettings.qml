@@ -13,7 +13,16 @@ Item {
         title: qsTr("Audio Settings")
         standardButtons: Dialog.Ok
         modal: true
-        onAccepted: close()
+        onAccepted: {
+            close()
+        }
+        onClosed: {
+            AppDelegate.audioRecorder.initialize();
+        }
+        onOpened: {
+            AppDelegate.audioRecorder.stop()
+        }
+
         padding: 10
         Rectangle {
             id: groupBox
