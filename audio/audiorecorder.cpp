@@ -21,6 +21,9 @@ public:
         Q_Q(AudioRecorder);
         audioFormat = format;
         audioFormat.setChannelCount(1);
+        audioFormat.setSampleSize(32);
+        audioFormat.setSampleType(QAudioFormat::SignedInt);
+        audioFormat.setByteOrder(QAudioFormat::BigEndian);
         q->formatChanged(audioFormat);
         return audioDeviceInfo.isFormatSupported(format);
     }
@@ -42,6 +45,9 @@ public:
         if (!audioDeviceInfo.isFormatSupported(audioFormat)) {
             audioFormat = audioDeviceInfo.preferredFormat();
             audioFormat.setChannelCount(1);
+            audioFormat.setSampleSize(32);
+            audioFormat.setSampleType(QAudioFormat::Float);
+            audioFormat.setByteOrder(QAudioFormat::BigEndian);
             emit q->formatChanged(audioFormat);
         }
         emit q->deviceChanged(audioDeviceInfo.deviceName());
@@ -100,6 +106,7 @@ public:
 
         if (error == QAudio::NoError) {
             audioBuffer->start();
+            audioInput->setVolume(1.);
             audioInput->start(audioBuffer);
             error = audioInput->error();
         }
