@@ -3,7 +3,6 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtLocation 5.9
 import QtGraphicalEffects 1.0
-import QtQuick.Controls.Material 2.1
 import com.mohabouje.soundmaps 1.0
 ApplicationWindow {
     id: window
@@ -15,6 +14,9 @@ ApplicationWindow {
     header: ToolBar {
         id: toolBar;
         position: ToolBar.Header
+        background: Rectangle {
+            color: ThemeManager.accentColor()
+        }
         RowLayout {
             anchors.fill: parent
             ImageToolButton {
@@ -65,6 +67,9 @@ ApplicationWindow {
                     MenuItem {
                         text: "Settings"
                         onClicked: {
+                            if (AppDelegate.audioRecorder.active) {
+                                AppDelegate.audioRecorder.stop()
+                            }
                             audioSettingsDialog.show()
                         }
                     }
@@ -76,11 +81,16 @@ ApplicationWindow {
         }
     }
 
+
     AudioSettings {
         id: audioSettingsDialog
         anchors.centerIn: parent
         width: parent.width * 0.75
         height: parent.height * 0.9
+
+        onDialogClosed: {
+            AppDelegate.audioRecorder.reset();
+        }
     }
 
     Drawer {
@@ -109,7 +119,7 @@ ApplicationWindow {
         id: tabBar
         currentIndex: swipeView.currentIndex
         position: TabBar.Footer
-        hightlightColor: Material.accent
-        normalColor: Material.foreground
+        hightlightColor: ThemeManager.accentColor()
+        normalColor: ThemeManager.foregroundColor()
     }
 }

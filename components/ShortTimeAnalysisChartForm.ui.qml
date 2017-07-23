@@ -1,8 +1,8 @@
 import QtQuick 2.4
 import QtCharts 2.2
 import QtQuick.Controls 2.2
-import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.3
+import com.mohabouje.soundmaps 1.0
 Page {
     width: 400
     height: 400
@@ -15,7 +15,7 @@ Page {
             width: parent.width
             height: parent.height
             title: qsTr("Short Time Analysis")
-            titleColor: Material.accent
+            titleColor: ThemeManager.accentColor()
             antialiasing: false
             backgroundColor: "transparent"
             legend.visible : false

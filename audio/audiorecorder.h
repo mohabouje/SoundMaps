@@ -32,12 +32,11 @@ public:
     Q_INVOKABLE void stop();
     Q_INVOKABLE QStringList availableDevices() const;
     Q_INVOKABLE int indexForSampleRate(int sampleRate) const;
-    Q_INVOKABLE QAudio::Error initialize();
+    Q_INVOKABLE QAudio::Error reset();
 
     QAudio::Error error() const;
     bool active() const;
     QStringList supportedSampleRates() const;
-    QAudio::State state() const;
     AudioBuffer* buffer() const;
     int sampleRate() const;
     int bufferDuration() const;
@@ -47,7 +46,6 @@ public slots:
     void setDevice(const QString& name);
     void setBufferDuration(int duration);
 signals:
-    void stateChanged(QAudio::State state);
     void sampleRateChanged(int sampleRate);
     void deviceChanged(const QString& decive);
     void bufferDurationChanged(int duration);

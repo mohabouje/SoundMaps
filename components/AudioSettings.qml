@@ -1,33 +1,22 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2
-import QtQuick.Controls.Material 2.0
 import com.mohabouje.soundmaps 1.0
 Item {
     anchors.centerIn: parent
     width: 450
     height: 350
+    signal dialogClosed;
     Dialog {
         id: dialog
         width: parent.width
         height: parent.height
         standardButtons: Dialog.Ok
         modal: true
-        onAccepted: {
-            close()
-        }
-        onClosed: {
-            AppDelegate.audioRecorder.initialize();
-        }
-        onOpened: {
-            AppDelegate.audioRecorder.stop()
-        }
-
         padding: 10
-
         header: Rectangle {
             visible: false
-            color: Material.primary
+            color: ThemeManager.accentColor()
             width: parent.width
             height: 40
         }
@@ -85,6 +74,10 @@ Item {
                 }
             }
         }
+        onAccepted: {
+            close()
+        }
+        onClosed: dialogClosed()
     }
 
     function show() {

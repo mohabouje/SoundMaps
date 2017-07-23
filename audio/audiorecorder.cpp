@@ -9,7 +9,8 @@ class AudioRecorderPrivate : public QSharedData {
     Q_DECLARE_PUBLIC(AudioRecorder)
 public:
     AudioRecorderPrivate(AudioRecorder* parent) :
-        q_ptr(parent)
+        q_ptr(parent),
+        audioBuffer(new AudioBuffer(parent))
     {
         setDevice(QAudioDeviceInfo::defaultInputDevice());
         setFormat(audioDeviceInfo.preferredFormat());
@@ -18,19 +19,36 @@ public:
     }
     ~AudioRecorderPrivate() {}
 
-    void ensureBasicProperties() {
-        audioFormat.setChannelCount(1);
-        audioFormat.setSampleType(QAudioFormat::Float);
+    void reset() {
+        setFormat(audioFormat);
+        setDevice(audioDeviceInfo);
+        setBufferDuration(audioBufferDuration);
+        initialize();
+    }
+
+    inline void setBufferDuration(int speed) {
+        Q_Q(AudioRecorder);
+        if (audioBufferDuration != speed) {
+            audioBufferDuration = speed;
+            emit q->bufferDurationChanged(audioBufferDuration);
+        }
     }
 
     inline bool setFormat(const QAudioFormat& format) {
         Q_Q(AudioRecorder);
-        const int currentSampleRate = audioFormat.sampleRate();
-        audioFormat = format;
-        if (audioFormat.sampleRate() != currentSampleRate) {
-            emit q->sampleRateChanged(audioFormat.sampleRate());
+        if (format != audioFormat) {
+            if (audioFormat.sampleRate() != format.sampleRate()) {
+                emit q->sampleRateChanged(format.sampleRate());
+            }
+            audioFormat = format;
+            audioFormat.setChannelCount(1);
+            audioFormat.setSampleType(QAudioFormat::Float);
         }
-        return audioDeviceInfo.isFormatSupported(format);
+        const bool supported = audioDeviceInfo.isFormatSupported(format);
+        if (!supported) {
+            qWarning() << "The given format its not supported by device " << audioDeviceInfo.deviceName();
+        }
+        return supported;
     }
     inline void setDevice(const QString& name) {
         const QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
@@ -46,12 +64,15 @@ public:
 
     inline void setDevice(const QAudioDeviceInfo& deviceInfo) {
         Q_Q(AudioRecorder);
-        audioDeviceInfo = deviceInfo;
-        if (!audioDeviceInfo.isFormatSupported(audioFormat)) {
-            setFormat(audioDeviceInfo.preferredFormat());
+        if (audioDeviceInfo != deviceInfo) {
+            audioDeviceInfo = deviceInfo;
+            if (!audioDeviceInfo.isFormatSupported(audioFormat)) {
+                qWarning() << "Current format not supported, using the nearest one";
+                setFormat(audioDeviceInfo.nearestFormat(audioFormat));
+            }
+            emit q->deviceChanged(audioDeviceInfo.deviceName());
+            emit q->supportedSampleRatesChanged(supportedSampleRates());
         }
-        emit q->deviceChanged(audioDeviceInfo.deviceName());
-        emit q->supportedSampleRatesChanged(supportedSampleRates());
     }
 
     inline QStringList supportedSampleRates() const {
@@ -68,20 +89,25 @@ public:
     }
 
     inline QAudio::Error initialize() {
-        audioBuffer->deleteLater();
-        audioInput->deleteLater();
+        if (audioInput) {
+            delete audioInput;
+            qInfo() << "Deleting the preconfigured audio input";
+        }
 
-        audioBuffer = new AudioBuffer(audioBufferDuration * audioFormat.sampleRate() / 1000, audioFormat);
+        audioBuffer->restart(audioBufferDuration, audioFormat);
         audioInput = new QAudioInput(audioDeviceInfo, audioFormat);
         QObject::connect(audioInput, &QAudioInput::stateChanged, [&](QAudio::State state) {
             Q_Q(AudioRecorder);
-            emit q->stateChanged(state);
             emit q->activeChanged(state == QAudio::ActiveState);
         });
 
+        const QAudio::Error error = audioInput->error();
+        if (error != QAudio::NoError) {
+            qCritical() << "Got an error while initializing the current audio input " << error;
+        }
         Q_Q(AudioRecorder);
         emit q->errorChanged(audioInput->error());
-        return audioInput->error();
+        return  error;
     }
 
     inline QAudio::Error stop() {
@@ -99,16 +125,11 @@ public:
             qWarning() << "Trying to initialize an active device";
             return QAudio::NoError;
         }
+        qWarning() << "Recording device " << audioDeviceInfo.deviceName() << " with format " << audioFormat;
 
         audioBuffer->start();
         audioInput->start(audioBuffer);
         return audioInput->error();
-    }
-
-    inline void setBufferDuration(int speed) {
-        Q_Q(AudioRecorder);
-        audioBufferDuration = speed;
-        emit q->bufferDurationChanged(audioBufferDuration);
     }
 
     AudioRecorder * const  q_ptr;
@@ -124,7 +145,7 @@ AudioRecorder::AudioRecorder(QObject *parent) :
     d_ptr(new AudioRecorderPrivate(this))
 {
     availableDevices();
-    connect(buffer(), &AudioBuffer::bufferReady, [&](const QVector<double> data){
+    connect(buffer(), &AudioBuffer::bufferReady, [](const QVector<float> data){
         qInfo() <<  data.size();
     });
 }
@@ -183,9 +204,10 @@ int AudioRecorder::indexForSampleRate(int sampleRate) const {
     return d->audioDeviceInfo.supportedSampleRates().indexOf(sampleRate);
 }
 
-QAudio::Error AudioRecorder::initialize() {
+QAudio::Error AudioRecorder::reset() {
     Q_D(AudioRecorder);
-    return d->initialize();
+    d->reset();
+    return d->audioInput->error();
 }
 
 QAudio::Error AudioRecorder::error() const {
@@ -196,11 +218,6 @@ QAudio::Error AudioRecorder::error() const {
 QStringList AudioRecorder::supportedSampleRates() const{
     Q_D(const AudioRecorder);
     return d->supportedSampleRates();
-}
-
-QAudio::State AudioRecorder::state() const {
-    Q_D(const AudioRecorder);
-    return d->audioInput->state();
 }
 
 int AudioRecorder::sampleRate() const {

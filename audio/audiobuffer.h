@@ -7,13 +7,14 @@ class AudioBufferPrivate;
 class AudioBuffer : public QIODevice {
     Q_OBJECT
 public:
-    explicit AudioBuffer(int bufferSize, const QAudioFormat& format, QObject *parent = nullptr);
+    explicit AudioBuffer(QObject *parent = nullptr);
     ~AudioBuffer();
 public slots:
     void start();
     void stop();
+    void restart(int bufferInMsecs, const QAudioFormat& format);
 signals:
-    void bufferReady(const QVector<double> data);
+    void bufferReady(const QVector<float> data);
 protected:
     qint64 readData(char *data, qint64 maxlen) override;
     qint64 writeData(const char *data, qint64 len) override;
