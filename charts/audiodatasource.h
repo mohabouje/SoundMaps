@@ -12,6 +12,7 @@ public:
 public slots:
     void initialize(int sampleRate, int bufferInMSecs);
     void appendBuffer(const QVector<double>& data);
+    void appendBuffer(const float *data, ulong size);
     Q_INVOKABLE void update(QAbstractSeries *series);
 private:
     QVector<QPointF>     m_data;

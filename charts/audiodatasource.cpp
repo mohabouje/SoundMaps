@@ -19,6 +19,17 @@ void AudioDataSource::initialize(int sampleRate, int bufferInMSecs) {
     }
 }
 
+void AudioDataSource::appendBuffer(const float* data, ulong size) {
+    const int dataSize = m_data.size();
+    for (int i=size; i<dataSize; i++) {
+        m_data[i].setY(m_data[i - size].y());
+    }
+
+    for (int i=dataSize - size; i <dataSize; i++) {
+        m_data[i].setY(data[i - (dataSize - size)] );
+    }
+}
+
 void AudioDataSource::appendBuffer(const QVector<double> &data) {
     const int size = data.size();
     const int dataSize = m_data.size();

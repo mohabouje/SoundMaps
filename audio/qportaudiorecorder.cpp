@@ -1,6 +1,7 @@
 #include "qportaudiorecorder.h"
 #include <portaudio.h>
 #include <QSharedData>
+#include <QStringList>
 class QPortAudioRecorderPrivate : public QSharedData {
     Q_DISABLE_COPY(QPortAudioRecorderPrivate)
     Q_DECLARE_PUBLIC(QPortAudioRecorder)
@@ -26,6 +27,7 @@ public:
         _inputDeviceParam.device = Pa_GetDefaultInputDevice();
         _sampleRate = Pa_GetDeviceInfo(_inputDeviceParam.device)->defaultSampleRate;
         _frameLength = static_cast<ulong>(0.1 * _sampleRate);
+        getSupportedSampleRates();
         return _isInitialized  && restart();
     }
 
@@ -42,9 +44,9 @@ public:
         _inputDeviceParam.hostApiSpecificStreamInfo = NULL;
         _inputDeviceParam.suggestedLatency = Pa_GetDeviceInfo(_inputDeviceParam.device)->defaultLowInputLatency;
 
-        const PaError err = Pa_OpenStream(&_dataStream, &_inputDeviceParam, NULL, _sampleRate, _frameLength, paClipOff, &QPortAudioCallback, this);
+        Q_Q(QPortAudioRecorder);
+        const PaError err = Pa_OpenStream(&_dataStream, &_inputDeviceParam, NULL, _sampleRate, _frameLength, paClipOff, &QPortAudioCallback, q);
         if (err != paNoError) {
-            Q_Q(QPortAudioRecorder);
             emit q->onError(Pa_GetErrorText(err));
         }
         return err;
@@ -54,17 +56,18 @@ public:
         return Pa_IsStreamActive(_dataStream);
     }
 
-    inline QStringList supportedSampleRates() const {
+    void getSupportedSampleRates() {
         static const QList<double> sampleRates = {8000.0, 11025.0, 16000.0, 22050.0, 44100.0, 48000.0 };
-        QStringList list;
+        _supportedSR.clear();
         foreach(const double sampleRate, sampleRates) {
             if (Pa_IsFormatSupported(&_inputDeviceParam,
                                      &_outputDeviceParam,
                                      sampleRate)) {
-                list.append(QString::number(sampleRate));
+                _supportedSR.append(QString::number(sampleRate));
             }
         }
-        return  list;
+        Q_Q(QPortAudioRecorder);
+        emit q->supportedSampleRatesChanged(_supportedSR);
     }
 
     PaError record() {
@@ -100,6 +103,7 @@ public:
             Q_Q(QPortAudioRecorder);
             _inputDeviceParam.device = index;
             emit q->deviceChanged(index);
+            getSupportedSampleRates();
         }
     }
 
@@ -132,6 +136,7 @@ public:
 
 
     QPortAudioRecorder* const q_ptr;
+    QStringList             _supportedSR;
     PaStream*               _dataStream;
     PaStreamParameters      _inputDeviceParam;
     PaStreamParameters      _outputDeviceParam;
@@ -185,8 +190,13 @@ QStringList QPortAudioRecorder::inputDevices() const {
 
 QStringList QPortAudioRecorder::supportedSampleRates() const {
     Q_D(const QPortAudioRecorder);
-    return d->supportedSampleRates();
+    return d->_supportedSR;
 
+}
+
+bool QPortAudioRecorder::reset() {
+    Q_D(QPortAudioRecorder);
+    d->restart();
 }
 
 int QPortAudioRecorder::device() const {
@@ -217,7 +227,7 @@ void QPortAudioRecorder::bufferReady(const void *input, void *output, ulong fram
     emit onBufferReady((float*)(input), framelength);
 }
 
-unsigned long QPortAudioRecorder::frameLength() const {
+ulong QPortAudioRecorder::frameLength() const {
     Q_D(const QPortAudioRecorder);
     return d->_frameLength;
 }

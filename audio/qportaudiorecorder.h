@@ -13,7 +13,7 @@ public:
     Q_INVOKABLE bool isInitialized() const;
     Q_INVOKABLE QStringList inputDevices() const;
     Q_INVOKABLE QStringList supportedSampleRates() const;
-
+    Q_INVOKABLE bool reset();
     bool active() const;
     int device() const;
     double sampleRate() const;
@@ -33,6 +33,7 @@ signals:
     void activeChanged(bool);
     void onError(const QString&) const;
     void onBufferReady(float*, ulong) const;
+    void supportedSampleRatesChanged(const QStringList&);
 private slots:
     virtual void bufferReady(const void*, void*, ulong);
 private:

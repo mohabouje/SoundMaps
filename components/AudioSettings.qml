@@ -32,8 +32,8 @@ Item {
                 }
                 ComboBox {
                     editable: false
-                    model: AppDelegate.audioRecorder.availableDevices()
-                    onCurrentTextChanged: (AppDelegate.audioRecorder.device = currentText)
+                    model: AppDelegate.recorder.inputDevices()
+                    //onCurrentTextChanged: (AppDelegate.audioRecorder.device = currentIndex)
                     Layout.fillWidth: true
                 }
 
@@ -42,7 +42,7 @@ Item {
                 }
                 ComboBox {
                     id: comboBox
-                    model: AppDelegate.audioRecorder.supportedSampleRates
+                    model: AppDelegate.recorder.supportedSampleRates()
                     onCurrentTextChanged: AppDelegate.audioRecorder.sampleRate = parseInt(currentText)
                     Layout.fillWidth: true
                 }
