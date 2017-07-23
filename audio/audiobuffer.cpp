@@ -15,7 +15,7 @@ public:
     ~AudioBufferPrivate() {}
 
     void reset(int bufferInMsecs, const QAudioFormat& format) {
-        audioBuffer = QVector<float>(bufferInMsecs * format.sampleRate() / 1000, 0);
+        audioBuffer = QVector<double>(bufferInMsecs * format.sampleRate() / 1000, 0);
         audioFormat = format;
         pos = 0;
     }
@@ -34,14 +34,14 @@ public:
                 pos = 0;
             }
 
-            audioBuffer[pos] = *reinterpret_cast<const float*>(ptr);
+            audioBuffer[pos] = static_cast<double>(*reinterpret_cast<const float*>(ptr));
             ptr += sampleBytes;
             pos++;
         }
     }
 
     AudioBuffer* const q_ptr;
-    QVector<float> audioBuffer;
+    QVector<double> audioBuffer;
     QAudioFormat    audioFormat;
     int            pos{0};
 };

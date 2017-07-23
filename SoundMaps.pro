@@ -41,4 +41,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 include(audio/audio.pri)
 include(components/components.pri);
-
+include(charts/charts.pri);

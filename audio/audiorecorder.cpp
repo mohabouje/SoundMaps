@@ -145,9 +145,6 @@ AudioRecorder::AudioRecorder(QObject *parent) :
     d_ptr(new AudioRecorderPrivate(this))
 {
     availableDevices();
-    connect(buffer(), &AudioBuffer::bufferReady, [](const QVector<float> data){
-        qInfo() <<  data.size();
-    });
 }
 
 AudioRecorder::~AudioRecorder() {
