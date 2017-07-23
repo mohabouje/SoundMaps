@@ -6,7 +6,7 @@ android {
 }
 
 CONFIG += c++11
-
+LIBS += -lportaudio
 HEADERS += \
     config.h \
     appdelegate.h
