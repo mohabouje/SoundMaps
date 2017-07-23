@@ -1,5 +1,6 @@
 #include "audiodatasource.h"
 #include <QXYSeries>
+#include <QtDebug>
 QT_CHARTS_USE_NAMESPACE
 
 Q_DECLARE_METATYPE(QAbstractSeries *)
@@ -13,7 +14,7 @@ void AudioDataSource::initialize(int sampleRate, int bufferInMSecs) {
     const int size = sampleRate * bufferInMSecs / 1000;
     m_data = QVector<QPointF>(size);
     for (int i=0; i<size; i++) {
-        m_data[i].setX(static_cast<double>(i) / static_cast<double>(sampleRate));
+        m_data[i].setX(static_cast<double>(i) / static_cast<double>(sampleRate) * 1000);
         m_data[i].setY(0.0);
     }
 }
@@ -26,7 +27,7 @@ void AudioDataSource::appendBuffer(const QVector<double> &data) {
     }
 
     for (int i=dataSize - size; i <dataSize; i++) {
-        m_data[i].setY( data[i - (dataSize - size)] );
+        m_data[i].setY(100 * data[i - (dataSize - size)] );
     }
 
 }

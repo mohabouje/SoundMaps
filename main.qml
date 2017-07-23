@@ -3,6 +3,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import QtLocation 5.9
 import QtGraphicalEffects 1.0
+import QtCharts 2.2
 import com.mohabouje.soundmaps 1.0
 ApplicationWindow {
     id: window
@@ -101,19 +102,14 @@ ApplicationWindow {
 
     }
 
-
     SwipeView {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        Repeater {
-            model: tabBar.count
-            ShortTimeAnalysisChart {
-            }
+        ShortTimeAnalysisChart {
         }
     }
-
 
     footer: MainTabBar {
         id: tabBar
@@ -121,5 +117,9 @@ ApplicationWindow {
         position: TabBar.Footer
         hightlightColor: ThemeManager.accentColor()
         normalColor: ThemeManager.foregroundColor()
+    }
+
+    Component.onCompleted: {
+        AppDelegate.audioRecorder.reset();
     }
 }

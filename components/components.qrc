@@ -4,7 +4,6 @@
         <file>MainTabBar.qml</file>
         <file>AudioSettings.qml</file>
         <file>ShortTimeAnalysisChart.qml</file>
-        <file>ShortTimeAnalysisChartForm.ui.qml</file>
         <file>ImageToolButtonForm.ui.qml</file>
         <file>ImageToolButton.qml</file>
     </qresource>

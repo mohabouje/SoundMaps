@@ -16,9 +16,7 @@ DISTFILES += \
     $$PWD/MainTabBar.qml \
     $$PWD/TabImageButton.qml \
     $$PWD/AudioSettings.qml \
-    $$PWD/ShortTimeAnalysisChartForm.ui.qml \
     $$PWD/ShortTimeAnalysisChart.qml \
-    $$PWD/ShortTimeAnalysisChartForm.ui.qml \
     $$PWD/ShortTimeAnalysisChart.qml \
     $$PWD/ImageToolButtonForm.ui.qml \
     $$PWD/ImageToolButton.qml
