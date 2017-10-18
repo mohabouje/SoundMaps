@@ -47,6 +47,11 @@ ComponentsManager::ComponentsManager(QObject *parent) :
     qmlRegisterType<DrawerModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "DrawerModel");
 }
 
+ComponentsManager::~ComponentsManager()
+{
+    delete d_ptr;
+}
+
 DrawerModel *ComponentsManager::drawerModel() {
     Q_D(ComponentsManager);
     return d->drawerModel;

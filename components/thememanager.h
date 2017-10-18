@@ -9,6 +9,7 @@ class ThemeManager : public QObject {
     Q_OBJECT
 public:
     explicit ThemeManager(QObject *parent = nullptr);
+    virtual ~ThemeManager();
     static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
     Q_INVOKABLE QColor backgroundColor() const;
     Q_INVOKABLE QColor foregroundColor() const;

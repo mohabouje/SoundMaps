@@ -32,7 +32,7 @@ public:
     void setRecorder(QPortAudioRecorder* tmp) {
         Q_Q(AppDelegate);
         if (tmp != recorder) {
-            tmp = recorder;
+            recorder = tmp;
             emit q->recorderChanged(recorder);
         }
     }
@@ -76,6 +76,11 @@ AppDelegate::AppDelegate(QObject *parent) :
     qmlRegisterType<ComponentsManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "ComponentsManager");
     qmlRegisterType<QPortAudioRecorder>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "QPortAudioRecorder");
     qmlRegisterType<AudioDataSource>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioDataSource");
+}
+
+AppDelegate::~AppDelegate()
+{
+    delete d_ptr;
 }
 
 AudioRecorder *AppDelegate::audioRecorder() const {

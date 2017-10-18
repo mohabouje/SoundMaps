@@ -18,6 +18,7 @@ class AppDelegate : public QObject
     Q_PROPERTY(QPortAudioRecorder* recorder READ recorder WRITE setRecorder NOTIFY recorderChanged)
 public:
     explicit AppDelegate(QObject *parent = nullptr);
+    virtual ~AppDelegate();
     static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
     AudioRecorder *audioRecorder() const;
     AudioDataSource *audioDataSource() const;

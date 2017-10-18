@@ -42,3 +42,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 include(audio/audio.pri)
 include(components/components.pri);
 include(charts/charts.pri);
+
+INCLUDEPATH += /usr/local/include
+DEPENDPATH +=  /usr/local/include
+
+
+INCLUDEPATH += /usr/local/include/
+LIBS += -L /usr/local/lib/ -lportaudio
+
+

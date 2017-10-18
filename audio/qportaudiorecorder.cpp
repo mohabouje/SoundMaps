@@ -196,7 +196,7 @@ QStringList QPortAudioRecorder::supportedSampleRates() const {
 
 bool QPortAudioRecorder::reset() {
     Q_D(QPortAudioRecorder);
-    d->restart();
+    return d->restart() == paNoError;
 }
 
 int QPortAudioRecorder::device() const {

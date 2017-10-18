@@ -11,6 +11,7 @@ class ComponentsManager : public QObject {
     Q_PROPERTY(TabBarModel* tabBarModel READ tabBarModel WRITE setTabBarModel NOTIFY tabBarModelChanged)
 public:
     explicit ComponentsManager(QObject *parent = nullptr);
+    virtual ~ComponentsManager();
     DrawerModel*    drawerModel();
     TabBarModel*    tabBarModel();
 signals:

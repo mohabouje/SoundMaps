@@ -20,6 +20,11 @@ ThemeManager::ThemeManager(QObject *parent) : QObject(parent), d_ptr(new ThemeMa
 
 }
 
+ThemeManager::~ThemeManager()
+{
+    delete d_ptr;
+}
+
 QObject *ThemeManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine);
     Q_UNUSED(scriptEngine);
