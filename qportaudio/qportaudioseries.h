@@ -5,12 +5,12 @@
 #include <QtCharts>
 #include <QAbstractSeries>
 QT_CHARTS_USE_NAMESPACE
-class AudioDataSource : public QObject {
+class QPortAudioSeries : public QObject {
     Q_OBJECT
 public:
-    explicit AudioDataSource(QObject *parent = nullptr);
-public slots:
+    explicit QPortAudioSeries(QObject *parent = nullptr);
     void initialize(int sampleRate, int bufferInMSecs);
+public slots:
     void appendBuffer(const QVector<double>& data);
     void appendBuffer(const float *data, ulong size);
     Q_INVOKABLE void update(QAbstractSeries *series);

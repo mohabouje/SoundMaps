@@ -1,10 +1,7 @@
 #include "appdelegate.h"
 #include "config.h"
 
-#include <audio/audiorecorder.h>
-#include <audio/audiobuffer.h>
-#include <audio/qportaudiorecorder.h>
-#include <charts/audiodatasource.h>
+#include <qportaudio/qportaudiomanager.h>
 #include <components/componentsmanager.h>
 
 class AppDelegatePrivate : QSharedData {
@@ -13,69 +10,25 @@ class AppDelegatePrivate : QSharedData {
 public:
     AppDelegatePrivate(AppDelegate* parent) :
         q_ptr(parent),
-        audioRecorder(new AudioRecorder(parent)),
-        audioDataSource(new AudioDataSource(parent)),
         componentsManager(new ComponentsManager(parent)),
-        recorder(new QPortAudioRecorder(parent))
+        audioManager(new QPortAudioManager(parent))
     {
-        audioDataSource->initialize(recorder->sampleRate(), 100);
-        QObject::connect(recorder, &QPortAudioRecorder::sampleRateChanged, [&](double sampleRate) {
-            audioDataSource->initialize(sampleRate, audioRecorder->bufferDuration());
-        });
-        QObject::connect(recorder, &QPortAudioRecorder::onBufferReady, [&](float * _t1, ulong _t2){
-            audioDataSource->appendBuffer(_t1, _t2);
-        });
+
 
     }
     ~AppDelegatePrivate() {}
 
-    void setRecorder(QPortAudioRecorder* tmp) {
-        Q_Q(AppDelegate);
-        if (tmp != recorder) {
-            recorder = tmp;
-            emit q->recorderChanged(recorder);
-        }
-    }
-
-    void setAudioDataSource(AudioDataSource* tmp) {
-        Q_Q(AppDelegate);
-        if (tmp != audioDataSource) {
-            audioDataSource = tmp;
-            emit q->audioDataSourceChanged(audioDataSource);
-        }
-    }
-
-    void setAudioRecorder(AudioRecorder* tmp) {
-        Q_Q(AppDelegate);
-        if (tmp != audioRecorder) {
-            audioRecorder = tmp;
-            emit q->audioRecorderChanged(audioRecorder);
-        }
-    }
-
-    void setComponentsManager(ComponentsManager* tmp) {
-        Q_Q(AppDelegate);
-        if (tmp != componentsManager) {
-            componentsManager = tmp;
-            emit q->componentsManagerChanged(componentsManager);
-        }
-    }
-
     AppDelegate* const  q_ptr;
-    AudioRecorder*   audioRecorder;
-    AudioDataSource* audioDataSource;
     ComponentsManager* componentsManager;
-    QPortAudioRecorder *recorder;
+    QPortAudioManager*  audioManager;
 };
 
 AppDelegate::AppDelegate(QObject *parent) :
     QObject(parent),
     d_ptr(new AppDelegatePrivate(this))
 {
-    qmlRegisterType<AudioRecorder>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioRecorder");
     qmlRegisterType<ComponentsManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "ComponentsManager");
-    qmlRegisterType<QPortAudioRecorder>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "QPortAudioRecorder");
-    qmlRegisterType<AudioDataSource>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioDataSource");
+    qmlRegisterType<QPortAudioManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "QPortAudioManager");
 }
 
 AppDelegate::~AppDelegate()
@@ -83,51 +36,35 @@ AppDelegate::~AppDelegate()
     delete d_ptr;
 }
 
-AudioRecorder *AppDelegate::audioRecorder() const {
-    Q_D(const AppDelegate);
-    return d->audioRecorder;
-}
-
-AudioDataSource *AppDelegate::audioDataSource() const {
-    Q_D(const AppDelegate);
-    return d->audioDataSource;
-}
 
 ComponentsManager *AppDelegate::componentsManager() const {
     Q_D(const AppDelegate);
     return d->componentsManager;
 }
 
-QPortAudioRecorder *AppDelegate::recorder() const {
+void AppDelegate::setComponentsManager(ComponentsManager * tmp) {
+    Q_D(AppDelegate);
+    if (tmp != d->componentsManager) {
+        d->componentsManager = tmp;
+        emit componentsManagerChanged(tmp);
+    }}
+
+QPortAudioManager *AppDelegate::audioManager() const {
     Q_D(const AppDelegate);
-    return d->recorder;
+    return d->audioManager;
 }
 
-void AppDelegate::setAudioDataSource(AudioDataSource *source) {
+void AppDelegate::setAudioManager(QPortAudioManager *value) {
     Q_D(AppDelegate);
-    d->setAudioDataSource(source);
+    if (value != d->audioManager) {
+        d->audioManager = value;
+        emit audioManagerChanged(value);
+    }
 }
-
-void AppDelegate::setComponentsManager(ComponentsManager * componentsManager) {
-    Q_D(AppDelegate);
-    d->setComponentsManager(componentsManager);
-}
-
-void AppDelegate::setRecorder(QPortAudioRecorder *recorder) {
-    Q_D(AppDelegate);
-    d->setRecorder(recorder);
-}
-
 
 QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
     return new AppDelegate();
 }
-
-void AppDelegate::setAudioRecorder(AudioRecorder *audioRecorder) {
-    Q_D(AppDelegate);
-    d->setAudioRecorder(audioRecorder);
-}
-
 

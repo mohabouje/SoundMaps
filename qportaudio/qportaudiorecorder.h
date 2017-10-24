@@ -5,22 +5,22 @@
 class QPortAudioRecorderPrivate;
 class QPortAudioRecorder : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool active READ active NOTIFY activeChanged)
+    Q_PROPERTY(bool isActive READ isActive NOTIFY activeChanged)
     Q_PROPERTY(int device READ device WRITE setDevice NOTIFY deviceChanged)
     Q_PROPERTY(double sampleRate READ sampleRate WRITE setSampleRate NOTIFY sampleRateChanged)
 public:
     explicit QPortAudioRecorder(QObject *parent = nullptr);
-    Q_INVOKABLE bool isInitialized() const;
     Q_INVOKABLE QStringList inputDevices() const;
     Q_INVOKABLE QStringList supportedSampleRates() const;
-    Q_INVOKABLE bool reset();
-    bool active() const;
+    Q_INVOKABLE bool isInitialized() const;
+    bool isActive() const;
     int device() const;
     double sampleRate() const;
     double latency() const;
     double streamTimestamp() const;
     ulong frameLength() const;
 public slots:
+    Q_INVOKABLE bool reset();
     Q_INVOKABLE int record();
     Q_INVOKABLE int stop();
     void setSampleRate(double sampleRate);

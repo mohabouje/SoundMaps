@@ -32,7 +32,7 @@ Item {
                 }
                 ComboBox {
                     editable: false
-                    model: AppDelegate.recorder.inputDevices()
+                    model: AppDelegate.audioManager.recorder.inputDevices()
                     //onCurrentTextChanged: (AppDelegate.audioRecorder.device = currentIndex)
                     Layout.fillWidth: true
                 }
@@ -42,8 +42,8 @@ Item {
                 }
                 ComboBox {
                     id: comboBox
-                    model: AppDelegate.recorder.supportedSampleRates()
-                    onCurrentTextChanged: AppDelegate.audioRecorder.sampleRate = parseInt(currentText)
+                    model: AppDelegate.audioManager.recorder.supportedSampleRates()
+                    onCurrentTextChanged: AppDelegate.audioManager.recorder.sampleRate = parseInt(currentText)
                     Layout.fillWidth: true
                 }
                 Label {
@@ -54,21 +54,21 @@ Item {
                     Layout.fillWidth: true
                     RadioButton {
                         id : lowProcessing
-                        checked: AppDelegate.audioRecorder.bufferDuration == AudioRecorder.Low
-                        onClicked: AppDelegate.audioRecorder.setBufferDuration(AudioRecorder.Low)
+                        checked: AppDelegate.audioManager.refreshRate == QPortAudioManager.Low
+                        onClicked: AppDelegate.audioManager.refreshRate = (QPortAudioManager.Low)
                         text: qsTr("Low (10 FPS)")
                     }
                     RadioButton {
                         id : mediumProcessing
-                        checked: AppDelegate.audioRecorder.bufferDuration == AudioRecorder.Medium
-                        onClicked: AppDelegate.audioRecorder.setBufferDuration(AudioRecorder.Medium)
+                        checked: AppDelegate.audioManager.refreshRate == QPortAudioManager.Medium
+                        onClicked: AppDelegate.audioManager.refreshRate = (QPortAudioManager.Medium)
                         text: qsTr("Medium (20 FPS)")
                     }
 
                     RadioButton {
                         id : highProcessing
-                        checked: AppDelegate.audioRecorder.bufferDuration == AudioRecorder.High
-                        onClicked: AppDelegate.audioRecorder.setBufferDuration(AudioRecorder.High)
+                        checked: AppDelegate.audioManager.refreshRate == QPortAudioManager.Hight
+                        onClicked: AppDelegate.audioManager.refreshRate = (QPortAudioManager.Hight)
                         text: qsTr("Hight (40 FPS)")
                     }
                 }

@@ -44,6 +44,8 @@ public:
         _inputDeviceParam.hostApiSpecificStreamInfo = NULL;
         _inputDeviceParam.suggestedLatency = Pa_GetDeviceInfo(_inputDeviceParam.device)->defaultLowInputLatency;
 
+        _frameLength =  static_cast<ulong>(0.1 * _sampleRate);
+
         Q_Q(QPortAudioRecorder);
         const PaError err = Pa_OpenStream(&_dataStream, &_inputDeviceParam, NULL, _sampleRate, _frameLength, paClipOff, &QPortAudioCallback, q);
         if (err != paNoError) {
@@ -167,7 +169,7 @@ int QPortAudioRecorder::record() {
     Q_D(QPortAudioRecorder);
     return d->record();
 }
-bool QPortAudioRecorder::active() const {
+bool QPortAudioRecorder::isActive() const {
     Q_D(const QPortAudioRecorder);
     return isInitialized() && Pa_IsStreamActive(d->_dataStream);
 }

@@ -1,16 +1,16 @@
-#include "audiodatasource.h"
+#include "qportaudioseries.h"
 #include <QXYSeries>
 #include <QtDebug>
 QT_CHARTS_USE_NAMESPACE
 
 Q_DECLARE_METATYPE(QAbstractSeries *)
 Q_DECLARE_METATYPE(QAbstractAxis *)
-AudioDataSource::AudioDataSource(QObject *parent) : QObject(parent)
+QPortAudioSeries::QPortAudioSeries(QObject *parent) : QObject(parent)
 {
 
 }
 
-void AudioDataSource::initialize(int sampleRate, int bufferInMSecs) {
+void QPortAudioSeries::initialize(int sampleRate, int bufferInMSecs) {
     const int size = sampleRate * bufferInMSecs / 1000;
     m_data = QVector<QPointF>(size);
     for (int i=0; i<size; i++) {
@@ -19,7 +19,7 @@ void AudioDataSource::initialize(int sampleRate, int bufferInMSecs) {
     }
 }
 
-void AudioDataSource::appendBuffer(const float* data, ulong size) {
+void QPortAudioSeries::appendBuffer(const float* data, ulong size) {
     const int dataSize = m_data.size();
     for (int i=size; i<dataSize; i++) {
         m_data[i].setY(m_data[i - size].y());
@@ -30,7 +30,7 @@ void AudioDataSource::appendBuffer(const float* data, ulong size) {
     }
 }
 
-void AudioDataSource::appendBuffer(const QVector<double> &data) {
+void QPortAudioSeries::appendBuffer(const QVector<double> &data) {
     const int size = data.size();
     const int dataSize = m_data.size();
     for (int i=size; i<dataSize; i++) {
@@ -43,9 +43,11 @@ void AudioDataSource::appendBuffer(const QVector<double> &data) {
 
 }
 
-void AudioDataSource::update(QAbstractSeries *series) {
+void QPortAudioSeries::update(QAbstractSeries *series) {
     QXYSeries *xySeries = qobject_cast<QXYSeries*>(series);
     if (xySeries) {
         xySeries->replace(m_data);
     }
 }
+
+

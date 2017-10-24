@@ -28,7 +28,7 @@ Page {
             ValueAxis {
                 id: axisX
                 min: 0
-                max: AppDelegate.audioRecorder.bufferDuration
+                max: 100
                 tickCount: 1
 
             }
@@ -48,11 +48,11 @@ Page {
 
         Timer {
             id: refreshTimer
-            interval: AppDelegate.audioRecorder.bufferDuration
+            interval: AppDelegate.audioManager.refreshRate
             running: true
             repeat: true
             onTriggered: {
-                AppDelegate.audioDataSource.update(series);
+                AppDelegate.audioManager.audioSeries.update(series);
             }
         }
 

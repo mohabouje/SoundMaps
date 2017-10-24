@@ -43,14 +43,14 @@ ApplicationWindow {
             }
 
             ImageToolButton {
-                iconSource: (AppDelegate.recorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
+                iconSource: (AppDelegate.audioManager.recorder.isActive) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
                 iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
                 iconColor: "white"
                 onClicked: {
-                    if (AppDelegate.recorder.active) {
-                        AppDelegate.recorder.stop()
+                    if (AppDelegate.audioManager.recorder.isActive) {
+                        AppDelegate.audioManager.recorder.stop()
                     } else {
-                        AppDelegate.recorder.record()
+                        AppDelegate.audioManager.recorder.record()
                     }
                 }
             }
@@ -120,6 +120,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        AppDelegate.audioRecorder.reset();
+        AppDelegate.audioManager.recorder.reset()
     }
 }
