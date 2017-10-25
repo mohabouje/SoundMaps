@@ -28,7 +28,7 @@ Page {
             ValueAxis {
                 id: axisX
                 min: 0
-                max: AppDelegate.audioManager.recorder.frameLength / 1000 * AppDelegate.audioManager.recorder.sampleRate
+                max: AppDelegate.audioManager.recorder.frameLength / 1000.0 * AppDelegate.audioManager.recorder.sampleRate
                 tickCount: 1
 
             }
@@ -48,7 +48,7 @@ Page {
 
         Timer {
             id: refreshTimer
-            interval: AppDelegate.audioManager.refreshRate
+            interval: AppDelegate.componentsManager.refreshRate
             running: true
             repeat: true
             onTriggered: {

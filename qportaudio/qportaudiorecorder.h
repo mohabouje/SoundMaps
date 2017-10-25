@@ -37,11 +37,9 @@ signals:
     void deviceChanged(int);
     void activeChanged(bool);
     void streamTimestampChanged(double);
+    void supportedSampleRatesChanged(const QStringList&);
     void onError(const QString&) const;
     void onBufferReady(float*, ulong) const;
-    void supportedSampleRatesChanged(const QStringList&);
-private slots:
-    void bufferReady(const void*, void*, ulong);
 private:
     Q_DECLARE_PRIVATE(QPortAudioRecorder)
     Q_DISABLE_COPY(QPortAudioRecorder)

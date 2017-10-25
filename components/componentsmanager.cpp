@@ -35,8 +35,9 @@ public:
     }
 
     ComponentsManager* const q_ptr;
-    DrawerModel*             drawerModel;
-    TabBarModel*             tabBarModel;
+    ComponentsManager::RefreshRate rs{ComponentsManager::Low};
+    DrawerModel*             drawerModel{nullptr};
+    TabBarModel*             tabBarModel{nullptr};
 };
 
 ComponentsManager::ComponentsManager(QObject *parent) :
@@ -71,3 +72,17 @@ void ComponentsManager::setTabBarModel(TabBarModel * tabBarModel) {
     Q_D(ComponentsManager);
     d->setTabBarModel(tabBarModel);
 }
+
+ComponentsManager::RefreshRate ComponentsManager::refreshRate() const {
+    Q_D(const ComponentsManager);
+    return d->rs;
+}
+
+void ComponentsManager::setRefreshRate(ComponentsManager::RefreshRate refresh) {
+    Q_D(ComponentsManager);
+    if (refresh != d->rs) {
+        d->rs = refresh;
+        emit refreshRateChanged(d->rs);
+    }
+}
+

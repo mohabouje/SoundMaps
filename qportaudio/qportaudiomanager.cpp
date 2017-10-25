@@ -33,7 +33,6 @@ public:
     }
 
     QPortAudioManager* const q_ptr;
-    QPortAudioManager::RefreshRate rs;
     QPortAudioSeries* audioSeries;
     QPortAudioRecorder *recorder;
 };
@@ -47,6 +46,7 @@ QPortAudioManager::QPortAudioManager(QObject *parent) :
 
     Q_D(QPortAudioManager);
     connect(d->recorder, &QPortAudioRecorder::onBufferReady, this, [&](float * _t1, ulong _t2){
+        Q_D(QPortAudioManager);
         d->audioSeries->appendBuffer(_t1, _t2);
     });
 }
@@ -65,10 +65,6 @@ QPortAudioRecorder *QPortAudioManager::recorder() const {
     return d->recorder;
 }
 
-QPortAudioManager::RefreshRate QPortAudioManager::refreshRate() const {
-    Q_D(const QPortAudioManager);
-    return d->rs;
-}
 
 void QPortAudioManager::reset() {
     Q_D(QPortAudioManager);
@@ -83,12 +79,4 @@ void QPortAudioManager::setAudioSeries(QPortAudioSeries *source) {
 void QPortAudioManager::setRecorder(QPortAudioRecorder *recorder) {
     Q_D(QPortAudioManager);
     d->setRecorder(recorder);
-}
-
-void QPortAudioManager::setRefreshRate(QPortAudioManager::RefreshRate refresh) {
-    Q_D(QPortAudioManager);
-    if (refresh != d->rs) {
-        d->rs = refresh;
-        emit refreshRateChanged(d->rs);
-    }
 }

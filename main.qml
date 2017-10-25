@@ -98,6 +98,18 @@ ApplicationWindow {
 
         ShortTimeAnalysisChart {
         }
+
+        Page {
+
+        }
+
+        Page {
+
+        }
+
+        Page {
+
+        }
     }
 
     footer: MainTabBar {

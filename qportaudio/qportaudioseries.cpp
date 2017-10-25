@@ -11,17 +11,17 @@ QPortAudioSeries::QPortAudioSeries(QObject *parent) : QObject(parent)
 }
 
 void QPortAudioSeries::initialize(int sampleRate, int bufferInMSecs) {
-    m_data.resize(sampleRate * bufferInMSecs / 1000);
+    m_data = QVector<QPointF>(sampleRate * bufferInMSecs / 1000);
     for (int i=0, size = m_data.size(); i<size; i++) {
-        m_data[i].setX(static_cast<double>(i) / static_cast<double>(sampleRate) * 1000);
+        m_data[i].setX(i);
         m_data[i].setY(0.0);
     }
 }
 
 void QPortAudioSeries::appendBuffer(const float* data, ulong size) {
-    Q_ASSERT_X(static_cast<ulong>(m_data.size()) < size,
-               __FUNCTION__,
-               "Trying to append a buffer with a size higher than the current one");
+    //Q_ASSERT_X(static_cast<ulong>(m_data.size()) < size,
+      //         __FUNCTION__,
+        //       "Trying to append a buffer with a size higher than the current one");
 
     const int dataSize = m_data.size();
     for (int i=size; i<dataSize; i++) {

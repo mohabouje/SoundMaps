@@ -18,39 +18,38 @@ public:
         Q_Q(QPortAudioRecorder);
         const PaError err = Pa_Initialize();
         if( err != paNoError ) {
-            _isInitialized = false;
+            isInitialized = false;
             emit q->onError(Pa_GetErrorText(err));
             return  false;
         }
 
-        _isInitialized = true;
-        _inputDeviceParam.device = Pa_GetDefaultInputDevice();
-        _sampleRate = Pa_GetDeviceInfo(_inputDeviceParam.device)->defaultSampleRate;
-        _frameLength = 10;
+        isInitialized = true;
+        inputDeviceParam.device = Pa_GetDefaultInputDevice();
+        sampleRate = Pa_GetDeviceInfo(inputDeviceParam.device)->defaultSampleRate;
+        frameLength = 10;
         getSupportedSampleRates();
-        return _isInitialized  && restart();
+        return isInitialized  && restart();
     }
 
     PaError restart() {
-        _outputDeviceParam.channelCount = 1;
-        _outputDeviceParam.device = Pa_GetDefaultOutputDevice();
-        _outputDeviceParam.sampleFormat = paFloat32;
-        _outputDeviceParam.suggestedLatency = Pa_GetDeviceInfo(_outputDeviceParam.device)->defaultLowInputLatency;
-        _outputDeviceParam.hostApiSpecificStreamInfo = NULL;
+        outputDeviceParam.channelCount = 1;
+        outputDeviceParam.device = Pa_GetDefaultOutputDevice();
+        outputDeviceParam.sampleFormat = paFloat32;
+        outputDeviceParam.suggestedLatency = Pa_GetDeviceInfo(outputDeviceParam.device)->defaultLowInputLatency;
+        outputDeviceParam.hostApiSpecificStreamInfo = NULL;
 
 
-        _inputDeviceParam.channelCount = 1;
-        _inputDeviceParam.sampleFormat = paFloat32;
-        _inputDeviceParam.hostApiSpecificStreamInfo = NULL;
-        _inputDeviceParam.suggestedLatency = Pa_GetDeviceInfo(_inputDeviceParam.device)->defaultLowInputLatency;
-
+        inputDeviceParam.channelCount = 1;
+        inputDeviceParam.sampleFormat = paFloat32;
+        inputDeviceParam.hostApiSpecificStreamInfo = NULL;
+        inputDeviceParam.suggestedLatency = Pa_GetDeviceInfo(inputDeviceParam.device)->defaultLowInputLatency;
 
         Q_Q(QPortAudioRecorder);
-        const PaError err = Pa_OpenStream(&_dataStream,
-                                          &_inputDeviceParam,
-                                          &_outputDeviceParam,
-                                          _sampleRate,
-                                          static_cast<ulong>(_frameLength * _sampleRate),
+        const PaError err = Pa_OpenStream(&dataStream,
+                                          &inputDeviceParam,
+                                          NULL,
+                                          sampleRate,
+                                          static_cast<ulong>(frameLength / 1000.0 * sampleRate),
                                           paClipOff,
                                           &QPortAudioCallback, q);
         if (err != paNoError) {
@@ -60,21 +59,21 @@ public:
     }
 
     inline bool isRunning() {
-        return Pa_IsStreamActive(_dataStream);
+        return Pa_IsStreamActive(dataStream);
     }
 
     void getSupportedSampleRates() {
         static const QList<double> sampleRates = {8000.0, 11025.0, 16000.0, 22050.0, 44100.0, 48000.0 };
-        _supportedSR.clear();
+        supportedSR.clear();
         foreach(const double sampleRate, sampleRates) {
-            if (Pa_IsFormatSupported(&_inputDeviceParam,
-                                     NULL,
+            if (Pa_IsFormatSupported(&inputDeviceParam,
+                                     &outputDeviceParam,
                                      sampleRate)) {
-                _supportedSR.append(QString::number(sampleRate));
+                supportedSR.append(QString::number(sampleRate));
             }
         }
         Q_Q(QPortAudioRecorder);
-        emit q->supportedSampleRatesChanged(_supportedSR);
+        emit q->supportedSampleRatesChanged(supportedSR);
     }
 
     PaError record() {
@@ -82,7 +81,7 @@ public:
             return paNoError;
         }
         Q_Q(QPortAudioRecorder);
-        const PaError err = Pa_StartStream(_dataStream);
+        const PaError err = Pa_StartStream(dataStream);
         if ( err != paNoError ) {
             emit q->onError(Pa_GetErrorText(err));
         }
@@ -93,7 +92,7 @@ public:
     PaError stop() {
         if (isRunning()) {
             Q_Q(QPortAudioRecorder);
-            const PaError err = Pa_StopStream(_dataStream);
+            const PaError err = Pa_StopStream(dataStream);
             if ( err != paNoError ) {
                 emit q->onError(Pa_GetErrorText(err));
             }
@@ -104,11 +103,11 @@ public:
     }
 
     void setInputDevice(PaDeviceIndex index) {
-        if (index != _inputDeviceParam.device
+        if (index != inputDeviceParam.device
                 && index < Pa_GetDeviceCount()
                 && Pa_GetDeviceInfo(index)->maxInputChannels > 0) {
             Q_Q(QPortAudioRecorder);
-            _inputDeviceParam.device = index;
+            inputDeviceParam.device = index;
             emit q->deviceChanged(index);
             getSupportedSampleRates();
         }
@@ -116,13 +115,13 @@ public:
 
 
     PaError setSampleRate(double sr) {
-        if (sr != _sampleRate) {
+        if (sr != sampleRate) {
             Q_Q(QPortAudioRecorder);
-            _sampleRate = sr;
+            sampleRate = sr;
             emit q->sampleRateChanged(sr);
-            return Pa_IsFormatSupported(&_inputDeviceParam,
-                                                         &_outputDeviceParam,
-                                                         _sampleRate);
+            return Pa_IsFormatSupported(&inputDeviceParam,
+                                                         &outputDeviceParam,
+                                                         sampleRate);
 
         }
         return paNoError;
@@ -137,21 +136,22 @@ public:
     {
         Q_UNUSED(timeInfo);
         Q_UNUSED(statusFlags);
+        Q_UNUSED(outputBuffer);
         QPortAudioRecorder* recorder = static_cast<QPortAudioRecorder*>(userData);
-        recorder->bufferReady(inputBuffer, outputBuffer, framesPerBuffer);
+        emit recorder->onBufferReady((float*)(inputBuffer), framesPerBuffer);
         emit recorder->streamTimestampChanged(timeInfo->currentTime);
         return paContinue;
     }
 
 
     QPortAudioRecorder* const q_ptr;
-    QStringList             _supportedSR;
-    PaStream*               _dataStream;
-    PaStreamParameters      _inputDeviceParam;
-    PaStreamParameters      _outputDeviceParam;
-    double                  _sampleRate{8000.0};
-    ulong                   _frameLength{10};
-    bool                    _isInitialized{false};
+    QStringList             supportedSR;
+    PaStream*               dataStream;
+    PaStreamParameters      inputDeviceParam;
+    PaStreamParameters      outputDeviceParam;
+    double                  sampleRate{8000.0};
+    ulong                   frameLength{10};
+    bool                    isInitialized{false};
 };
 
 QPortAudioRecorder::QPortAudioRecorder(QObject *parent)
@@ -163,7 +163,7 @@ QPortAudioRecorder::QPortAudioRecorder(QObject *parent)
 
 double QPortAudioRecorder::streamTimestamp() const {
     Q_D(const QPortAudioRecorder);
-    return Pa_GetStreamTime(d->_dataStream);
+    return Pa_GetStreamTime(d->dataStream);
 }
 
 void QPortAudioRecorder::toggle() {
@@ -186,11 +186,11 @@ int QPortAudioRecorder::record() {
 }
 bool QPortAudioRecorder::active() const {
     Q_D(const QPortAudioRecorder);
-    return isInitialized() && Pa_IsStreamActive(d->_dataStream);
+    return isInitialized() && Pa_IsStreamActive(d->dataStream);
 }
 bool QPortAudioRecorder::isInitialized() const {
     Q_D(const QPortAudioRecorder);
-    return d->_isInitialized;
+    return d->isInitialized;
 }
 
 QStringList QPortAudioRecorder::inputDevices() const {
@@ -207,7 +207,7 @@ QStringList QPortAudioRecorder::inputDevices() const {
 
 QStringList QPortAudioRecorder::supportedSampleRates() const {
     Q_D(const QPortAudioRecorder);
-    return d->_supportedSR;
+    return d->supportedSR;
 
 }
 
@@ -218,7 +218,7 @@ bool QPortAudioRecorder::reset() {
 
 int QPortAudioRecorder::device() const {
     Q_D(const QPortAudioRecorder);
-    return d->_inputDeviceParam.device;
+    return d->inputDeviceParam.device;
 }
 
 void QPortAudioRecorder::setSampleRate(double sampleRate) {
@@ -228,8 +228,8 @@ void QPortAudioRecorder::setSampleRate(double sampleRate) {
 
 void QPortAudioRecorder::setFrameLength(ulong frame) {
     Q_D(QPortAudioRecorder);
-    if (frame != d->_frameLength) {
-        d->_frameLength = frame;
+    if (frame != d->frameLength) {
+        d->frameLength = frame;
         emit frameLengthChanged(frame);
     }
 }
@@ -239,20 +239,15 @@ void QPortAudioRecorder::setDevice(int index) {
     d->setInputDevice(index);
 }
 
-void QPortAudioRecorder::bufferReady(const void *input, void *output, ulong framelength) {
-    Q_UNUSED(output);
-    emit onBufferReady((float*)(input), framelength);
-}
-
 ulong QPortAudioRecorder::frameLength() const {
     Q_D(const QPortAudioRecorder);
-    return d->_frameLength;
+    return d->frameLength;
 }
 double QPortAudioRecorder::sampleRate() const {
     Q_D(const QPortAudioRecorder);
-    return d->_sampleRate;
+    return d->sampleRate;
 }
 double QPortAudioRecorder::latency() const {
     Q_D(const QPortAudioRecorder);
-    return d->_inputDeviceParam.suggestedLatency;
+    return d->inputDeviceParam.suggestedLatency;
 }

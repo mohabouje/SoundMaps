@@ -33,7 +33,6 @@ Item {
                 ComboBox {
                     editable: false
                     model: AppDelegate.audioManager.recorder.inputDevices()
-                    //onCurrentTextChanged: (AppDelegate.audioRecorder.device = currentIndex)
                     Layout.fillWidth: true
                 }
 
@@ -54,21 +53,21 @@ Item {
                     Layout.fillWidth: true
                     RadioButton {
                         id : lowProcessing
-                        checked: AppDelegate.audioManager.refreshRate == QPortAudioManager.Low
-                        onClicked: AppDelegate.audioManager.refreshRate = (QPortAudioManager.Low)
+                        checked: AppDelegate.componentsManager.refreshRate == ComponentsManager.Low
+                        onClicked: AppDelegate.componentsManager.refreshRate = (ComponentsManager.Low)
                         text: qsTr("Low (10 FPS)")
                     }
                     RadioButton {
                         id : mediumProcessing
-                        checked: AppDelegate.audioManager.refreshRate == QPortAudioManager.Medium
-                        onClicked: AppDelegate.audioManager.refreshRate = (QPortAudioManager.Medium)
+                        checked: AppDelegate.componentsManager.refreshRate == ComponentsManager.Medium
+                        onClicked: AppDelegate.componentsManager.refreshRate = (ComponentsManager.Medium)
                         text: qsTr("Medium (20 FPS)")
                     }
 
                     RadioButton {
                         id : highProcessing
-                        checked: AppDelegate.audioManager.refreshRate == QPortAudioManager.Hight
-                        onClicked: AppDelegate.audioManager.refreshRate = (QPortAudioManager.Hight)
+                        checked: AppDelegate.componentsManager.refreshRate == ComponentsManager.Hight
+                        onClicked: AppDelegate.componentsManager.refreshRate = (ComponentsManager.Hight)
                         text: qsTr("Hight (40 FPS)")
                     }
                 }

@@ -15,7 +15,7 @@ public slots:
     void appendBuffer(const float *data, ulong size);
     Q_INVOKABLE void update(QAbstractSeries *series);
 private:
-    QVector<QPointF>     m_data;
+    QVector<QPointF>     m_data{QVector<QPointF>(0)};
 };
 
 #endif // AUDIODATASOURCE_H
