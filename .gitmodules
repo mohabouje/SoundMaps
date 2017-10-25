@@ -1,0 +1,3 @@
+[submodule "eDSP"]
+	path = eDSP
+	url = https://github.com/mohabouje/eDSP.git
