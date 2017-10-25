@@ -49,6 +49,4 @@ DEPENDPATH +=  /usr/local/include
 INCLUDEPATH += /usr/local/include/
 LIBS += -L /usr/local/lib/ -lportaudio
 
-INCLUDEPATH += $PWD/third_paty/eDSP/src/
-
 
