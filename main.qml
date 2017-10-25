@@ -43,16 +43,10 @@ ApplicationWindow {
             }
 
             ImageToolButton {
-                iconSource: (AppDelegate.audioManager.recorder.isActive) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
+                iconSource: (AppDelegate.audioManager.recorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
                 iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
                 iconColor: "white"
-                onClicked: {
-                    if (AppDelegate.audioManager.recorder.isActive) {
-                        AppDelegate.audioManager.recorder.stop()
-                    } else {
-                        AppDelegate.audioManager.recorder.record()
-                    }
-                }
+                onClicked: AppDelegate.audioManager.recorder.toggle();
             }
 
             ImageToolButton {
@@ -68,9 +62,7 @@ ApplicationWindow {
                     MenuItem {
                         text: "Settings"
                         onClicked: {
-                            if (AppDelegate.recorder.active) {
-                                AppDelegate.recorder.stop()
-                            }
+                            AppDelegate.audioManager.recorder.stop();
                             audioSettingsDialog.show()
                         }
                     }
@@ -88,10 +80,7 @@ ApplicationWindow {
         anchors.centerIn: parent
         width: parent.width * 0.75
         height: parent.height * 0.9
-
-        onDialogClosed: {
-            AppDelegate.recorder.reset();
-        }
+        onDialogClosed: AppDelegate.audioManager.reset()
     }
 
     Drawer {
@@ -120,6 +109,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        AppDelegate.audioManager.recorder.reset()
+        AppDelegate.audioManager.reset()
     }
 }

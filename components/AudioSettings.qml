@@ -42,7 +42,7 @@ Item {
                 }
                 ComboBox {
                     id: comboBox
-                    model: AppDelegate.audioManager.recorder.supportedSampleRates()
+                    model: AppDelegate.audioManager.recorder.supportedSampleRates
                     onCurrentTextChanged: AppDelegate.audioManager.recorder.sampleRate = parseInt(currentText)
                     Layout.fillWidth: true
                 }

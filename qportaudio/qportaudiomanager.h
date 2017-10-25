@@ -25,6 +25,7 @@ signals:
     void recorderChanged(QPortAudioRecorder*);
     void refreshRateChanged(RefreshRate);
 public slots:
+    Q_INVOKABLE void reset();
     void setAudioSeries(QPortAudioSeries*);
     void setRecorder(QPortAudioRecorder*);
     void setRefreshRate(RefreshRate);

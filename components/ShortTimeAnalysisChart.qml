@@ -28,7 +28,7 @@ Page {
             ValueAxis {
                 id: axisX
                 min: 0
-                max: 100
+                max: AppDelegate.audioManager.recorder.frameLength / 1000 * AppDelegate.audioManager.recorder.sampleRate
                 tickCount: 1
 
             }
