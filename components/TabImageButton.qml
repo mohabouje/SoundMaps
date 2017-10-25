@@ -1,11 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.0
+import com.mohabouje.soundmaps 1.0
 
 TabButton {
     id: tabButton
-    property color highlightColor:  Qt.red
-    property color normalColor: Qt.black
+    property color highlightColor:  ThemeManager.accentColor()
+    property color normalColor: ThemeManager.foregroundColor()
     property string icon: "";
     Rectangle {
         anchors.fill: parent

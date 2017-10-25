@@ -5,8 +5,8 @@ import com.mohabouje.soundmaps 1.0
 TabBar {
     id: tabBar
     position: TabBar.Footer
-    property color hightlightColor: Qt.red
-    property color normalColor: Qt.black
+    property color hightlightColor: ThemeManager.accentColor()
+    property color normalColor: ThemeManager.foregroundColor()
 
     Repeater {
         model: AppDelegate.componentsManager.tabBarModel

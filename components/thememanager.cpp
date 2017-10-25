@@ -11,9 +11,9 @@ public:
 
 
     ThemeManager* const q_ptr;
-    QColor  backgroundColor{Qt::red};
+    QColor  backgroundColor{Qt::blue};
     QColor  foreGroundColor{Qt::darkGray};
-    QColor  accentColor{Qt::red};
+    QColor  accentColor{Qt::blue};
 };
 
 ThemeManager::ThemeManager(QObject *parent) : QObject(parent), d_ptr(new ThemeManagerPrivate(this)) {

@@ -18,7 +18,6 @@ DISTFILES += \
     $$PWD/AudioSettings.qml \
     $$PWD/ShortTimeAnalysisChart.qml \
     $$PWD/ShortTimeAnalysisChart.qml \
-    $$PWD/ImageToolButtonForm.ui.qml \
     $$PWD/ImageToolButton.qml
 
 RESOURCES += \

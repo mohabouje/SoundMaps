@@ -43,6 +43,7 @@ Page {
                 id : series
                 axisX: axisX
                 axisY: axisY
+                useOpenGL: true
             }
         }
 
