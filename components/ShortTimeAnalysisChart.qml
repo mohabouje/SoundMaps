@@ -43,7 +43,6 @@ Page {
                 id : series
                 axisX: axisX
                 axisY: axisY
-                useOpenGL: true
             }
         }
 
@@ -53,12 +52,13 @@ Page {
             running: true
             repeat: true
             onTriggered: {
-                AppDelegate.audioManager.audioSeries.update(series);
+                AppDelegate.audioManager.audioSeries.update();
             }
         }
 
     }
     Component.onCompleted: {
+        AppDelegate.audioManager.audioSeries.setSeries(series)
         refreshTimer.start()
     }
 }
