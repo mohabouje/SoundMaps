@@ -9,7 +9,7 @@ TabBar {
     property color normalColor: ThemeManager.foregroundColor()
 
     Repeater {
-        model: AppDelegate.componentsManager.tabBarModel
+        model: ComponentsManager.tabBarModel
         TabImageButton {
             icon: model.icon
             highlightColor: tabBar.hightlightColor

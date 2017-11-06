@@ -1,7 +1,7 @@
 #include "componentsmanager.h"
-#include "drawermodel.h"
-#include "tabbarmodel.h"
-#include "circularbufferseries.h"
+#include "models/tabbarmodel.h"
+#include "models/drawermodel.h"
+#include "chart/circularbufferseries.h"
 
 #include <QSharedData>
 #include <QQmlEngine>
@@ -15,6 +15,17 @@ public:
         drawerModel(new DrawerModel(parent)),
         tabBarModel(new TabBarModel(parent))
     {
+
+        drawerModel->appendTab("Data Base", "qrc:/icon/database.svg");
+        drawerModel->appendTab("Help", "qrc:/icon/help-circle.svg");
+        drawerModel->appendTab("About", "qrc:/icon/contact-mail.svg");
+
+
+        tabBarModel->appendTab("Time", "qrc:/icon/chart-areaspline.svg");
+        tabBarModel->appendTab("Freq", "qrc:/icon/chart-bar.svg");
+        tabBarModel->appendTab("Locator", "qrc:/icon/map-marker-radius.svg");
+        tabBarModel->appendTab("Beacons", "qrc:/icon/access-point.svg", 1);
+
 
     }
     ~ComponentsManagerPrivate(){}
@@ -48,6 +59,12 @@ ComponentsManager::ComponentsManager(QObject *parent) :
     qmlRegisterType<TabBarModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "TabBarModel");
     qmlRegisterType<DrawerModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "DrawerModel");
     qmlRegisterType<CircularBufferSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "CircularBufferSeries");
+}
+
+QObject *ComponentsManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
+    Q_UNUSED(engine);
+    Q_UNUSED(scriptEngine);
+    return SINGLETON_INSTANCE(ComponentsManager);
 }
 
 ComponentsManager::~ComponentsManager()

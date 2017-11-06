@@ -1,6 +1,8 @@
 #ifndef THEMEMANAGER_H
 #define THEMEMANAGER_H
 
+#include "util/singletone.h"
+
 #include <QObject>
 #include <QQmlEngine>
 #include <QColor>
@@ -18,6 +20,7 @@ public:
 private:
     Q_DECLARE_PRIVATE(ThemeManager)
     Q_DISABLE_COPY(ThemeManager)
+    SINGLETON_CREATOR(ThemeManager)
     ThemeManagerPrivate*    d_ptr;
 };
 

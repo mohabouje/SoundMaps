@@ -28,7 +28,7 @@ ThemeManager::~ThemeManager()
 QObject *ThemeManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine);
     Q_UNUSED(scriptEngine);
-    return  new ThemeManager();
+    return SINGLETON_INSTANCE(ThemeManager);
 }
 
 QColor ThemeManager::backgroundColor() const {

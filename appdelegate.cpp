@@ -2,7 +2,7 @@
 #include "config.h"
 
 #include <audio/audiomanager.h>
-#include <components/componentsmanager.h>
+#include <ui/componentsmanager.h>
 
 class AppDelegatePrivate : QSharedData {
     Q_DISABLE_COPY(AppDelegatePrivate)
@@ -10,7 +10,7 @@ class AppDelegatePrivate : QSharedData {
 public:
     AppDelegatePrivate(AppDelegate* parent) :
         q_ptr(parent),
-        componentsManager(new ComponentsManager(parent)),
+        componentsManager(),
         audioManager(new AudioManager(parent))
     {
 
@@ -19,8 +19,10 @@ public:
     ~AppDelegatePrivate() {}
 
     AppDelegate* const  q_ptr;
-    ComponentsManager* componentsManager;
-    AudioManager*  audioManager;
+    ComponentsManager* componentsManager{qobject_cast<ComponentsManager*>(
+                    ComponentsManager::qmlSingleton(nullptr, nullptr))};
+    AudioManager*  audioManager{qobject_cast<AudioManager*>(
+                    AudioManager::qmlSingleton(nullptr, nullptr))};
 };
 
 AppDelegate::AppDelegate(QObject *parent) :
@@ -34,44 +36,13 @@ AppDelegate::AppDelegate(QObject *parent) :
 AppDelegate::~AppDelegate()
 {
     delete d_ptr;
-    if (instance != nullptr) {
-        delete instance;
-    }
 }
 
 
-ComponentsManager *AppDelegate::componentsManager() const {
-    Q_D(const AppDelegate);
-    return d->componentsManager;
-}
 
-void AppDelegate::setComponentsManager(ComponentsManager * tmp) {
-    Q_D(AppDelegate);
-    if (tmp != d->componentsManager) {
-        d->componentsManager = tmp;
-        emit componentsManagerChanged(tmp);
-    }}
-
-AudioManager *AppDelegate::audioManager() const {
-    Q_D(const AppDelegate);
-    return d->audioManager;
-}
-
-void AppDelegate::setAudioManager(AudioManager *value) {
-    Q_D(AppDelegate);
-    if (value != d->audioManager) {
-        d->audioManager = value;
-        emit audioManagerChanged(value);
-    }
-}
-
-AppDelegate* AppDelegate::instance = nullptr;
 QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-    if (instance == nullptr) {
-        instance = new AppDelegate();
-    }
-    return instance;
+    Q_UNUSED(engine);
+    Q_UNUSED(scriptEngine);
+    return SINGLETON_INSTANCE(AppDelegate);
 }
 

@@ -15,9 +15,6 @@ void DrawerItem::setCounter(int counter) {
 DrawerModel::DrawerModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    appendTab("Data Base", "qrc:/icon/database.svg");
-    appendTab("Help", "qrc:/icon/help-circle.svg");
-    appendTab("About", "qrc:/icon/contact-mail.svg");
 }
 
 void DrawerModel::appendTab(const QString &name, const QString &icon, int counter) {

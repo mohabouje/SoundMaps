@@ -9,13 +9,14 @@ CONFIG += c++11
 LIBS += -lportaudio
 HEADERS += \
     config.h \
-    appdelegate.h
+    appdelegate.h \
+    util/call_once.h \
+    util/singletone.h
 
 SOURCES += main.cpp \
     appdelegate.cpp
 
-RESOURCES += qml.qrc \
-    resources/resources.qrc
+RESOURCES +=  resources/resources.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -40,7 +41,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 include(audio/audio.pri)
-include(components/components.pri);
+include(ui/ui.pri);
 
 INCLUDEPATH += /usr/local/include
 DEPENDPATH +=  /usr/local/include

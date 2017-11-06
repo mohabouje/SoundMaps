@@ -32,7 +32,7 @@ Item {
                 }
                 ComboBox {
                     editable: false
-                    model: AppDelegate.audioManager.recorder.inputDevices()
+                    model: AudioManager.recorder.inputDevices()
                     Layout.fillWidth: true
                 }
 
@@ -41,8 +41,8 @@ Item {
                 }
                 ComboBox {
                     id: comboBox
-                    model: AppDelegate.audioManager.recorder.supportedSampleRates
-                    onCurrentTextChanged: AppDelegate.audioManager.recorder.sampleRate = parseInt(currentText)
+                    model: AudioManager.recorder.supportedSampleRates
+                    onCurrentTextChanged: AudioManager.recorder.sampleRate = parseInt(currentText)
                     Layout.fillWidth: true
                 }
                 Label {
@@ -53,21 +53,21 @@ Item {
                     Layout.fillWidth: true
                     RadioButton {
                         id : lowProcessing
-                        checked: AppDelegate.componentsManager.refreshRate == ComponentsManager.Low
-                        onClicked: AppDelegate.componentsManager.refreshRate = (ComponentsManager.Low)
+                        checked: ComponentsManager.refreshRate == ComponentsManager.Low
+                        onClicked: ComponentsManager.refreshRate = (ComponentsManager.Low)
                         text: qsTr("Low (10 FPS)")
                     }
                     RadioButton {
                         id : mediumProcessing
-                        checked: AppDelegate.componentsManager.refreshRate == ComponentsManager.Medium
-                        onClicked: AppDelegate.componentsManager.refreshRate = (ComponentsManager.Medium)
+                        checked: ComponentsManager.refreshRate == ComponentsManager.Medium
+                        onClicked: ComponentsManager.refreshRate = (ComponentsManager.Medium)
                         text: qsTr("Medium (20 FPS)")
                     }
 
                     RadioButton {
                         id : highProcessing
-                        checked: AppDelegate.componentsManager.refreshRate == ComponentsManager.Hight
-                        onClicked: AppDelegate.componentsManager.refreshRate = (ComponentsManager.Hight)
+                        checked: ComponentsManager.refreshRate == ComponentsManager.Hight
+                        onClicked: ComponentsManager.refreshRate = (ComponentsManager.Hight)
                         text: qsTr("Hight (40 FPS)")
                     }
                 }

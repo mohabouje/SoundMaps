@@ -21,10 +21,6 @@ void TabBarItem::setCounter(int counter) {
 }
 
 TabBarModel::TabBarModel(QObject *parent) : QAbstractListModel(parent) {
-    appendTab("Time", "qrc:/icon/chart-areaspline.svg");
-    appendTab("Freq", "qrc:/icon/chart-bar.svg");
-    appendTab("Locator", "qrc:/icon/map-marker-radius.svg");
-    appendTab("Beacons", "qrc:/icon/access-point.svg", 1);
 }
 
 int TabBarModel::rowCount(const QModelIndex &parent) const {

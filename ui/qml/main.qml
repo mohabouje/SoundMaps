@@ -43,10 +43,10 @@ ApplicationWindow {
             }
 
             ImageToolButton {
-                iconSource: (AudioManager.recorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
+                iconSource: (AppDelegate.audioManager.recorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
                 iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
                 iconColor: "white"
-                onClicked: AudioManager.recorder.toggle();
+                onClicked: AppDelegate.audioManager.recorder.toggle();
             }
 
             ImageToolButton {
@@ -121,6 +121,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        AudioManager.reset()
+        AppDelegate.audioManager.reset()
     }
 }

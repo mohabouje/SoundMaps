@@ -51,6 +51,12 @@ AudioManager::AudioManager(QObject *parent) :
     reset();
 }
 
+QObject *AudioManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
+    Q_UNUSED(engine);
+    Q_UNUSED(scriptEngine);
+    return SINGLETON_INSTANCE(AudioManager);
+}
+
 AudioManager::~AudioManager() {
     delete d_ptr;
 }
@@ -69,8 +75,7 @@ AudioRecorder *AudioManager::recorder() const {
 void AudioManager::reset() {
     Q_D(AudioManager);
     d->recorder->reset();
-    const int size = d->recorder->sampleRate() * d->recorder->frameLength() / 1000.;
-    d->circularSeries->setSize(size);
+    d->circularSeries->setSize(static_cast<int>(d->recorder->sampleRate() * d->recorder->frameLength() / 1000));
 }
 
 void AudioManager::setAudioSeries(CircularBufferSeries *source) {

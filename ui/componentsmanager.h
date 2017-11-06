@@ -2,6 +2,9 @@
 #define COMPONENTSMANAGER_H
 
 #include <QObject>
+#include <QQmlEngine>
+#include "util/singletone.h"
+
 class TabBarModel;
 class DrawerModel;
 class ComponentsManagerPrivate;
@@ -12,6 +15,7 @@ class ComponentsManager : public QObject {
     Q_PROPERTY(RefreshRate refreshRate READ refreshRate WRITE setRefreshRate NOTIFY refreshRateChanged)
 public:
     explicit ComponentsManager(QObject *parent = nullptr);
+    static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
     enum RefreshRate { Low = 100, Medium = 50, Hight = 20};
     Q_ENUM(RefreshRate)
 
@@ -30,6 +34,7 @@ public slots:
 private:
     Q_DECLARE_PRIVATE(ComponentsManager)
     Q_DISABLE_COPY(ComponentsManager)
+    SINGLETON_CREATOR(ComponentsManager)
     ComponentsManagerPrivate*   d_ptr;
 };
 

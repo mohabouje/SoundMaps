@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>TabImageButton.qml</file>
-        <file>MainTabBar.qml</file>
-        <file>AudioSettings.qml</file>
-        <file>ShortTimeAnalysisChart.qml</file>
-        <file>ImageToolButton.qml</file>
-    </qresource>
-</RCC>
