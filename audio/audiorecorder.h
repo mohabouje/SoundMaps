@@ -2,8 +2,8 @@
 #define QPORTAUDIORECORDER_H
 
 #include <QObject>
-class QPortAudioRecorderPrivate;
-class QPortAudioRecorder : public QObject {
+class AudioRecorderPrivate;
+class AudioRecorder : public QObject {
     Q_OBJECT
     Q_PROPERTY(bool active READ active NOTIFY activeChanged)
     Q_PROPERTY(int device READ device WRITE setDevice NOTIFY deviceChanged)
@@ -13,7 +13,7 @@ class QPortAudioRecorder : public QObject {
     Q_PROPERTY(double streamTimestamp READ streamTimestamp NOTIFY streamTimestampChanged)
     Q_PROPERTY(QStringList supportedSampleRates READ supportedSampleRates NOTIFY supportedSampleRatesChanged)
 public:
-    explicit QPortAudioRecorder(QObject *parent = nullptr);
+    explicit AudioRecorder(QObject *parent = nullptr);
     Q_INVOKABLE QStringList inputDevices() const;
     Q_INVOKABLE bool isInitialized() const;
     QStringList supportedSampleRates() const;
@@ -41,9 +41,9 @@ signals:
     void onError(const QString&) const;
     void onBufferReady(float*, ulong) const;
 private:
-    Q_DECLARE_PRIVATE(QPortAudioRecorder)
-    Q_DISABLE_COPY(QPortAudioRecorder)
-    QPortAudioRecorderPrivate* d_ptr;
+    Q_DECLARE_PRIVATE(AudioRecorder)
+    Q_DISABLE_COPY(AudioRecorder)
+    AudioRecorderPrivate* d_ptr;
 };
 
 #endif // QPORTAUDIORECORDER_H

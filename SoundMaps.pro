@@ -39,7 +39,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-include(qportaudio/qportaudio.pri)
+include(audio/audio.pri)
 include(components/components.pri);
 
 INCLUDEPATH += /usr/local/include

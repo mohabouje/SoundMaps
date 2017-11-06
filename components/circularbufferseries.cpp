@@ -11,19 +11,16 @@ CircularBufferSeries::CircularBufferSeries(QObject *parent) : QObject(parent), m
 }
 
 void CircularBufferSeries::setSize(int size) {
-    if (size != m_data.size()) {
-        m_data.resize(size);
-        for (int i=0, size = m_data.size(); i<size; i++) {
-            m_data[i].setX(i);
-            m_data[i].setY(0.0);
-        }
-        emit sizeChanged(size);
+    m_data.resize(size);
+    for (int i=0, size = m_data.size(); i<size; i++) {
+        m_data[i].setX(i);
+        m_data[i].setY(0.0);
     }
-
+    emit sizeChanged(size);
 }
 
 void CircularBufferSeries::appendBuffer(const float* data, ulong size) {
-    Q_ASSERT_X(static_cast<ulong>(m_data.size()) < size,
+    Q_ASSERT_X(static_cast<ulong>(m_data.size()) <= size,
                __FUNCTION__,
                "Trying to append a buffer with a size higher than the current one");
 
@@ -39,7 +36,7 @@ void CircularBufferSeries::appendBuffer(const float* data, ulong size) {
 
 
 void CircularBufferSeries::appendBuffer(const QVector<double> &data) {
-    Q_ASSERT_X(m_data.size() < data.size(),
+    Q_ASSERT_X(m_data.size() <= data.size(),
                __FUNCTION__,
                "Trying to append a buffer with a size higher than the current one");
 

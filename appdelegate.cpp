@@ -1,7 +1,7 @@
 #include "appdelegate.h"
 #include "config.h"
 
-#include <qportaudio/qportaudiomanager.h>
+#include <audio/audiomanager.h>
 #include <components/componentsmanager.h>
 
 class AppDelegatePrivate : QSharedData {
@@ -11,7 +11,7 @@ public:
     AppDelegatePrivate(AppDelegate* parent) :
         q_ptr(parent),
         componentsManager(new ComponentsManager(parent)),
-        audioManager(new QPortAudioManager(parent))
+        audioManager(new AudioManager(parent))
     {
 
 
@@ -20,7 +20,7 @@ public:
 
     AppDelegate* const  q_ptr;
     ComponentsManager* componentsManager;
-    QPortAudioManager*  audioManager;
+    AudioManager*  audioManager;
 };
 
 AppDelegate::AppDelegate(QObject *parent) :
@@ -28,7 +28,7 @@ AppDelegate::AppDelegate(QObject *parent) :
     d_ptr(new AppDelegatePrivate(this))
 {
     qmlRegisterType<ComponentsManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "ComponentsManager");
-    qmlRegisterType<QPortAudioManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "QPortAudioManager");
+    qmlRegisterType<AudioManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioManager");
 }
 
 AppDelegate::~AppDelegate()
@@ -52,12 +52,12 @@ void AppDelegate::setComponentsManager(ComponentsManager * tmp) {
         emit componentsManagerChanged(tmp);
     }}
 
-QPortAudioManager *AppDelegate::audioManager() const {
+AudioManager *AppDelegate::audioManager() const {
     Q_D(const AppDelegate);
     return d->audioManager;
 }
 
-void AppDelegate::setAudioManager(QPortAudioManager *value) {
+void AppDelegate::setAudioManager(AudioManager *value) {
     Q_D(AppDelegate);
     if (value != d->audioManager) {
         d->audioManager = value;
