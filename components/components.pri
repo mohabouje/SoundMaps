@@ -4,13 +4,15 @@ HEADERS += \
     $$PWD/drawermodel.h \
     $$PWD/tabbarmodel.h \
     $$PWD/componentsmanager.h \
-    $$PWD/thememanager.h
+    $$PWD/thememanager.h \
+    $$PWD/circularbufferseries.h
 
 SOURCES += \
     $$PWD/drawermodel.cpp \
     $$PWD/tabbarmodel.cpp \
     $$PWD/componentsmanager.cpp \
-    $$PWD/thememanager.cpp
+    $$PWD/thememanager.cpp \
+    $$PWD/circularbufferseries.cpp
 
 DISTFILES += \
     $$PWD/MainTabBar.qml \

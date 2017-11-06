@@ -10,7 +10,7 @@ class QPortAudioManagerPrivate : QSharedData {
 public:
     QPortAudioManagerPrivate(QPortAudioManager* parent) :
         q_ptr(parent),
-        audioSeries(new QPortAudioSeries(parent)),
+        circularSeries(new CircularBufferSeries(parent)),
         recorder(new QPortAudioRecorder(parent))
     {
 
@@ -24,16 +24,16 @@ public:
         }
     }
 
-    void setAudioSeries(QPortAudioSeries* tmp) {
+    void setAudioSeries(CircularBufferSeries* tmp) {
         Q_Q(QPortAudioManager);
-        if (tmp != audioSeries) {
-            audioSeries = tmp;
-            emit q->audioSeriesChanged(audioSeries);
+        if (tmp != circularSeries) {
+            circularSeries = tmp;
+            emit q->audioSeriesChanged(circularSeries);
         }
     }
 
     QPortAudioManager* const q_ptr;
-    QPortAudioSeries* audioSeries;
+    CircularBufferSeries* circularSeries;
     QPortAudioRecorder *recorder;
 };
 
@@ -42,12 +42,11 @@ QPortAudioManager::QPortAudioManager(QObject *parent) :
     d_ptr(new QPortAudioManagerPrivate(this))
 {
     qmlRegisterType<QPortAudioRecorder>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "QPortAudioRecorder");
-    qmlRegisterType<QPortAudioSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "QPortAudioSeries");
 
     Q_D(QPortAudioManager);
     connect(d->recorder, &QPortAudioRecorder::onBufferReady, this, [&](float * _t1, ulong _t2){
         Q_D(QPortAudioManager);
-        d->audioSeries->appendBuffer(_t1, _t2);
+        d->circularSeries->appendBuffer(_t1, _t2);
     });
 }
 
@@ -55,9 +54,9 @@ QPortAudioManager::~QPortAudioManager() {
     delete d_ptr;
 }
 
-QPortAudioSeries *QPortAudioManager::audioSeries() const {
+CircularBufferSeries *QPortAudioManager::audioSeries() const {
     Q_D(const QPortAudioManager);
-    return d->audioSeries;
+    return d->circularSeries;
 }
 
 QPortAudioRecorder *QPortAudioManager::recorder() const {
@@ -69,10 +68,10 @@ QPortAudioRecorder *QPortAudioManager::recorder() const {
 void QPortAudioManager::reset() {
     Q_D(QPortAudioManager);
     d->recorder->reset();
-    d->audioSeries->initialize(d->recorder->sampleRate(), d->recorder->frameLength());
+    d->circularSeries->setSize(d->recorder->sampleRate() * d->recorder->frameLength() / 1000. );
 }
 
-void QPortAudioManager::setAudioSeries(QPortAudioSeries *source) {
+void QPortAudioManager::setAudioSeries(CircularBufferSeries *source) {
     Q_D(QPortAudioManager);
     d->setAudioSeries(source);
 }

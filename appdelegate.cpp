@@ -34,6 +34,9 @@ AppDelegate::AppDelegate(QObject *parent) :
 AppDelegate::~AppDelegate()
 {
     delete d_ptr;
+    if (instance != nullptr) {
+        delete instance;
+    }
 }
 
 
@@ -62,9 +65,13 @@ void AppDelegate::setAudioManager(QPortAudioManager *value) {
     }
 }
 
+AppDelegate* AppDelegate::instance = nullptr;
 QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
-    return new AppDelegate();
+    if (instance == nullptr) {
+        instance = new AppDelegate();
+    }
+    return instance;
 }
 

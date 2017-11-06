@@ -28,7 +28,8 @@ public slots:
 private:
     Q_DECLARE_PRIVATE(AppDelegate)
     Q_DISABLE_COPY(AppDelegate)
-    AppDelegatePrivate* d_ptr;
+    static AppDelegate* instance;
+    AppDelegatePrivate* d_ptr{nullptr};
 };
 
 #endif // APPDELEGATE_H

@@ -1,24 +1,28 @@
-#include "qportaudioseries.h"
+#include "circularbufferseries.h"
 #include <QXYSeries>
 #include <QtDebug>
 QT_CHARTS_USE_NAMESPACE
 
 Q_DECLARE_METATYPE(QAbstractSeries *)
 Q_DECLARE_METATYPE(QAbstractAxis *)
-QPortAudioSeries::QPortAudioSeries(QObject *parent) : QObject(parent), m_series(new QLineSeries(parent))
+CircularBufferSeries::CircularBufferSeries(QObject *parent) : QObject(parent), m_series(new QLineSeries(parent))
 {
 
 }
 
-void QPortAudioSeries::initialize(int sampleRate, int bufferInMSecs) {
-    m_data.resize(static_cast<int>(sampleRate * bufferInMSecs / 1000));
-    for (int i=0, size = m_data.size(); i<size; i++) {
-        m_data[i].setX(i);
-        m_data[i].setY(0.0);
+void CircularBufferSeries::setSize(int size) {
+    if (size != m_data.size()) {
+        m_data.resize(size);
+        for (int i=0, size = m_data.size(); i<size; i++) {
+            m_data[i].setX(i);
+            m_data[i].setY(0.0);
+        }
+        emit sizeChanged(size);
     }
+
 }
 
-void QPortAudioSeries::appendBuffer(const float* data, ulong size) {
+void CircularBufferSeries::appendBuffer(const float* data, ulong size) {
     Q_ASSERT_X(static_cast<ulong>(m_data.size()) < size,
                __FUNCTION__,
                "Trying to append a buffer with a size higher than the current one");
@@ -33,7 +37,8 @@ void QPortAudioSeries::appendBuffer(const float* data, ulong size) {
     }
 }
 
-void QPortAudioSeries::appendBuffer(const QVector<double> &data) {
+
+void CircularBufferSeries::appendBuffer(const QVector<double> &data) {
     Q_ASSERT_X(m_data.size() < data.size(),
                __FUNCTION__,
                "Trying to append a buffer with a size higher than the current one");
@@ -50,17 +55,14 @@ void QPortAudioSeries::appendBuffer(const QVector<double> &data) {
 
 }
 
-void QPortAudioSeries::update() {
+void CircularBufferSeries::update() {
     m_series->replace(m_data);
 }
 
-QXYSeries *QPortAudioSeries::series() const {
-    return m_series;
-}
-
-void QPortAudioSeries::setSeries(QXYSeries *series) {
+void CircularBufferSeries::setSeries(QXYSeries *series) {
     m_series = series;
     m_series->setUseOpenGL(true);
+    emit seriesChanged(series);
 }
 
 

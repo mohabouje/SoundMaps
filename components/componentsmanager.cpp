@@ -1,6 +1,7 @@
 #include "componentsmanager.h"
 #include "drawermodel.h"
 #include "tabbarmodel.h"
+#include "circularbufferseries.h"
 
 #include <QSharedData>
 #include <QQmlEngine>
@@ -46,6 +47,7 @@ ComponentsManager::ComponentsManager(QObject *parent) :
 {
     qmlRegisterType<TabBarModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "TabBarModel");
     qmlRegisterType<DrawerModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "DrawerModel");
+    qmlRegisterType<CircularBufferSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "CircularBufferSeries");
 }
 
 ComponentsManager::~ComponentsManager()
