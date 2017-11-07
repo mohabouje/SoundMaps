@@ -3,6 +3,7 @@
 #include "qbeacon.h"
 #include <QMap>
 #include <QObject>
+#include <QQmlEngine>
 #include <QSet>
 class QEnvironement : public QObject
 {
@@ -13,21 +14,21 @@ class QEnvironement : public QObject
     Q_PROPERTY(float height READ height WRITE setHeight NOTIFY heightChanged)
     Q_PROPERTY(int beaconsCount READ beaconsCount NOTIFY beaconsCountChanged)
 public:
-
-    explicit QEnvironement();
+    explicit QEnvironement(QObject* parent = nullptr);
+    static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
     ~QEnvironement() override;
     inline QString name() const { return QString::fromStdString(environement->name()); }
     inline float length() const { return environement->length(); }
     inline float width() const { return environement->width(); }
     inline float height() const { return environement->height(); }
     inline int beaconsCount() const { return environement->beacons_size(); }
-    Q_INVOKABLE inline const QSet<QBeaconPtr>& beacons() const { return beaconsSet; }
-    Q_INVOKABLE bool    removeBeacon(const QBeaconPtr& beaconAt);
+    inline const QSet<QBeaconPtr>& beacons() const { return beaconsSet; }
+    bool removeBeacon(const QBeaconPtr& beaconAt);
     Q_INVOKABLE QBeaconPtr addBeacon();
     Q_INVOKABLE QBeaconPtr beaconAt(int index);
 public slots:
-    Q_INVOKABLE bool loadEnvironementFromFile(const QString& filename = QString());
-    Q_INVOKABLE bool saveEnvironementInFile(const QString& filename = QString()) const;
+    Q_INVOKABLE bool loadEnvironementFromFile(const QString& filename);
+    Q_INVOKABLE bool saveEnvironementInFile(const QString& filename) const;
     Q_INVOKABLE void clear();
     Q_INVOKABLE void init();
     void setName(const QString&);
@@ -47,5 +48,6 @@ private:
     Environement*               environement{new Environement};
     QSet<QBeaconPtr>            beaconsSet;
     QMap<QUuid, QBeaconPtr>     beaconsMap;
+    SM_DECL_SINGLETON(QEnvironement)
 };
 #endif // DATAMODEL_H

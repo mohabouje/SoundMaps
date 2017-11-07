@@ -15,7 +15,7 @@ class ComponentsManager : public QObject {
     Q_PROPERTY(RefreshRate refreshRate READ refreshRate WRITE setRefreshRate NOTIFY refreshRateChanged)
 public:
     explicit ComponentsManager(QObject *parent = nullptr);
-    static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
+    static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
     enum RefreshRate { Low = 100, Medium = 50, Hight = 20};
     Q_ENUM(RefreshRate)
 

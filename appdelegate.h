@@ -16,7 +16,7 @@ class AppDelegate : public QObject
 public:
     explicit AppDelegate(QObject *parent = nullptr);
     virtual ~AppDelegate();
-    static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
+    static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
 private:
     Q_DECLARE_PRIVATE(AppDelegate)
     Q_DISABLE_COPY(AppDelegate)

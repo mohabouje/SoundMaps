@@ -14,7 +14,7 @@ class AudioManager : public QObject {
     Q_PROPERTY(AudioRecorder* recorder READ recorder WRITE setRecorder NOTIFY recorderChanged)
 public:
     explicit AudioManager(QObject *parent = nullptr);
-    static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
+    static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
     virtual ~AudioManager();
     CircularBufferSeries *audioSeries() const;
     AudioRecorder* recorder() const;

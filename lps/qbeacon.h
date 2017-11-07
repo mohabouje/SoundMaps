@@ -16,7 +16,7 @@ class QBeacon : public QObject {
     Q_PROPERTY(QVector3D position READ position WRITE setPosition NOTIFY positionChanged)
 public:
     explicit QBeacon(Beacon* beacon, QObject* parent = nullptr);
-    virtual ~QBeacon() = default;
+    virtual ~QBeacon();
     inline QUuid uuid() const {  return QUuid(QString::fromStdString(beacon->uuid())); }
     inline quint32 id() const { return beacon->id(); }
     inline QString name() const { return QString::fromStdString(beacon->name()); }

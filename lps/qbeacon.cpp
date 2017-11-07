@@ -7,6 +7,10 @@ QBeacon::QBeacon(Beacon *beacon, QObject *parent) :
 
 }
 
+QBeacon::~QBeacon() {
+
+}
+
 void QBeacon::setPosition(const QVector3D &point) {
     if (point.x() != beacon->x()
             || point.y() != beacon->y()

@@ -6,19 +6,24 @@
 #include <QFile>
 #include <QDebug>
 
-QEnvironement::QEnvironement() {
+QEnvironement::QEnvironement(QObject *parent) : QObject (parent) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     environement->set_width(DefaultWidth);
     environement->set_height(DefaultHeight);
     environement->set_length(DefaultLength);
 }
 
+QObject *QEnvironement::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine);
+    Q_UNUSED(scriptEngine);
+    return SM_STATIC_SINGLETON(QEnvironement);
+}
+
 QEnvironement::~QEnvironement() {
     clear();
     delete environement;
 }
-
-
 
 QBeaconPtr QEnvironement::addBeacon() {
     Beacon* beacon = environement->add_beacons();
@@ -93,7 +98,6 @@ void QEnvironement::setName(const QString &name) {
         emit nameChanged(name);
     }
 }
-
 
 bool QEnvironement::loadEnvironementFromFile(const QString &filename) {
     static const QString defaultPath = ModelHelper::defaultDocumentsFolder() + ENVIRONEMENT_FILENAME;

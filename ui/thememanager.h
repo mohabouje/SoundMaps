@@ -12,7 +12,7 @@ class ThemeManager : public QObject {
 public:
     explicit ThemeManager(QObject *parent = nullptr);
     virtual ~ThemeManager();
-    static QObject* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine);
+    static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
     Q_INVOKABLE QColor backgroundColor() const;
     Q_INVOKABLE QColor foregroundColor() const;
     Q_INVOKABLE QColor accentColor() const;
