@@ -3,7 +3,7 @@
 
 #include "ui/chart/circularbufferseries.h"
 #include "audiorecorder.h"
-#include "util/singletone.h"
+#include "config.h"
 
 #include <QObject>
 #include <QQmlEngine>
@@ -28,7 +28,7 @@ public slots:
 private:
     Q_DECLARE_PRIVATE(AudioManager)
     Q_DISABLE_COPY(AudioManager)
-    SINGLETON_CREATOR(AudioManager)
+    SM_DECL_SINGLETON(AudioManager)
     AudioManagerPrivate* d_ptr;
 };
 

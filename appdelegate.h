@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QQmlEngine>
 
-#include "util/singletone.h"
+#include "config.h"
 
 class ComponentsManager;
 class AudioManager;
@@ -20,7 +20,7 @@ public:
 private:
     Q_DECLARE_PRIVATE(AppDelegate)
     Q_DISABLE_COPY(AppDelegate)
-    SINGLETON_CREATOR(AppDelegate)
+    SM_DECL_SINGLETON(AppDelegate)
     AppDelegatePrivate* d_ptr{nullptr};
 };
 

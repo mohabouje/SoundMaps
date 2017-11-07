@@ -64,7 +64,7 @@ ComponentsManager::ComponentsManager(QObject *parent) :
 QObject *ComponentsManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine);
     Q_UNUSED(scriptEngine);
-    return SINGLETON_INSTANCE(ComponentsManager);
+    return SM_STATIC_SINGLETON(ComponentsManager);
 }
 
 ComponentsManager::~ComponentsManager()

@@ -1,7 +1,7 @@
 #ifndef THEMEMANAGER_H
 #define THEMEMANAGER_H
 
-#include "util/singletone.h"
+#include "config.h"
 
 #include <QObject>
 #include <QQmlEngine>
@@ -16,11 +16,10 @@ public:
     Q_INVOKABLE QColor backgroundColor() const;
     Q_INVOKABLE QColor foregroundColor() const;
     Q_INVOKABLE QColor accentColor() const;
-
 private:
     Q_DECLARE_PRIVATE(ThemeManager)
     Q_DISABLE_COPY(ThemeManager)
-    SINGLETON_CREATOR(ThemeManager)
+    SM_DECL_SINGLETON(ThemeManager)
     ThemeManagerPrivate*    d_ptr;
 };
 

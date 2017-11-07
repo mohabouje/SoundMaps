@@ -1,9 +1,9 @@
 #ifndef COMPONENTSMANAGER_H
 #define COMPONENTSMANAGER_H
+#include "config.h"
 
 #include <QObject>
 #include <QQmlEngine>
-#include "util/singletone.h"
 
 class TabBarModel;
 class DrawerModel;
@@ -34,7 +34,7 @@ public slots:
 private:
     Q_DECLARE_PRIVATE(ComponentsManager)
     Q_DISABLE_COPY(ComponentsManager)
-    SINGLETON_CREATOR(ComponentsManager)
+    SM_DECL_SINGLETON(ComponentsManager)
     ComponentsManagerPrivate*   d_ptr;
 };
 

@@ -60,21 +60,4 @@ template<class T> QBasicAtomicPointer<T* (void)> Singleton<T>::create = Q_BASIC_
 template<class T> QBasicAtomicInt Singleton<T>::flag = Q_BASIC_ATOMIC_INITIALIZER(CallOnce::CO_Request);
 template<class T> QBasicAtomicPointer<void> Singleton<T>::tptr = Q_BASIC_ATOMIC_INITIALIZER(nullptr);
 
-
-#define ENABLE_SINGLETONE(Class) \
-    static Class* createInstance() { return new Class(); } \
-    Class* singletone() { return Singleton<Class>::instance(Class::createInstance); }
-
-
-#define ENABLE_QML_SINGLETONE(Class) \
-    static Class* createInstance() { return new Class(); } \
-    Class* qmlSingleton(QQmlEngine* engine, QJSEngine *scriptEngine) { \
-        Q_UNUSED(engine) \
-        Q_UNUSED(scriptEngine) \
-        return Singleton<Class>::instance(Class::createInstance); }
-
-
-#define SINGLETON_CREATOR(Class)  static Class* createInstance() { return new Class(); }
-#define SINGLETON_INSTANCE(Class) Singleton<Class>::instance(Class::createInstance)
-
 #endif // SINGLETON_H

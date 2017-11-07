@@ -43,6 +43,6 @@ AppDelegate::~AppDelegate()
 QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine);
     Q_UNUSED(scriptEngine);
-    return SINGLETON_INSTANCE(AppDelegate);
+    return SM_STATIC_SINGLETON(AppDelegate);
 }
 
