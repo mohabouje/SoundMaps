@@ -28,7 +28,7 @@ public slots:
 private:
     Q_DECLARE_PRIVATE(AudioManager)
     Q_DISABLE_COPY(AudioManager)
-    SINGLETON_CREATOR(AudioManager);
+    SINGLETON_CREATOR(AudioManager)
     AudioManagerPrivate* d_ptr;
 };
 
