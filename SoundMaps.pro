@@ -41,7 +41,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 include(audio/audio.pri)
-include(ui/ui.pri);
+include(ui/ui.pri)
+include(lps/lps.pri)
 
 INCLUDEPATH += /usr/local/include
 DEPENDPATH +=  /usr/local/include
@@ -49,5 +50,5 @@ DEPENDPATH +=  /usr/local/include
 
 INCLUDEPATH += /usr/local/include/
 LIBS += -L /usr/local/lib/ -lportaudio
-
+LIBS += -L /usr/local/lib/ -lprotobuf
 

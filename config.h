@@ -7,7 +7,8 @@
 #define PACKAGE_VERSION_MAJOR   1
 #define PACKAGE_VERSION_MINOR   0
 
-
+#define ENVIRONEMENT_FORMAT   ".envi"
+#define ENVIRONEMENT_FILENAME "environement" ENVIRONEMENT_FORMAT
 
 
 #define SM_DECL_SINGLETON(Class)  static Class* createInstance() { return new Class(); }
