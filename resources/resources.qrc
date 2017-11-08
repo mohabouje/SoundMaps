@@ -23,5 +23,9 @@
         <file>icon/navigation_close.svg</file>
         <file>icon/navigation_menu.svg</file>
         <file>icon/navigation_more_vert.svg</file>
+        <file>icon/wifi_levels/if_ic_signal_wifi_0.svg</file>
+        <file>icon/wifi_levels/if_ic_signal_wifi_1.svg</file>
+        <file>icon/wifi_levels/if_ic_signal_wifi_4.svg</file>
+        <file>icon/wifi_levels/if_ic_signal_wifi_3.svg</file>
     </qresource>
 </RCC>
