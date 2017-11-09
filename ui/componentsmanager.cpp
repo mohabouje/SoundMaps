@@ -6,6 +6,8 @@
 #include <QSharedData>
 #include <QQmlEngine>
 
+#include <ui/models/beaconlistmodel.h>
+
 class ComponentsManagerPrivate : public QSharedData {
     Q_DISABLE_COPY(ComponentsManagerPrivate)
     Q_DECLARE_PUBLIC(ComponentsManager)
@@ -13,7 +15,8 @@ public:
     ComponentsManagerPrivate(ComponentsManager* parent) :
         q_ptr(parent),
         drawerModel(new DrawerModel(parent)),
-        tabBarModel(new TabBarModel(parent))
+        tabBarModel(new TabBarModel(parent)),
+        beaconListModel(new BeaconListModel(parent))
     {
 
         drawerModel->appendTab("Data Base", "qrc:/icon/database.svg");
@@ -50,6 +53,7 @@ public:
     ComponentsManager::RefreshRate rs{ComponentsManager::Low};
     DrawerModel*             drawerModel{nullptr};
     TabBarModel*             tabBarModel{nullptr};
+    BeaconListModel* beaconListModel{nullptr};
 };
 
 ComponentsManager::ComponentsManager(QObject *parent) :
@@ -102,6 +106,19 @@ void ComponentsManager::setRefreshRate(ComponentsManager::RefreshRate refresh) {
     if (refresh != d->rs) {
         d->rs = refresh;
         emit refreshRateChanged(d->rs);
+    }
+}
+
+BeaconListModel *ComponentsManager::beaconListModel() const {
+    Q_D(const ComponentsManager);
+    return d->beaconListModel;
+}
+
+void ComponentsManager::setBeaconListModel(BeaconListModel *tmp) {
+    Q_D(ComponentsManager);
+    if (tmp != d->beaconListModel) {
+        d->beaconListModel = tmp;
+        emit beaconListModelChanged(d->beaconListModel);
     }
 }
 

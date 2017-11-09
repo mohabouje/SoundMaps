@@ -101,6 +101,20 @@ ApplicationWindow {
 
         Page {
 
+            ListView {
+                id: sampleListView
+                anchors.fill: parent
+                model: ComponentsManager.beaconListModel
+                delegate: BeaconListDelegate {
+                    beaconSnr: snr
+                    beaconName: name
+                    beaconState: state
+                    beaconPosition: position
+                }
+
+                spacing: 4
+              }
+
         }
 
         Page {
