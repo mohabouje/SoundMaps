@@ -1,6 +1,5 @@
 HEADERS += \
     $$PWD/model.pb.h \
-    $$PWD/modelhelper.h \
     $$PWD/qenvironement.h \
     $$PWD/qmeasure.h \
     $$PWD/qbeacon.h

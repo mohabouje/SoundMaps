@@ -42,5 +42,5 @@ private:
     Beacon*         beacon;
     inline Beacon* pointer() const { return beacon; }
 };
-typedef QSharedPointer<QBeacon> QBeaconPtr;
+typedef QSharedPointer<QBeacon> QBeacon_ptr;
 #endif // QBEACON_H

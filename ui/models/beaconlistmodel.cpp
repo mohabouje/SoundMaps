@@ -32,7 +32,7 @@ QVariant BeaconListModel::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
 
-    QBeaconPtr beacon = environement->beaconAt(row);
+    QBeacon_ptr beacon = environement->beaconAt(row);
     switch (role) {
     case IdRole:
         return QVariant::fromValue<quint32>(beacon->id());
