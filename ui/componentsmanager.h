@@ -1,13 +1,14 @@
 #ifndef COMPONENTSMANAGER_H
 #define COMPONENTSMANAGER_H
-#include "config.h"
-
+#include "sm_config.h"
+#include "models/tabbarmodel.h"
+#include "models/drawermodel.h"
+#include "models/beaconlistmodel.h"
+#include "chart/arrayseries.h"
+#include "chart/circularseries.h"
 #include <QObject>
 #include <QQmlEngine>
 
-class TabBarModel;
-class DrawerModel;
-class BeaconListModel;
 class ComponentsManagerPrivate;
 class ComponentsManager : public QObject {
     Q_OBJECT
@@ -15,6 +16,9 @@ class ComponentsManager : public QObject {
     Q_PROPERTY(TabBarModel* tabBarModel READ tabBarModel WRITE setTabBarModel NOTIFY tabBarModelChanged)
     Q_PROPERTY(RefreshRate refreshRate READ refreshRate WRITE setRefreshRate NOTIFY refreshRateChanged)
     Q_PROPERTY(BeaconListModel* beaconListModel READ beaconListModel WRITE setBeaconListModel NOTIFY beaconListModelChanged)
+    Q_PROPERTY(CircularSeries* circularSeries READ circularSeries NOTIFY circularSeriesChanged)
+    Q_PROPERTY(ArraySeries* arraySeries READ arraySeries NOTIFY arraySeriesChanged)
+
 public:
     explicit ComponentsManager(QObject *parent = nullptr);
     static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
@@ -22,16 +26,21 @@ public:
     Q_ENUM(RefreshRate)
 
     virtual ~ComponentsManager();
-    DrawerModel*    drawerModel();
-    TabBarModel*    tabBarModel();
-    RefreshRate refreshRate() const;
+    DrawerModel*    drawerModel() const;
+    TabBarModel*    tabBarModel() const;
     BeaconListModel *beaconListModel() const;
+
+    ArraySeries* arraySeries() const;
+    CircularSeries* circularSeries() const;
+    RefreshRate refreshRate() const;
 
 signals:
     void drawerModelChanged(DrawerModel*);
     void tabBarModelChanged(TabBarModel*);
     void beaconListModelChanged(BeaconListModel*);
     void refreshRateChanged(RefreshRate);
+    void arraySeriesChanged(ArraySeries*);
+    void circularSeriesChanged(CircularSeries*);
 public slots:
     void setDrawerModel(DrawerModel*);
     void setTabBarModel(TabBarModel*);

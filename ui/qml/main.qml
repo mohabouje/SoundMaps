@@ -18,6 +18,7 @@ ApplicationWindow {
         background: Rectangle {
             color: ThemeManager.accentColor()
         }
+
         RowLayout {
             anchors.fill: parent
             ImageToolButton {
@@ -135,6 +136,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        AppDelegate.init()
         AudioManager.reset()
     }
 }

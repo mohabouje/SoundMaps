@@ -1,7 +1,7 @@
 #ifndef TABBARMODEL_H
 #define TABBARMODEL_H
 
-#include "config.h"
+#include "sm_config.h"
 #include <QAbstractListModel>
 class TabBarItem : public QObject {
     Q_OBJECT

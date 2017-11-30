@@ -1,6 +1,6 @@
 #include "appdelegate.h"
 #include "audio/audiomanager.h"
-#include "config.h"
+#include "sm_config.h"
 #include "lps/qenvironement.h"
 #include "ui/componentsmanager.h"
 #include "ui/thememanager.h"
@@ -27,10 +27,10 @@ int main(int argc, char *argv[]) {
       PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR,
       "QEnvironement", &QEnvironement::qmlSingleton);
 
+
   QQmlApplicationEngine engine;
   engine.load(QUrl(QLatin1String("qrc:/main.qml")));
   if (engine.rootObjects().isEmpty())
     return -1;
-
   return app.exec();
 }

@@ -1,6 +1,6 @@
 #ifndef QBEACON_H
 #define QBEACON_H
-#include "config.h"
+#include "sm_config.h"
 #include "model.pb.h"
 #include <QMetaType>
 #include <QUuid>

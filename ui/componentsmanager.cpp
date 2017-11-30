@@ -1,13 +1,6 @@
 #include "componentsmanager.h"
-#include "models/tabbarmodel.h"
-#include "models/drawermodel.h"
-#include "chart/circularbufferseries.h"
 
 #include <QSharedData>
-#include <QQmlEngine>
-
-#include <ui/models/beaconlistmodel.h>
-
 class ComponentsManagerPrivate : public QSharedData {
     Q_DISABLE_COPY(ComponentsManagerPrivate)
     Q_DECLARE_PUBLIC(ComponentsManager)
@@ -16,7 +9,9 @@ public:
         q_ptr(parent),
         drawerModel(new DrawerModel(parent)),
         tabBarModel(new TabBarModel(parent)),
-        beaconListModel(new BeaconListModel(parent))
+        beaconListModel(new BeaconListModel(parent)),
+        arraySeries(new ArraySeries(parent)),
+        circularSeries(new CircularSeries(parent))
     {
 
         drawerModel->appendTab("Data Base", "qrc:/icon/database.svg");
@@ -33,27 +28,13 @@ public:
     }
     ~ComponentsManagerPrivate(){}
 
-    void setDrawerModel(DrawerModel* tmp) {
-        Q_Q(ComponentsManager);
-        if (tmp != drawerModel) {
-            drawerModel = tmp;
-            emit q->drawerModelChanged(drawerModel);
-        }
-    }
-
-    void setTabBarModel(TabBarModel* tmp) {
-        Q_Q(ComponentsManager);
-        if (tmp != tabBarModel) {
-            tabBarModel = tmp;
-            emit q->tabBarModelChanged(tabBarModel);
-        }
-    }
-
     ComponentsManager* const q_ptr;
     ComponentsManager::RefreshRate rs{ComponentsManager::Low};
-    DrawerModel*             drawerModel{nullptr};
-    TabBarModel*             tabBarModel{nullptr};
-    BeaconListModel* beaconListModel{nullptr};
+    DrawerModel*                drawerModel{nullptr};
+    TabBarModel*                tabBarModel{nullptr};
+    BeaconListModel*            beaconListModel{nullptr};
+    ArraySeries*                arraySeries{nullptr};
+    CircularSeries*             circularSeries{nullptr};
 };
 
 ComponentsManager::ComponentsManager(QObject *parent) :
@@ -63,7 +44,8 @@ ComponentsManager::ComponentsManager(QObject *parent) :
     qmlRegisterType<TabBarModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "TabBarModel");
     qmlRegisterType<DrawerModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "DrawerModel");
     qmlRegisterType<BeaconListModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "BeaconListModel");
-    qmlRegisterType<CircularBufferSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "CircularBufferSeries");
+    qmlRegisterType<ArraySeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "ArraySeries");
+    qmlRegisterType<CircularSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "CircularSeries");
 }
 
 QObject *ComponentsManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
@@ -77,24 +59,30 @@ ComponentsManager::~ComponentsManager()
     delete d_ptr;
 }
 
-DrawerModel *ComponentsManager::drawerModel() {
-    Q_D(ComponentsManager);
+DrawerModel *ComponentsManager::drawerModel() const {
+    Q_D(const ComponentsManager);
     return d->drawerModel;
 }
 
-TabBarModel *ComponentsManager::tabBarModel() {
-    Q_D(ComponentsManager);
+TabBarModel *ComponentsManager::tabBarModel() const {
+    Q_D(const ComponentsManager);
     return d->tabBarModel;
 }
 
-void ComponentsManager::setDrawerModel(DrawerModel * drawerModel) {
+void ComponentsManager::setDrawerModel(DrawerModel * tmp) {
     Q_D(ComponentsManager);
-    d->setDrawerModel(drawerModel);
+    if (tmp != d->drawerModel) {
+        d->drawerModel = tmp;
+        emit drawerModelChanged(d->drawerModel);
+    }
 }
 
-void ComponentsManager::setTabBarModel(TabBarModel * tabBarModel) {
+void ComponentsManager::setTabBarModel(TabBarModel * tmp) {
     Q_D(ComponentsManager);
-    d->setTabBarModel(tabBarModel);
+    if (tmp != d->tabBarModel) {
+        d->tabBarModel = tmp;
+        emit tabBarModelChanged(d->tabBarModel);
+    }
 }
 
 ComponentsManager::RefreshRate ComponentsManager::refreshRate() const {
@@ -113,6 +101,16 @@ void ComponentsManager::setRefreshRate(ComponentsManager::RefreshRate refresh) {
 BeaconListModel *ComponentsManager::beaconListModel() const {
     Q_D(const ComponentsManager);
     return d->beaconListModel;
+}
+
+ArraySeries *ComponentsManager::arraySeries() const {
+    Q_D(const ComponentsManager);
+    return d->arraySeries;
+}
+
+CircularSeries *ComponentsManager::circularSeries() const {
+    Q_D(const ComponentsManager);
+    return d->circularSeries;
 }
 
 void ComponentsManager::setBeaconListModel(BeaconListModel *tmp) {

@@ -1,7 +1,8 @@
 #include "appdelegate.h"
-#include "config.h"
+#include "sm_config.h"
 
 #include <audio/audiomanager.h>
+#include <ui/chart/circularseries.h>
 #include <ui/componentsmanager.h>
 
 class AppDelegatePrivate : QSharedData {
@@ -9,20 +10,14 @@ class AppDelegatePrivate : QSharedData {
     Q_DECLARE_PUBLIC(AppDelegate)
 public:
     AppDelegatePrivate(AppDelegate* parent) :
-        q_ptr(parent),
-        componentsManager(),
-        audioManager(new AudioManager(parent))
+        q_ptr(parent)
     {
 
 
     }
     ~AppDelegatePrivate() {}
 
-    AppDelegate* const  q_ptr;
-    ComponentsManager* componentsManager{qobject_cast<ComponentsManager*>(
-                    ComponentsManager::qmlSingleton(nullptr, nullptr))};
-    AudioManager*  audioManager{qobject_cast<AudioManager*>(
-                    AudioManager::qmlSingleton(nullptr, nullptr))};
+    AppDelegate* const  q_ptr;    
 };
 
 AppDelegate::AppDelegate(QObject *parent) :
@@ -33,12 +28,11 @@ AppDelegate::AppDelegate(QObject *parent) :
     qmlRegisterType<AudioManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioManager");
 }
 
+
 AppDelegate::~AppDelegate()
 {
     delete d_ptr;
 }
-
-
 
 QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine);
@@ -46,3 +40,20 @@ QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) 
     return SM_STATIC_SINGLETON(AppDelegate);
 }
 
+#define DEFAULT_BUFFER_SIZE_SECS 10
+void AppDelegate::init() const {
+    ComponentsManager* cm = qobject_cast<ComponentsManager*>(ComponentsManager::qmlSingleton(nullptr, nullptr));
+    AudioManager* am = qobject_cast<AudioManager*>(AudioManager::qmlSingleton(nullptr, nullptr));
+    AudioRecorder* audioRecorder = am->recorder();
+    CircularSeries* circularSeries = cm->circularSeries();
+
+    connect(audioRecorder, &AudioRecorder::onBufferReady, this, [circularSeries](float* buffer, int size) {
+       circularSeries->append(buffer, size);
+    });
+
+    connect(audioRecorder, &AudioRecorder::sampleRateChanged, this, [circularSeries](double sr) {
+        circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * sr));
+    });
+
+    circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * audioRecorder->sampleRate()));
+}

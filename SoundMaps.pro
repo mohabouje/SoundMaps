@@ -5,13 +5,13 @@ android {
     QTPLUGIN += qsvg
 }
 
-CONFIG += c++11
+CONFIG += c++14
 LIBS += -lportaudio
 HEADERS += \
-    config.h \
     appdelegate.h \
     util/call_once.h \
-    util/singletone.h
+    util/singletone.h \
+    sm_config.h
 
 SOURCES += main.cpp \
     appdelegate.cpp
@@ -43,6 +43,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 include(audio/audio.pri)
 include(ui/ui.pri)
 include(lps/lps.pri)
+include(dsp/dsp.pri)
+
 
 INCLUDEPATH += /usr/local/include/
 DEPENDPATH +=  /usr/local/include

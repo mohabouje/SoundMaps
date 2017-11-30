@@ -28,7 +28,7 @@ Page {
             ValueAxis {
                 id: axisX
                 min: 0
-                max: AudioManager.recorder.frameLength / 1000.0 * AudioManager.recorder.sampleRate
+                max: ComponentsManager.circularSeries.size
                 tickCount: 1
 
             }
@@ -52,13 +52,13 @@ Page {
             running: true
             repeat: true
             onTriggered: {
-                AudioManager.audioSeries.update();
+                ComponentsManager.circularSeries.update()
             }
         }
 
     }
     Component.onCompleted: {
-        AudioManager.audioSeries.setSeries(series)
+        ComponentsManager.circularSeries.setSeries(series)
         refreshTimer.start()
     }
 }

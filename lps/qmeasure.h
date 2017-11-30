@@ -1,6 +1,6 @@
 #ifndef QMEASURE_H
 #define QMEASURE_H
-#include "config.h"
+#include "sm_config.h"
 #include "qbeacon.h"
 #include <QMetaType>
 class QMeasure {

@@ -1,7 +1,7 @@
 #ifndef THEMEMANAGER_H
 #define THEMEMANAGER_H
 
-#include "config.h"
+#include "sm_config.h"
 
 #include <QObject>
 #include <QQmlEngine>
