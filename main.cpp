@@ -10,12 +10,6 @@
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication app(argc, argv);
-
-  int s = 89;
-  if (s) {
-    {}
-  };
-
   // Singletone Elements
   qmlRegisterSingletonType<AppDelegate>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR,
                                         PACKAGE_VERSION_MINOR, "AppDelegate",

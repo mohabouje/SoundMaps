@@ -44,11 +44,8 @@ include(audio/audio.pri)
 include(ui/ui.pri)
 include(lps/lps.pri)
 
-INCLUDEPATH += /usr/local/include
-DEPENDPATH +=  /usr/local/include
-
-
 INCLUDEPATH += /usr/local/include/
+DEPENDPATH +=  /usr/local/include
 LIBS += -L /usr/local/lib/ -lportaudio
 LIBS += -L /usr/local/lib/ -lprotobuf
 
