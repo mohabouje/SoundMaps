@@ -23,6 +23,7 @@ public:
     double latency() const;
     double streamTimestamp() const;
     ulong frameLength() const;
+    ulong frameLengthMSecs() const;
 public slots:
     Q_INVOKABLE void toggle();
     Q_INVOKABLE bool reset();
@@ -30,6 +31,7 @@ public slots:
     Q_INVOKABLE int stop();
     void setSampleRate(double sampleRate);
     void setFrameLength(ulong frame);
+    void setFrameLengthMSecs(ulong msecs);
     void setDevice(int index);
 signals:
     void frameLengthChanged(ulong);

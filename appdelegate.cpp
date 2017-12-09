@@ -1,9 +1,15 @@
 #include "appdelegate.h"
 #include "sm_config.h"
 
+#include <eDSP/include/properties/properties.h>
+#include <eDSP/include/frequency/cepstrum.h>
+#include <eDSP/include/frequency/autocorrelation.h>
+#include <eDSP/include/frequency/linearpredictivecoding.h>
+#include <chrono>
 #include <audio/audiomanager.h>
 #include <ui/chart/circularseries.h>
 #include <ui/componentsmanager.h>
+#include <QDebug>
 
 class AppDelegatePrivate : QSharedData {
     Q_DISABLE_COPY(AppDelegatePrivate)
@@ -18,6 +24,9 @@ public:
     ~AppDelegatePrivate() {}
 
     eDSP::frequency::Spectrogram  spectrogram{};
+    eDSP::frequency::Cepstrum cepstrum{};
+    eDSP::frequency::AutoCorrelation autocorr;
+    eDSP::frequency::LinearPredictiveCode<double, 13> lpc;
     AppDelegate* const  q_ptr;    
 };
 
@@ -51,10 +60,22 @@ void AppDelegate::init() {
 
 
     connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, int size) {
-        std::vector<double> input(buffer, buffer + size), output(size);
-
         Q_D(AppDelegate);
+        const auto start = std::chrono::system_clock::now();
+        std::vector<double> input(buffer, buffer + size), output(size);
+        const auto energy = eDSP::properties::energy(std::begin(input), std::end(input));
+        const auto power = eDSP::properties::power(std::begin(input), std::end(input));
+        const auto azcr = eDSP::properties::zero_crossing_rate(std::begin(input), std::end(input));
+        const auto loudness = eDSP::properties::loudness(std::begin(input), std::end(input));
+        d->cepstrum.compute(std::begin(input), std::end(input), std::begin(output));
         d->spectrogram.compute(std::begin(input), std::end(input), std::begin(output));
+        d->autocorr.compute(std::begin(input), std::end(input), std::begin(output));
+        const auto& lpc_coeff = d->lpc.compute(std::begin(input), std::end(input));
+        const auto end = std::chrono::system_clock::now();
+        const auto elapsed_seconds = std::chrono::duration_cast<std::chrono::nanoseconds>(end-start);
+        qDebug() <<  "elapsed time: " << elapsed_seconds.count();
+
+
         spectrogramSeries->set(std::begin(output), std::end(output));
         circularSeries->set(std::begin(input), std::end(input));
     });
@@ -64,7 +85,7 @@ void AppDelegate::init() {
             audioRecorder](double sr) {
         circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * sr));
         spectrogramSeries->setSampleRate(sr);
-        spectrogramSeries->setSize(static_cast<int>(audioRecorder->frameLength() / 1000.0 * sr));
+        spectrogramSeries->setSize(static_cast<int>(audioRecorder->frameLength()));
     });
 
     audioRecorder->sampleRateChanged(audioRecorder->sampleRate());

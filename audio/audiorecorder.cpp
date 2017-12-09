@@ -49,7 +49,7 @@ public:
                                           &inputDeviceParam,
                                           NULL,
                                           sampleRate,
-                                          static_cast<ulong>(frameLength / 1000.0 * sampleRate),
+                                          frameLength,
                                           paClipOff,
                                           &QPortAudioCallback, q);
         if (err != paNoError) {
@@ -150,7 +150,8 @@ public:
     PaStreamParameters      inputDeviceParam;
     PaStreamParameters      outputDeviceParam;
     double                  sampleRate{8000.0};
-    ulong                   frameLength{10};
+    ulong                   frameLength{800};
+    ulong                   frameLengthMSecs{10};
     bool                    isInitialized{false};
 };
 
@@ -230,6 +231,16 @@ void AudioRecorder::setFrameLength(ulong frame) {
     Q_D(AudioRecorder);
     if (frame != d->frameLength) {
         d->frameLength = frame;
+        d->frameLengthMSecs = static_cast<ulong>(d->frameLength * 1000.0 / d->sampleRate);
+        emit frameLengthChanged(frame);
+    }
+}
+
+void AudioRecorder::setFrameLengthMSecs(ulong frame) {
+    Q_D(AudioRecorder);
+    if (frame != d->frameLengthMSecs) {
+        d->frameLengthMSecs = frame;
+        d->frameLength = static_cast<ulong>(d->frameLengthMSecs / 1000.0 * d->sampleRate);
         emit frameLengthChanged(frame);
     }
 }
@@ -242,6 +253,11 @@ void AudioRecorder::setDevice(int index) {
 ulong AudioRecorder::frameLength() const {
     Q_D(const AudioRecorder);
     return d->frameLength;
+}
+
+ulong AudioRecorder::frameLengthMSecs() const {
+    Q_D(const AudioRecorder);
+    return d->frameLengthMSecs;
 }
 double AudioRecorder::sampleRate() const {
     Q_D(const AudioRecorder);
