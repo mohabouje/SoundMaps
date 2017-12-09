@@ -7,13 +7,14 @@ TabButton {
     id: tabButton
     property color highlightColor:  ThemeManager.accentColor()
     property color normalColor: ThemeManager.foregroundColor()
-    property string icon: "";
-    Rectangle {
+    property string icon_source: "";
+
+    contentItem: Rectangle {
         anchors.fill: parent
         Image {
             id: image
             anchors.centerIn: parent
-            source: icon
+            source: icon_source
             sourceSize: Qt.size(0.60 * parent.height,  0.60 * parent.height)
             smooth: true
             visible: false

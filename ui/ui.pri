@@ -8,7 +8,8 @@ HEADERS += \
     $$PWD/thememanager.h \
     $$PWD/models/beaconlistmodel.h \
     $$PWD/chart/arrayseries.h \
-    $$PWD/chart/circularseries.h
+    $$PWD/chart/circularseries.h \
+    $$PWD/chart/spectrogramseries.h
 
 SOURCES += \
     $$PWD/models/drawermodel.cpp \
@@ -17,4 +18,5 @@ SOURCES += \
     $$PWD/thememanager.cpp \
     $$PWD/models/beaconlistmodel.cpp \
     $$PWD/chart/arrayseries.cpp \
-    $$PWD/chart/circularseries.cpp
+    $$PWD/chart/circularseries.cpp \
+    $$PWD/chart/spectrogramseries.cpp

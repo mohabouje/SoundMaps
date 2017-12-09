@@ -11,7 +11,7 @@ TabBar {
     Repeater {
         model: ComponentsManager.tabBarModel
         TabImageButton {
-            icon: model.icon
+            icon_source: model.icon
             highlightColor: tabBar.hightlightColor
             normalColor: tabBar.normalColor
         }
