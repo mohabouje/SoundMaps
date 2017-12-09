@@ -1,13 +1,7 @@
 #include "arrayseries.h"
-#include "eDSP/include/utility/vector.h"
 ArraySeries::ArraySeries(QObject *parent) : QObject (parent)
 {
 
-}
-
-void ArraySeries::init() {
-    eDSP::utility::set(std::begin(m_y), std::end(m_y), 0);
-    eDSP::utility::linspace(std::begin(m_x), std::end(m_x), 0, m_x.size());
 }
 
 void ArraySeries::setSize(int sz) {
@@ -31,5 +25,6 @@ void ArraySeries::update() {
 
 void ArraySeries::setSeries(QXYSeries* series) {
     m_series = series;
+    m_series->setUseOpenGL(true);
     update();
 }

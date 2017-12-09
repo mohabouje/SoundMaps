@@ -10,6 +10,8 @@ public:
     explicit CircularSeries(QObject *parent = nullptr);
     void append(const QVector<double>&);
     void append(const float*, int);
+protected:
+    void init() override;
 };
 
 #endif // CIRCULARSERIES_H

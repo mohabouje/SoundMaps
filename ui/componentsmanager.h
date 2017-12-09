@@ -4,7 +4,6 @@
 #include "models/tabbarmodel.h"
 #include "models/drawermodel.h"
 #include "models/beaconlistmodel.h"
-#include "chart/arrayseries.h"
 #include "chart/circularseries.h"
 #include "chart/spectrogramseries.h"
 #include <QObject>
@@ -18,7 +17,6 @@ class ComponentsManager : public QObject {
     Q_PROPERTY(RefreshRate refreshRate READ refreshRate WRITE setRefreshRate NOTIFY refreshRateChanged)
     Q_PROPERTY(BeaconListModel* beaconListModel READ beaconListModel WRITE setBeaconListModel NOTIFY beaconListModelChanged)
     Q_PROPERTY(CircularSeries* circularSeries READ circularSeries NOTIFY circularSeriesChanged)
-    Q_PROPERTY(ArraySeries* arraySeries READ arraySeries NOTIFY arraySeriesChanged)
     Q_PROPERTY(SpectrogramSeries* spectrogramSeries READ spectrogramSeries NOTIFY spectrogramSeriesChanged)
 public:
     explicit ComponentsManager(QObject *parent = nullptr);
@@ -31,7 +29,6 @@ public:
     TabBarModel*    tabBarModel() const;
     BeaconListModel *beaconListModel() const;
 
-    ArraySeries* arraySeries() const;
     SpectrogramSeries* spectrogramSeries() const;
     CircularSeries* circularSeries() const;
     RefreshRate refreshRate() const;

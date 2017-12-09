@@ -27,16 +27,16 @@ Page {
 
             ValueAxis {
                 id: axisX
-                min: 0
-                max: ComponentsManager.spectrogramSeries.size
+                min: ComponentsManager.spectrogramSeries.axisMinX
+                max: ComponentsManager.spectrogramSeries.axisMaxX
                 tickCount: 1
 
             }
 
             ValueAxis {
                 id: axisY
-                min: -1
-                max: 1
+                min: ComponentsManager.spectrogramSeries.axisMinY
+                max: ComponentsManager.spectrogramSeries.axisMaxY
             }
 
             LineSeries {

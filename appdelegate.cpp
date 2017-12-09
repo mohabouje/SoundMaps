@@ -51,13 +51,13 @@ void AppDelegate::init() {
 
 
     connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, int size) {
-        QVector<double> input(size), output(size / 2 + 1);
+        QVector<double> input(size), output(size);
         std::copy(buffer, buffer + size, std::begin(input));
 
         Q_D(AppDelegate);
         d->spectrogram.compute(std::begin(input), std::end(input), std::begin(output));
         spectrogramSeries->set(output);
-        circularSeries->append(buffer, size);
+        circularSeries->append(input);
     });
 
     connect(audioRecorder, &AudioRecorder::sampleRateChanged, this, [circularSeries,
@@ -65,7 +65,7 @@ void AppDelegate::init() {
             audioRecorder](double sr) {
         circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * sr));
         spectrogramSeries->setSampleRate(sr);
-        spectrogramSeries->setSize(static_cast<int>(audioRecorder->frameLength() / 1000.0 * sr / 2));
+        spectrogramSeries->setSize(static_cast<int>(audioRecorder->frameLength() / 1000.0 * sr));
     });
 
     audioRecorder->sampleRateChanged(audioRecorder->sampleRate());
