@@ -24,9 +24,3 @@ void SpectrogramSeries::setSampleRate(double _sr) {
     }
 }
 
-void SpectrogramSeries::set(const QVector<double> &tmp) {
-    Q_ASSERT_X(m_data.size() >= tmp.size(),
-               __FUNCTION__,
-               "Trying to append a buffer with a size higher than the current one");
-    std::copy(std::begin(tmp), std::end(tmp), std::begin(m_y));
-}

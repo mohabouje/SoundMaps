@@ -10,8 +10,11 @@ public:
     explicit SpectrogramSeries(QObject *parent = nullptr);
     double sampleRate() const { return m_samplerate; }
     void setSampleRate(double _sr);
-public slots:
-    void set(const QVector<double> &tmp);
+
+    template<class ForwardIterator>
+    void set(const ForwardIterator first, const ForwardIterator last) {
+        std::copy(first, last, std::begin(m_y));
+    }
 signals:
     void sampleRateChanged(double);
 protected:

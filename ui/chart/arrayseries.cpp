@@ -16,7 +16,7 @@ void ArraySeries::setSize(int sz) {
 
 void ArraySeries::update() {
     std::transform(std::begin(m_x), std::end(m_x), std::begin(m_y), std::begin(m_data),
-                   [](double& x, double& y) -> QPointF {
+                   [](const double& x, const double& y) -> QPointF {
                         return QPointF(x,y);
     });
 
