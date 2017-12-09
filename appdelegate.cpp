@@ -22,10 +22,10 @@ public:
     }
     ~AppDelegatePrivate() {}
 
-    eDSP::frequency::Spectrogram  spectrogram{};
-    eDSP::frequency::Cepstrum cepstrum{};
-    eDSP::frequency::AutoCorrelation autocorr;
-    eDSP::frequency::LinearPredictiveCode<double> lpc;
+    edsp::frequency::Spectrogram  spectrogram{};
+    edsp::frequency::Cepstrum cepstrum{};
+    edsp::frequency::AutoCorrelation autocorr;
+    edsp::frequency::LinearPredictiveCode<double> lpc;
     AppDelegate* const  q_ptr;    
 };
 
@@ -62,10 +62,10 @@ void AppDelegate::init() {
         Q_D(AppDelegate);
         const auto start = std::chrono::system_clock::now();
         std::vector<double> input(buffer, buffer + size), output(size);
-        const auto energy = eDSP::properties::energy(std::begin(input), std::end(input));
-        const auto power = eDSP::properties::power(std::begin(input), std::end(input));
-        const auto azcr = eDSP::properties::zero_crossing_rate(std::begin(input), std::end(input));
-        const auto loudness = eDSP::properties::loudness(std::begin(input), std::end(input));
+        const auto energy = edsp::properties::energy(std::begin(input), std::end(input));
+        const auto power = edsp::properties::power(std::begin(input), std::end(input));
+        const auto azcr = edsp::properties::zero_crossing_rate(std::begin(input), std::end(input));
+        const auto loudness = edsp::properties::loudness(std::begin(input), std::end(input));
         d->cepstrum.compute(std::begin(input), std::end(input), std::begin(output));
         d->spectrogram.compute(std::begin(input), std::end(input), std::begin(output));
         d->autocorr.compute(std::begin(input), std::end(input), std::begin(output));
