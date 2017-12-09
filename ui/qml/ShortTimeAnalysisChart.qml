@@ -28,7 +28,7 @@ Page {
             ValueAxis {
                 id: axisX
                 min: 0
-                max: ComponentsManager.circularSeries.size
+                max: ComponentsManager.spectrogramSeries.size
                 tickCount: 1
 
             }
@@ -52,13 +52,13 @@ Page {
             running: true
             repeat: true
             onTriggered: {
-                ComponentsManager.circularSeries.update()
+                ComponentsManager.spectrogramSeries.update()
             }
         }
 
     }
     Component.onCompleted: {
-        ComponentsManager.circularSeries.setSeries(series)
+        ComponentsManager.spectrogramSeries.setSeries(series)
         refreshTimer.start()
     }
 }

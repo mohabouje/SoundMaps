@@ -11,7 +11,8 @@ public:
         tabBarModel(new TabBarModel(parent)),
         beaconListModel(new BeaconListModel(parent)),
         arraySeries(new ArraySeries(parent)),
-        circularSeries(new CircularSeries(parent))
+        circularSeries(new CircularSeries(parent)),
+        spectrogramSeries(new SpectrogramSeries(parent))
     {
 
         drawerModel->appendTab("Data Base", "qrc:/icon/database.svg");
@@ -35,6 +36,7 @@ public:
     BeaconListModel*            beaconListModel{nullptr};
     ArraySeries*                arraySeries{nullptr};
     CircularSeries*             circularSeries{nullptr};
+    SpectrogramSeries*          spectrogramSeries{nullptr};
 };
 
 ComponentsManager::ComponentsManager(QObject *parent) :
@@ -46,6 +48,7 @@ ComponentsManager::ComponentsManager(QObject *parent) :
     qmlRegisterType<BeaconListModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "BeaconListModel");
     qmlRegisterType<ArraySeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "ArraySeries");
     qmlRegisterType<CircularSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "CircularSeries");
+    qmlRegisterType<SpectrogramSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "SpectrogramSeries");
 }
 
 QObject *ComponentsManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {
@@ -106,6 +109,11 @@ BeaconListModel *ComponentsManager::beaconListModel() const {
 ArraySeries *ComponentsManager::arraySeries() const {
     Q_D(const ComponentsManager);
     return d->arraySeries;
+}
+
+SpectrogramSeries *ComponentsManager::spectrogramSeries() const {
+    Q_D(const ComponentsManager);
+    return d->spectrogramSeries;
 }
 
 CircularSeries *ComponentsManager::circularSeries() const {

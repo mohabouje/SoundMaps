@@ -3,19 +3,20 @@
 
 #include "arrayseries.h"
 
-class Spectrogramseries : public ArraySeries {
+class SpectrogramSeries : public ArraySeries {
     Q_OBJECT
+    Q_PROPERTY(double sampleRate READ sampleRate WRITE setSampleRate NOTIFY sampleRateChanged)
 public:
-    explicit Spectrogramseries(QObject *parent = nullptr);
+    explicit SpectrogramSeries(QObject *parent = nullptr);
     void init() override;
-    quint16 sampleRate() const { return m_samplerate; }
-    void setSampleRate(quint16 _sr);
+    double sampleRate() const { return m_samplerate; }
+    void setSampleRate(double _sr);
 public slots:
     void set(const QVector<double> &tmp);
 signals:
-    void sampleRateChanged(quint16);
+    void sampleRateChanged(double);
 private:
-    quint16 m_samplerate;
+    double m_samplerate;
 };
 
 #endif // SPECTROGRAMSERIES_H

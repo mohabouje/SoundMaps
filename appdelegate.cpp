@@ -17,6 +17,7 @@ public:
     }
     ~AppDelegatePrivate() {}
 
+    eDSP::frequency::Spectrogram  spectrogram{};
     AppDelegate* const  q_ptr;    
 };
 
@@ -41,19 +42,31 @@ QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) 
 }
 
 #define DEFAULT_BUFFER_SIZE_SECS 10
-void AppDelegate::init() const {
+void AppDelegate::init() {
     ComponentsManager* cm = qobject_cast<ComponentsManager*>(ComponentsManager::qmlSingleton(nullptr, nullptr));
     AudioManager* am = qobject_cast<AudioManager*>(AudioManager::qmlSingleton(nullptr, nullptr));
     AudioRecorder* audioRecorder = am->recorder();
     CircularSeries* circularSeries = cm->circularSeries();
+    SpectrogramSeries *spectrogramSeries = cm->spectrogramSeries();
 
-    connect(audioRecorder, &AudioRecorder::onBufferReady, this, [circularSeries](float* buffer, int size) {
-       circularSeries->append(buffer, size);
+
+    connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, int size) {
+        QVector<double> input(size), output(size / 2 + 1);
+        std::copy(buffer, buffer + size, std::begin(input));
+
+        Q_D(AppDelegate);
+        d->spectrogram.compute(std::begin(input), std::end(input), std::begin(output));
+        spectrogramSeries->set(output);
+        circularSeries->append(buffer, size);
     });
 
-    connect(audioRecorder, &AudioRecorder::sampleRateChanged, this, [circularSeries](double sr) {
+    connect(audioRecorder, &AudioRecorder::sampleRateChanged, this, [circularSeries,
+            spectrogramSeries,
+            audioRecorder](double sr) {
         circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * sr));
+        spectrogramSeries->setSampleRate(sr);
+        spectrogramSeries->setSize(static_cast<int>(audioRecorder->frameLength() / 1000.0 * sr / 2));
     });
 
-    circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * audioRecorder->sampleRate()));
+    audioRecorder->sampleRateChanged(audioRecorder->sampleRate());
 }
