@@ -18,15 +18,14 @@ public:
     AppDelegatePrivate(AppDelegate* parent) :
         q_ptr(parent)
     {
-
-
+        lpc.set_order(13);
     }
     ~AppDelegatePrivate() {}
 
     eDSP::frequency::Spectrogram  spectrogram{};
     eDSP::frequency::Cepstrum cepstrum{};
     eDSP::frequency::AutoCorrelation autocorr;
-    eDSP::frequency::LinearPredictiveCode<double, 13> lpc;
+    eDSP::frequency::LinearPredictiveCode<double> lpc;
     AppDelegate* const  q_ptr;    
 };
 
@@ -70,7 +69,9 @@ void AppDelegate::init() {
         d->cepstrum.compute(std::begin(input), std::end(input), std::begin(output));
         d->spectrogram.compute(std::begin(input), std::end(input), std::begin(output));
         d->autocorr.compute(std::begin(input), std::end(input), std::begin(output));
-        const auto& lpc_coeff = d->lpc.compute(std::begin(input), std::end(input));
+
+        std::vector<double> coeff, reflections; double error;
+        std::tie(error, coeff, reflections) = d->lpc.compute(std::begin(input), std::end(input));
         const auto end = std::chrono::system_clock::now();
         const auto elapsed_seconds = std::chrono::duration_cast<std::chrono::nanoseconds>(end-start);
         qDebug() <<  "elapsed time: " << elapsed_seconds.count();
