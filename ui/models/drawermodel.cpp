@@ -1,30 +1,23 @@
 #include "drawermodel.h"
 
-void DrawerItem::setName(const QString &name) {
-    _name = name;
-}
 
-void DrawerItem::setIcon(const QString &icon) {
-    _icon = icon;
-}
-
-void DrawerItem::setCounter(int counter) {
-    _counter = counter;
-}
 
 DrawerModel::DrawerModel(QObject *parent)
     : QAbstractListModel(parent)
 {
 }
 
-void DrawerModel::appendTab(const QString &name, const QString &icon, int counter) {
+void DrawerModel::append(const QString &name, const QString &icon, int counter) {
     DrawerItem* item = new DrawerItem(this);
     item->setName(name);
     item->setIcon(icon);
     item->setCounter(counter);
-    _drawerItems.append(item);
+    append(item);
 }
 
+void DrawerModel::append(DrawerItem *item) {
+    _drawerItems.append(item);
+}
 
 int DrawerModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)

@@ -3,7 +3,10 @@
 BeaconListModel::BeaconListModel(QObject *parent) :
     QAbstractListModel (parent)
 {
-    environement = qobject_cast<QEnvironement*>(QEnvironement::qmlSingleton());
+}
+
+void BeaconListModel::setEnvironement(QEnvironement *environement) {
+    BeaconListModel::environement = environement;
 }
 
 QHash<int, QByteArray> BeaconListModel::roleNames() const {

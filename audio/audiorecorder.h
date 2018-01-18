@@ -2,6 +2,8 @@
 #define QPORTAUDIORECORDER_H
 
 #include <QObject>
+#include "sm_config.h"
+
 class AudioRecorderPrivate;
 class AudioRecorder : public QObject {
     Q_OBJECT
@@ -45,7 +47,7 @@ signals:
 private:
     Q_DECLARE_PRIVATE(AudioRecorder)
     Q_DISABLE_COPY(AudioRecorder)
-    AudioRecorderPrivate* d_ptr;
+    SM_PIMPL_PTR(AudioRecorder)
 };
 
 #endif // QPORTAUDIORECORDER_H

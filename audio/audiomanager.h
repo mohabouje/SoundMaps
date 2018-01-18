@@ -24,7 +24,7 @@ private:
     Q_DECLARE_PRIVATE(AudioManager)
     Q_DISABLE_COPY(AudioManager)
     SM_DECL_SINGLETON(AudioManager)
-    AudioManagerPrivate* d_ptr;
+    SM_PIMPL_PTR(AudioManager)
 };
 
 #endif // QPORTAUDIOMANAGER_H

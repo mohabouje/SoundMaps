@@ -9,7 +9,9 @@ HEADERS += \
     $$PWD/models/beaconlistmodel.h \
     $$PWD/chart/arrayseries.h \
     $$PWD/chart/circularseries.h \
-    $$PWD/chart/spectrogramseries.h
+    $$PWD/chart/spectrogramseries.h \
+    $$PWD/models/tabbaritem.h \
+    $$PWD/models/draweritem.h
 
 SOURCES += \
     $$PWD/models/drawermodel.cpp \
@@ -19,4 +21,6 @@ SOURCES += \
     $$PWD/models/beaconlistmodel.cpp \
     $$PWD/chart/arrayseries.cpp \
     $$PWD/chart/circularseries.cpp \
-    $$PWD/chart/spectrogramseries.cpp
+    $$PWD/chart/spectrogramseries.cpp \
+    $$PWD/models/tabbaritem.cpp \
+    $$PWD/models/draweritem.cpp

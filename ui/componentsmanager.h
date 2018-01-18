@@ -50,7 +50,7 @@ private:
     Q_DECLARE_PRIVATE(ComponentsManager)
     Q_DISABLE_COPY(ComponentsManager)
     SM_DECL_SINGLETON(ComponentsManager)
-    ComponentsManagerPrivate*   d_ptr;
+    SM_PIMPL_PTR(ComponentsManager)
 };
 
 #endif // COMPONENTSMANAGER_H

@@ -22,7 +22,7 @@ private:
     Q_DECLARE_PRIVATE(AppDelegate)
     Q_DISABLE_COPY(AppDelegate)
     SM_DECL_SINGLETON(AppDelegate)
-    AppDelegatePrivate* d_ptr{nullptr};
+    SM_PIMPL_PTR(AppDelegate)
 };
 
 #endif // APPDELEGATE_H

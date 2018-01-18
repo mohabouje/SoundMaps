@@ -1,27 +1,21 @@
 #include "tabbarmodel.h"
-void TabBarItem::setName(const QString &name) {
-    if (_name != name) {
-        _name = name;
-        emit nameChanged();
-    }
-}
 
-void TabBarItem::setIcon(const QString &icon) {
-    if (_icon != icon) {
-        _icon = icon;
-        emit iconChanged();
-    }
-}
-
-void TabBarItem::setCounter(int counter) {
-    if (_counter != counter) {
-        _counter = counter;
-        emit counterChanged();
-    }
-}
 
 TabBarModel::TabBarModel(QObject *parent) : QAbstractListModel(parent) {
 }
+
+void TabBarModel::appendTab(TabBarItem * item) {
+    _tabBarItems.append(item);
+
+}
+void TabBarModel::appendTab(const QString &name, const QString &icon, int counter) {
+    TabBarItem* item = new TabBarItem(this);
+    item->setName(name);
+    item->setIcon(icon);
+    item->setCounter(counter);
+    appendTab(item);
+}
+
 
 int TabBarModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
@@ -59,10 +53,4 @@ QVariant TabBarModel::data(const QModelIndex &index, int role) const {
     }
 }
 
-void TabBarModel::appendTab(const QString &name, const QString &icon, int counter) {
-    TabBarItem* item = new TabBarItem(this);
-    item->setName(name);
-    item->setIcon(icon);
-    item->setCounter(counter);
-    _tabBarItems.append(item);
-}
+

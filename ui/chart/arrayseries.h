@@ -8,6 +8,7 @@
 QT_CHARTS_USE_NAMESPACE
 
 using AxisLimit = QPair<double, double>;
+class ArraySeriesPrivate;
 class ArraySeries : public QObject
 {
     Q_OBJECT

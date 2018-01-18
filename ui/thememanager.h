@@ -20,7 +20,7 @@ private:
     Q_DECLARE_PRIVATE(ThemeManager)
     Q_DISABLE_COPY(ThemeManager)
     SM_DECL_SINGLETON(ThemeManager)
-    ThemeManagerPrivate*    d_ptr;
+    SM_PIMPL_PTR(ThemeManager);
 };
 
 #endif // THEMEMANAGER_H

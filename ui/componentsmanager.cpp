@@ -14,9 +14,9 @@ public:
         spectrogramSeries(new SpectrogramSeries(parent))
     {
 
-        drawerModel->appendTab("Data Base", "qrc:/icon/database.svg");
-        drawerModel->appendTab("Help", "qrc:/icon/help-circle.svg");
-        drawerModel->appendTab("About", "qrc:/icon/contact-mail.svg");
+        drawerModel->append("Data Base", "qrc:/icon/database.svg");
+        drawerModel->append("Help", "qrc:/icon/help-circle.svg");
+        drawerModel->append("About", "qrc:/icon/contact-mail.svg");
 
 
         tabBarModel->appendTab("Time", "qrc:/icon/chart-areaspline.svg");
