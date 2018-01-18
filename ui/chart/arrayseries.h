@@ -18,14 +18,16 @@ class ArraySeries : public QObject
     Q_PROPERTY(double axisMaxY READ axisMaxY NOTIFY axisMaxYChanged)
 public:
     explicit ArraySeries(QObject *parent = nullptr);
+    inline bool isInitialized() const { return m_series != nullptr; }
+    inline int size() { return m_data.size(); }
+    inline const QVector<double>& x() const { return m_x; }
+    inline const QVector<double>& y() const { return m_y; }
+    inline double axisMinX() const { return m_axisX.first; }
+    inline double axisMinY() const { return m_axisY.first; }
+    inline double axisMaxX() const { return m_axisX.second; }
+    inline double axisMaxY() const { return m_axisY.second; }
+public slots:
     void setSize(int size);
-    int size() { return m_data.size(); }
-    const QVector<double>& x() const { return m_x; }
-    const QVector<double>& y() const { return m_y; }  
-    double axisMinX() const { return m_axisX.first; }
-    double axisMinY() const { return m_axisY.first; }
-    double axisMaxX() const { return m_axisX.second; }
-    double axisMaxY() const { return m_axisY.second; }
     Q_INVOKABLE void update();
     Q_INVOKABLE void setSeries(QXYSeries*);
 signals:
@@ -36,10 +38,10 @@ signals:
     void sizeChanged(double);
 protected:
     virtual void init() = 0;
+    QXYSeries*       m_series{nullptr};
     QVector<double> m_x{};
     QVector<double> m_y{};
     QVector<QPointF> m_data{};
-    QXYSeries*       m_series{nullptr};
     QPair<double, double> m_axisX{};
     QPair<double, double> m_axisY{};
 };

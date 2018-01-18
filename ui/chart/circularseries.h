@@ -9,7 +9,7 @@ class CircularSeries : public ArraySeries
 public:
     explicit CircularSeries(QObject *parent = nullptr);
 
-    template<class ForwardIterator>
+    template<class ForwardIterator, typename = std::enable_if<std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, double>::value>>
     void set(const ForwardIterator first, const ForwardIterator last) {
         const auto size = std::distance(first, last);
         std::rotate(m_y.begin(), m_y.begin() + size, m_y.end());

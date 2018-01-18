@@ -17,22 +17,20 @@ public:
   static QObject *qmlSingleton(QQmlEngine *engine = nullptr,
                                QJSEngine *scriptEngine = nullptr);
   ~QEnvironement() override;
-  inline QString name() const {
-    return QString::fromStdString(environement->name());
-  }
+  inline QString name() const { return QString::fromStdString(environement->name()); }
   inline float length() const { return environement->length(); }
   inline float width() const { return environement->width(); }
   inline float height() const { return environement->height(); }
   inline int beaconsCount() const { return environement->beacons_size(); }
   inline const QSet<QBeacon_ptr> &beacons() const { return beaconsSet; }
-  bool removeBeacon(const QBeacon_ptr &beaconAt);
-  Q_INVOKABLE QBeacon_ptr addBeacon();
   Q_INVOKABLE QBeacon_ptr beaconAt(int index);
 public slots:
   Q_INVOKABLE bool loadEnvironementFromFile(const QString &filename);
   Q_INVOKABLE bool saveEnvironementInFile(const QString &filename) const;
+  Q_INVOKABLE bool removeBeacon(const QBeacon_ptr &beaconAt);
   Q_INVOKABLE void clear();
   Q_INVOKABLE void init();
+  Q_INVOKABLE QBeacon_ptr addBeacon();
   void setName(const QString &);
   void setLength(float value);
   void setWidth(float value);
@@ -50,7 +48,7 @@ private:
   static constexpr float DefaultLength{10.0};
   Environement *environement{new Environement};
   QSet<QBeacon_ptr> beaconsSet;
-  QMap<QUuid, QBeacon_ptr> beaconsMap;
+  QHash<QUuid, QBeacon_ptr> beaconsMap;
   SM_DECL_SINGLETON(QEnvironement)
 };
 #endif // DATAMODEL_H

@@ -2,6 +2,7 @@
 #define SPECTROGRAMSERIES_H
 
 #include "arrayseries.h"
+#include <type_traits>
 
 class SpectrogramSeries : public ArraySeries {
     Q_OBJECT
@@ -11,7 +12,7 @@ public:
     double sampleRate() const { return m_samplerate; }
     void setSampleRate(double _sr);
 
-    template<class ForwardIterator>
+    template<class ForwardIterator, typename = std::enable_if<std::is_same<typename std::iterator_traits<ForwardIterator>::value_type, double>::value>>
     void set(const ForwardIterator first, const ForwardIterator last) {
         std::copy(first, last, std::begin(m_y));
     }

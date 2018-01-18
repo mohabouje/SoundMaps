@@ -9,17 +9,14 @@ void ArraySeries::setSize(int sz) {
         m_x.resize(sz);
         m_y.resize(sz);
         m_data.resize(sz);
-        init();
         emit sizeChanged(sz);
     }
+    init();
 }
 
 void ArraySeries::update() {
     std::transform(std::begin(m_x), std::end(m_x), std::begin(m_y), std::begin(m_data),
-                   [](const double& x, const double& y) -> QPointF {
-                        return QPointF(x,y);
-    });
-
+                   [](const double& x, const double& y) -> QPointF { return {x,y}; });
     m_series->replace(m_data);
 }
 
