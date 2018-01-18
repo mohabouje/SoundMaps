@@ -4,6 +4,14 @@ TabBarItem::TabBarItem(QObject *parent) :
 
 }
 
+TabBarItem::TabBarItem(const QString &name, const QString &icon, int counter, QObject *parent) :
+    QObject(parent),
+    _name(name),
+    _icon(icon),
+    _counter(counter)
+{
+
+}
 void TabBarItem::setName(const QString &name) {
     if (_name != name) {
         _name = name;

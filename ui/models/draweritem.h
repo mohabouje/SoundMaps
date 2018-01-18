@@ -9,6 +9,9 @@ class DrawerItem : public QObject {
     Q_PROPERTY(int counter READ counter WRITE setCounter NOTIFY counterChanged)
 public:
     explicit DrawerItem(QObject* parent = Q_NULLPTR);
+    DrawerItem(const QString& name, const QString& icon, int counter, QObject* parent = Q_NULLPTR);
+
+
     inline QString name() const { return _name; }
     inline QString icon() const { return _icon; }
     inline int counter() const { return _counter; }

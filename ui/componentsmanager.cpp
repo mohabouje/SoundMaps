@@ -19,10 +19,10 @@ public:
         drawerModel->append("About", "qrc:/icon/contact-mail.svg");
 
 
-        tabBarModel->appendTab("Time", "qrc:/icon/chart-areaspline.svg");
-        tabBarModel->appendTab("Freq", "qrc:/icon/chart-bar.svg");
-        tabBarModel->appendTab("Locator", "qrc:/icon/map-marker-radius.svg");
-        tabBarModel->appendTab("Beacons", "qrc:/icon/access-point.svg", 1);
+        tabBarModel->append("Time", "qrc:/icon/chart-areaspline.svg");
+        tabBarModel->append("Freq", "qrc:/icon/chart-bar.svg");
+        tabBarModel->append("Locator", "qrc:/icon/map-marker-radius.svg");
+        tabBarModel->append("Beacons", "qrc:/icon/access-point.svg", 1);
 
 
     }

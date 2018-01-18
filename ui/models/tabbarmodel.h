@@ -10,8 +10,8 @@ class TabBarModel : public QAbstractListModel {
 public:
     explicit TabBarModel(QObject* parent = Q_NULLPTR);
 public slots:
-    Q_INVOKABLE void appendTab(TabBarItem* item);
-    Q_INVOKABLE void appendTab(const QString& name, const QString& icon, int counter = 0);
+    Q_INVOKABLE void append(TabBarItem* item);
+    Q_INVOKABLE void append(const QString& name, const QString& icon, int counter = 0);
 protected:
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

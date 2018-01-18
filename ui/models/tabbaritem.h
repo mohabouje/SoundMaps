@@ -9,6 +9,7 @@ class TabBarItem : public QObject {
     Q_PROPERTY(int counter READ counter WRITE setCounter NOTIFY counterChanged)
 public:
     explicit TabBarItem(QObject* parent = Q_NULLPTR);
+    TabBarItem(const QString &name, const QString &icon, int counter, QObject *parent);
     inline QString name() const { return _name; }
     inline QString icon() const { return _icon; }
     inline int counter() const {  return _counter; }
