@@ -57,6 +57,7 @@ QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) 
 void AppDelegate::initUi() {
     ComponentsManager* cm = sm::single_tone<ComponentsManager>();
     QEnvironement* environement = sm::single_tone<QEnvironement>();
+    cm->init();
     cm->beaconListModel()->setEnvironement(environement);
 }
 

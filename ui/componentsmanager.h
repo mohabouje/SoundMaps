@@ -20,11 +20,11 @@ class ComponentsManager : public QObject {
     Q_PROPERTY(SpectrogramSeries* spectrogramSeries READ spectrogramSeries NOTIFY spectrogramSeriesChanged)
 public:
     explicit ComponentsManager(QObject *parent = nullptr);
+    virtual ~ComponentsManager();
     static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
     enum RefreshRate { Low = 100, Medium = 50, Hight = 20};
     Q_ENUM(RefreshRate)
 
-    virtual ~ComponentsManager();
     DrawerModel*    drawerModel() const;
     TabBarModel*    tabBarModel() const;
     BeaconListModel *beaconListModel() const;
@@ -42,6 +42,7 @@ signals:
     void circularSeriesChanged(CircularSeries*);
     void spectrogramSeriesChanged(SpectrogramSeries*);
 public slots:
+    void init();
     void setDrawerModel(DrawerModel*);
     void setTabBarModel(TabBarModel*);
     void setRefreshRate(RefreshRate);

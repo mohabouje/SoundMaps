@@ -8,7 +8,7 @@ DrawerModel::DrawerModel(QObject *parent)
 }
 
 void DrawerModel::append(const QString &name, const QString &icon, int counter) {
-    append(new DrawerItem(name, icon, counter, this));
+    sm::append(_drawerItems, new DrawerItem(name, icon, counter, this));
 }
 
 void DrawerModel::append(DrawerItem *item) {

@@ -9,8 +9,8 @@ class DrawerModel : public QAbstractListModel
 public:
     explicit DrawerModel(QObject *parent = nullptr); 
 public slots:
-    Q_INVOKABLE void append(DrawerItem* item);
-    Q_INVOKABLE void append(const QString& name, const QString& icon, int counter = 0);
+    void append(DrawerItem* item);
+    void append(const QString& name, const QString& icon, int counter = 0);
 protected:
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

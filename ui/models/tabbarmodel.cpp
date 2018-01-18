@@ -9,7 +9,7 @@ void TabBarModel::append(TabBarItem * item) {
 
 }
 void TabBarModel::append(const QString &name, const QString &icon, int counter) {
-    append(new TabBarItem(name, icon, counter, this));
+    sm::append(_tabBarItems, new TabBarItem(name, icon, counter, this));
 }
 
 

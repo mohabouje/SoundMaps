@@ -13,19 +13,20 @@ public:
         circularSeries(new CircularSeries(parent)),
         spectrogramSeries(new SpectrogramSeries(parent))
     {
-
-        drawerModel->append("Data Base", "qrc:/icon/database.svg");
-        drawerModel->append("Help", "qrc:/icon/help-circle.svg");
-        drawerModel->append("About", "qrc:/icon/contact-mail.svg");
-
-
-        tabBarModel->append("Time", "qrc:/icon/chart-areaspline.svg");
-        tabBarModel->append("Freq", "qrc:/icon/chart-bar.svg");
-        tabBarModel->append("Locator", "qrc:/icon/map-marker-radius.svg");
-        tabBarModel->append("Beacons", "qrc:/icon/access-point.svg", 1);
-
-
     }
+
+    void init() {
+        sm::append(drawerModel, "Data Base", "qrc:/icon/database.svg");
+        sm::append(drawerModel, "Help", "qrc:/icon/help-circle.svg");
+        sm::append(drawerModel, "About", "qrc:/icon/contact-mail.svg");
+
+
+        sm::append(tabBarModel, "Time", "qrc:/icon/chart-areaspline.svg");
+        sm::append(tabBarModel, "Freq", "qrc:/icon/chart-bar.svg");
+        sm::append(tabBarModel, "Locator", "qrc:/icon/map-marker-radius.svg");
+        sm::append(tabBarModel, "Beacons", "qrc:/icon/access-point.svg", 1);
+    }
+
     ~ComponentsManagerPrivate(){}
 
     ComponentsManager* const q_ptr;
@@ -57,6 +58,11 @@ QObject *ComponentsManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEn
 ComponentsManager::~ComponentsManager()
 {
     delete d_ptr;
+}
+
+void ComponentsManager::init() {
+    Q_D(ComponentsManager);
+    d->init();
 }
 
 DrawerModel *ComponentsManager::drawerModel() const {
