@@ -136,7 +136,6 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        AppDelegate.init()
         AudioManager.reset()
     }
 }

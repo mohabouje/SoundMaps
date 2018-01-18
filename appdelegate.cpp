@@ -11,6 +11,7 @@
 #include <ui/chart/circularseries.h>
 #include <ui/componentsmanager.h>
 #include <QDebug>
+#include <lps/qenvironement.h>
 
 class AppDelegatePrivate : QSharedData {
     Q_DISABLE_COPY(AppDelegatePrivate)
@@ -52,12 +53,23 @@ QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) 
 }
 
 #define DEFAULT_BUFFER_SIZE_SECS 10
-void AppDelegate::init() {
+
+void AppDelegate::initUi() {
+    ComponentsManager* cm = qobject_cast<ComponentsManager*>(ComponentsManager::qmlSingleton(nullptr, nullptr));
+    QEnvironement* environement = qobject_cast<QEnvironement*>(QEnvironement::qmlSingleton(nullptr, nullptr));
+
+
+    cm->beaconListModel()->setEnvironement(environement);
+
+}
+
+void AppDelegate::initAudioSystem() {
     ComponentsManager* cm = qobject_cast<ComponentsManager*>(ComponentsManager::qmlSingleton(nullptr, nullptr));
     AudioManager* am = qobject_cast<AudioManager*>(AudioManager::qmlSingleton(nullptr, nullptr));
     AudioRecorder* audioRecorder = am->recorder();
     CircularSeries* circularSeries = cm->circularSeries();
     SpectrogramSeries *spectrogramSeries = cm->spectrogramSeries();
+
 
 
     connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, int size) {

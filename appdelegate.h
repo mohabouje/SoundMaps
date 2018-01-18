@@ -17,7 +17,9 @@ public:
     explicit AppDelegate(QObject *parent = nullptr);
     virtual ~AppDelegate();
     static QObject* qmlSingleton(QQmlEngine* engine = nullptr, QJSEngine *scriptEngine = nullptr);
-    Q_INVOKABLE void init();
+public slots:
+    void initUi();
+    void initAudioSystem();
 private:
     Q_DECLARE_PRIVATE(AppDelegate)
     Q_DISABLE_COPY(AppDelegate)

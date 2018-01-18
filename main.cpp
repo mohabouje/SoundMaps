@@ -27,6 +27,9 @@ int main(int argc, char *argv[]) {
       PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR,
       "QEnvironement", &QEnvironement::qmlSingleton);
 
+  AppDelegate* appdelegate = qobject_cast<AppDelegate*>(AppDelegate::qmlSingleton(nullptr, nullptr));
+  appdelegate->initUi();
+  appdelegate->initAudioSystem();
 
   QQmlApplicationEngine engine;
   engine.load(QUrl(QLatin1String("qrc:/main.qml")));
