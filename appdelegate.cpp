@@ -55,17 +55,14 @@ QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) 
 #define DEFAULT_BUFFER_SIZE_SECS 10
 
 void AppDelegate::initUi() {
-    ComponentsManager* cm = qobject_cast<ComponentsManager*>(ComponentsManager::qmlSingleton(nullptr, nullptr));
-    QEnvironement* environement = qobject_cast<QEnvironement*>(QEnvironement::qmlSingleton(nullptr, nullptr));
-
-
+    ComponentsManager* cm = sm::single_tone<ComponentsManager>();
+    QEnvironement* environement = sm::single_tone<QEnvironement>();
     cm->beaconListModel()->setEnvironement(environement);
-
 }
 
 void AppDelegate::initAudioSystem() {
-    ComponentsManager* cm = qobject_cast<ComponentsManager*>(ComponentsManager::qmlSingleton(nullptr, nullptr));
-    AudioManager* am = qobject_cast<AudioManager*>(AudioManager::qmlSingleton(nullptr, nullptr));
+    ComponentsManager* cm = sm::single_tone<ComponentsManager>();
+    AudioManager* am = sm::single_tone<AudioManager>();
     AudioRecorder* audioRecorder = am->recorder();
     CircularSeries* circularSeries = cm->circularSeries();
     SpectrogramSeries *spectrogramSeries = cm->spectrogramSeries();

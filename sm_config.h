@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include "util/singletone.h"
+#include "util/sm_util.h"
 
 #define PACKAGE_NAME "com.mohabouje.soundmaps"
 #define PACKAGE_VERSION_MAJOR   1

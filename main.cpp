@@ -5,6 +5,8 @@
 #include "ui/componentsmanager.h"
 #include "ui/thememanager.h"
 
+#include "sm_config.h"
+
 #include <QApplication>
 #include <QQmlApplicationEngine>
 int main(int argc, char *argv[]) {
@@ -27,7 +29,7 @@ int main(int argc, char *argv[]) {
       PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR,
       "QEnvironement", &QEnvironement::qmlSingleton);
 
-  AppDelegate* appdelegate = qobject_cast<AppDelegate*>(AppDelegate::qmlSingleton(nullptr, nullptr));
+  AppDelegate* appdelegate = sm::single_tone<AppDelegate>();
   appdelegate->initUi();
   appdelegate->initAudioSystem();
 

@@ -1,5 +1,5 @@
 #include "drawermodel.h"
-
+#include "sm_config.h"
 
 
 DrawerModel::DrawerModel(QObject *parent)
@@ -16,7 +16,7 @@ void DrawerModel::append(const QString &name, const QString &icon, int counter) 
 }
 
 void DrawerModel::append(DrawerItem *item) {
-    _drawerItems.append(item);
+    sm::append(_drawerItems, item);
 }
 
 int DrawerModel::rowCount(const QModelIndex &parent) const {

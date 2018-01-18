@@ -5,7 +5,7 @@ TabBarModel::TabBarModel(QObject *parent) : QAbstractListModel(parent) {
 }
 
 void TabBarModel::appendTab(TabBarItem * item) {
-    _tabBarItems.append(item);
+    sm::append(_tabBarItems, item);
 
 }
 void TabBarModel::appendTab(const QString &name, const QString &icon, int counter) {

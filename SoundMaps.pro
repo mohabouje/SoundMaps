@@ -11,7 +11,8 @@ HEADERS += \
     appdelegate.h \
     util/call_once.h \
     util/singletone.h \
-    sm_config.h
+    sm_config.h \
+    util/sm_util.h
 
 SOURCES += main.cpp \
     appdelegate.cpp
