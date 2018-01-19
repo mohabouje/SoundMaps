@@ -52,8 +52,6 @@ QObject *AppDelegate::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) 
     return SM_STATIC_SINGLETON(AppDelegate);
 }
 
-#define DEFAULT_BUFFER_SIZE_SECS 10
-
 void AppDelegate::initUi() {
     ComponentsManager* cm = sm::single_tone<ComponentsManager>();
     QEnvironement* environement = sm::single_tone<QEnvironement>();
@@ -72,7 +70,6 @@ void AppDelegate::initAudioSystem() {
 
     connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, int size) {
         Q_D(AppDelegate);
-        const auto start = std::chrono::system_clock::now();
         std::vector<double> input(buffer, buffer + size), output(size);
 
         const auto energy = edsp::properties::energy(std::begin(input), std::end(input));
@@ -86,9 +83,6 @@ void AppDelegate::initAudioSystem() {
 
         std::vector<double> coeff, reflections; double error;
         std::tie(error, coeff, reflections) = d->lpc.compute(std::begin(input), std::end(input));
-        const auto end = std::chrono::system_clock::now();
-        const auto elapsed_seconds = std::chrono::duration_cast<std::chrono::nanoseconds>(end-start);
-        qDebug() <<  "elapsed time: " << elapsed_seconds.count();
 
 
         spectrogramSeries->set(std::begin(output), std::end(output));
@@ -98,10 +92,11 @@ void AppDelegate::initAudioSystem() {
     connect(audioRecorder, &AudioRecorder::sampleRateChanged, this, [circularSeries,
             spectrogramSeries,
             audioRecorder](double sr) {
-        circularSeries->setSize(static_cast<int>(DEFAULT_BUFFER_SIZE_SECS * sr));
+        circularSeries->setSize(static_cast<int>(10 * sr));
         spectrogramSeries->setSampleRate(sr);
         spectrogramSeries->setSize(static_cast<int>(audioRecorder->frameLength()));
     });
 
+    audioRecorder->setFrameLengthMSecs(20);
     audioRecorder->sampleRateChanged(audioRecorder->sampleRate());
 }
