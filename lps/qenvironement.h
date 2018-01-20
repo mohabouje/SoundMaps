@@ -46,9 +46,9 @@ private:
   static constexpr float DefaultWidth{10.0};
   static constexpr float DefaultHeight{3.0};
   static constexpr float DefaultLength{10.0};
-  Environement *environement{new Environement};
-  QSet<QBeacon_ptr> beaconsSet;
-  QHash<QUuid, QBeacon_ptr> beaconsMap;
+  QScopedPointer<Environement> environement{new Environement};
+  QSet<QBeacon_ptr> beaconsSet{};
+  QHash<QUuid, QBeacon_ptr> beaconsMap{};
   SM_DECL_SINGLETON(QEnvironement)
 };
 #endif // DATAMODEL_H

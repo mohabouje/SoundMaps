@@ -13,20 +13,20 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication app(argc, argv);
   // Singletone Elements
-  qmlRegisterSingletonType<AppDelegate>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR,
-                                        PACKAGE_VERSION_MINOR, "AppDelegate",
+  qmlRegisterSingletonType<AppDelegate>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR,
+                                        SM_PACKAGE_VERSION_MINOR, "AppDelegate",
                                         &AppDelegate::qmlSingleton);
-  qmlRegisterSingletonType<ThemeManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR,
-                                         PACKAGE_VERSION_MINOR, "ThemeManager",
+  qmlRegisterSingletonType<ThemeManager>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR,
+                                         SM_PACKAGE_VERSION_MINOR, "ThemeManager",
                                          &ThemeManager::qmlSingleton);
   qmlRegisterSingletonType<ComponentsManager>(
-      PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR,
+      SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR,
       "ComponentsManager", &ComponentsManager::qmlSingleton);
-  qmlRegisterSingletonType<AudioManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR,
-                                         PACKAGE_VERSION_MINOR, "AudioManager",
+  qmlRegisterSingletonType<AudioManager>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR,
+                                         SM_PACKAGE_VERSION_MINOR, "AudioManager",
                                          &AudioManager::qmlSingleton);
   qmlRegisterSingletonType<QEnvironement>(
-      PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR,
+      SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR,
       "QEnvironement", &QEnvironement::qmlSingleton);
 
   AppDelegate* appdelegate = sm::single_tone<AppDelegate>();

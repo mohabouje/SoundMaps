@@ -115,7 +115,7 @@ public:
 
 
     PaError setSampleRate(double sr) {
-        if (sr != sampleRate) {
+        if (!sm::float_compare(sr, sampleRate)) {
             Q_Q(AudioRecorder);
             sampleRate = sr;
             emit q->sampleRateChanged(sr);
@@ -227,7 +227,7 @@ void AudioRecorder::setSampleRate(double sampleRate) {
     d->setSampleRate(sampleRate);
 }
 
-void AudioRecorder::setFrameLength(ulong frame) {
+void AudioRecorder::setFrameLength(std::size_t frame) {
     Q_D(AudioRecorder);
     if (frame != d->frameLength) {
         d->frameLength = frame;
@@ -236,7 +236,7 @@ void AudioRecorder::setFrameLength(ulong frame) {
     }
 }
 
-void AudioRecorder::setFrameLengthMSecs(ulong frame) {
+void AudioRecorder::setFrameLengthMSecs(std::size_t frame) {
     Q_D(AudioRecorder);
     if (frame != d->frameLengthMSecs) {
         d->frameLengthMSecs = frame;

@@ -24,7 +24,7 @@ private:
     Q_DECLARE_PRIVATE(AppDelegate)
     Q_DISABLE_COPY(AppDelegate)
     SM_DECL_SINGLETON(AppDelegate)
-    SM_PIMPL_PTR(AppDelegate)
+    SM_DECL_PIMPL(AppDelegate)
 };
 
 #endif // APPDELEGATE_H

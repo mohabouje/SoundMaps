@@ -42,11 +42,11 @@ ComponentsManager::ComponentsManager(QObject *parent) :
     QObject(parent),
     d_ptr(new ComponentsManagerPrivate(this))
 {
-    qmlRegisterType<TabBarModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "TabBarModel");
-    qmlRegisterType<DrawerModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "DrawerModel");
-    qmlRegisterType<BeaconListModel>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "BeaconListModel");
-    qmlRegisterType<CircularSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "CircularSeries");
-    qmlRegisterType<SpectrogramSeries>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "SpectrogramSeries");
+    qmlRegisterType<TabBarModel>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "TabBarModel");
+    qmlRegisterType<DrawerModel>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "DrawerModel");
+    qmlRegisterType<BeaconListModel>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "BeaconListModel");
+    qmlRegisterType<CircularSeries>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "CircularSeries");
+    qmlRegisterType<SpectrogramSeries>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "SpectrogramSeries");
 }
 
 QObject *ComponentsManager::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine) {

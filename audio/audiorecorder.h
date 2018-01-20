@@ -32,22 +32,22 @@ public slots:
     Q_INVOKABLE int record();
     Q_INVOKABLE int stop();
     void setSampleRate(double sampleRate);
-    void setFrameLength(ulong frame);
-    void setFrameLengthMSecs(ulong msecs);
+    void setFrameLength(std::size_t frame);
+    void setFrameLengthMSecs(std::size_t msecs);
     void setDevice(int index);
 signals:
-    void frameLengthChanged(ulong);
+    void frameLengthChanged(std::size_t);
     void sampleRateChanged(double);
     void deviceChanged(int);
     void activeChanged(bool);
     void streamTimestampChanged(double);
     void supportedSampleRatesChanged(const QStringList&);
     void onError(const QString&) const;
-    void onBufferReady(float*, ulong) const;
+    void onBufferReady(float*, std::size_t) const;
 private:
     Q_DECLARE_PRIVATE(AudioRecorder)
     Q_DISABLE_COPY(AudioRecorder)
-    SM_PIMPL_PTR(AudioRecorder)
+    SM_DECL_PIMPL(AudioRecorder)
 };
 
 #endif // QPORTAUDIORECORDER_H

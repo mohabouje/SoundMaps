@@ -28,7 +28,6 @@ QObject *QEnvironement::qmlSingleton(QQmlEngine *engine,
 
 QEnvironement::~QEnvironement() {
   clear();
-  delete environement;
 }
 
 QBeacon_ptr QEnvironement::addBeacon() {
@@ -72,21 +71,21 @@ QBeacon_ptr QEnvironement::beaconAt(int index) {
 }
 
 void QEnvironement::setLength(float value) {
-  if (value != environement->length()) {
+  if (!sm::float_compare(value, environement->length())) {
     environement->set_length(value);
     emit lengthChanged(value);
   }
 }
 
 void QEnvironement::setWidth(float value) {
-  if (value != environement->width()) {
+  if (!sm::float_compare(value, environement->width())) {
     environement->set_width(value);
     emit widthChanged(value);
   }
 }
 
 void QEnvironement::setHeight(float value) {
-  if (value != environement->height()) {
+  if (!sm::float_compare(value, environement->height())) {
     environement->set_height(value);
     emit heightChanged(value);
   }
@@ -109,7 +108,7 @@ void QEnvironement::setName(const QString &name) {
 }
 
 bool QEnvironement::loadEnvironementFromFile(const QString &filename) {
-  static const QString defaultPath = DEFAULT_FOLDER + ENVIRONEMENT_FILENAME;
+  static const QString defaultPath = DEFAULT_FOLDER + SM_ENV_DEFAULT_FILENAME;
   QFile file(filename.isEmpty() ? defaultPath : filename);
   if (file.exists() && file.open(QIODevice::ReadOnly)) {
     const QByteArray array = file.readAll();
@@ -125,7 +124,7 @@ bool QEnvironement::loadEnvironementFromFile(const QString &filename) {
 }
 
 bool QEnvironement::saveEnvironementInFile(const QString &filename) const {
-  static const QString defaultPath = DEFAULT_FOLDER + ENVIRONEMENT_FILENAME;
+  static const QString defaultPath = DEFAULT_FOLDER + SM_ENV_DEFAULT_FILENAME;
   QSaveFile file(filename.isEmpty() ? defaultPath : filename);
   if (file.open(QIODevice::WriteOnly)) {
     const QByteArray data(environement->SerializeAsString().c_str(),

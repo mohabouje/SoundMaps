@@ -5,6 +5,7 @@
 #include <QObject>
 #include <qqmlengine.h>
 #include <type_traits>
+#include <cmath>
 
 namespace sm {
 
@@ -26,6 +27,12 @@ namespace sm {
     template <class Object, typename = std::enable_if<std::is_base_of<Object, QObject>::value>>
     inline Object * single_tone(QQmlEngine *engine = nullptr, QJSEngine *scriptEngine = nullptr) {
         return qobject_cast<Object*>(Object::qmlSingleton(engine, scriptEngine));
+    }
+
+    template <typename T, typename R,
+              typename = std::enable_if<std::is_arithmetic<T>::value && std::is_arithmetic<R>::value>>
+    constexpr bool float_compare(const T rhs, const R lhs) {
+        return std::abs(lhs - rhs) < std::numeric_limits<double>::epsilon();
     }
 
 }

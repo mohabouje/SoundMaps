@@ -31,7 +31,7 @@ AudioManager::AudioManager(QObject *parent) :
     QObject(parent),
     d_ptr(new AudioManagerPrivate(this))
 {
-    qmlRegisterType<AudioRecorder>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioRecorder");
+    qmlRegisterType<AudioRecorder>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "AudioRecorder");
     reset();
 }
 

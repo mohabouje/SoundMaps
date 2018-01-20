@@ -36,8 +36,8 @@ AppDelegate::AppDelegate(QObject *parent) :
     QObject(parent),
     d_ptr(new AppDelegatePrivate(this))
 {
-    qmlRegisterType<ComponentsManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "ComponentsManager");
-    qmlRegisterType<AudioManager>(PACKAGE_NAME, PACKAGE_VERSION_MAJOR, PACKAGE_VERSION_MINOR, "AudioManager");
+    qmlRegisterType<ComponentsManager>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "ComponentsManager");
+    qmlRegisterType<AudioManager>(SM_PACKAGE_NAME, SM_PACKAGE_VERSION_MAJOR, SM_PACKAGE_VERSION_MINOR, "AudioManager");
 }
 
 
@@ -68,14 +68,14 @@ void AppDelegate::initAudioSystem() {
 
 
 
-    connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, int size) {
+    connect(audioRecorder, &AudioRecorder::onBufferReady, this, [&, circularSeries, spectrogramSeries](float* buffer, std::size_t size) {
         Q_D(AppDelegate);
         std::vector<double> input(buffer, buffer + size), output(size);
 
-        const auto energy = edsp::properties::energy(std::begin(input), std::end(input));
-        const auto power = edsp::properties::power(std::begin(input), std::end(input));
-        const auto azcr = edsp::properties::zero_crossing_rate(std::begin(input), std::end(input));
-        const auto loudness = edsp::properties::loudness(std::begin(input), std::end(input));
+        edsp::properties::energy(std::begin(input), std::end(input));
+        edsp::properties::power(std::begin(input), std::end(input));
+        edsp::properties::zero_crossing_rate(std::begin(input), std::end(input));
+        edsp::properties::loudness(std::begin(input), std::end(input));
         d->dc.compute(std::begin(input), std::end(input), std::begin(output));
         d->cepstrum.compute(std::begin(input), std::end(input), std::begin(output));
         d->autocorr.compute(std::begin(input), std::end(input), std::begin(output));

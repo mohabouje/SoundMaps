@@ -20,8 +20,9 @@ public:
     return !(*this < entry);
   }
   inline bool operator==(const QMeasure &entry) const {
-    return (m_beacon->id() == entry.m_beacon->id()) &&
-           m_measure == entry.m_measure && m_rssi == entry.m_rssi;
+    return (m_beacon->id() == entry.m_beacon->id())
+            && sm::float_compare(m_measure,entry.m_measure)
+            && sm::float_compare(m_rssi, entry.m_rssi);
   }
   inline bool operator!=(const QMeasure &entry) const {
     return !(*this == entry);
