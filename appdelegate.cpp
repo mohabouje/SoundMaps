@@ -69,7 +69,7 @@ void AppDelegate::initAudioSystem()
     AudioRecorder* audioRecorder = am->recorder();
     CircularBuffer* waveformBuffer = qobject_cast<CircularBuffer*>(chartm->bufferForType(ChartManager::WaveForm));
     CircularBuffer* energyBuffer = qobject_cast<CircularBuffer*>(chartm->bufferForType(ChartManager::Energy));
-    CircularBuffer* pitchBuffer = qobject_cast<CircularBuffer*>(chartm->bufferForType(ChartManager::Energy));
+    CircularBuffer* pitchBuffer = qobject_cast<CircularBuffer*>(chartm->bufferForType(ChartManager::Pitch));
     SpectrogramBuffer* spectrogramBuffer = qobject_cast<SpectrogramBuffer*>(chartm->bufferForType(ChartManager::Spectrogram));
 
     Q_UNUSED(energyBuffer);

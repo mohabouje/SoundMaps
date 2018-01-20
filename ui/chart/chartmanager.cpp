@@ -9,9 +9,6 @@ public:
     ChartManagerPrivate(ChartManager* ptr)
         : q_ptr(ptr)
     {
-        for (auto& arrayBuffer : buffers) {
-            arrayBuffer->setParent(ptr);
-        }
     }
 
     ChartManager* const q_ptr;

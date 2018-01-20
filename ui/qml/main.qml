@@ -97,18 +97,32 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
-        ChartView {
+        ChartWidget {
         }
 
-        ChartView {
+        Page {
+
+            ListView {
+                id: sampleListView
+                anchors.fill: parent
+                model: AbstractModelManager.beaconListModel
+                delegate: BeaconListDelegate {
+                    beaconSnr: snr
+                    beaconName: name
+                    beaconState: state
+                    beaconPosition: position
+                }
+
+                spacing: 4
+              }
 
         }
 
-        ChartView {
+        Page {
 
         }
 
-        ChartView {
+        Page {
 
         }
     }

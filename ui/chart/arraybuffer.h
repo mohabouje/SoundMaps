@@ -45,8 +45,8 @@ protected:
     QVector<double> m_x{};
     QVector<double> m_y{};
     QVector<QPointF> m_data{};
-    QPair<double, double> m_axisX{};
-    QPair<double, double> m_axisY{};
+    QPair<double, double> m_axisX{ 0, 100 };
+    QPair<double, double> m_axisY{ -1, 1 };
 };
 
 Q_DECLARE_METATYPE(AxisLimit);
