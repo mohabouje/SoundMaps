@@ -1,11 +1,11 @@
 HEADERS += \
-    $$PWD/arrayseries.h \
     $$PWD/chartmanager.h \
-    $$PWD/circularseries.h \
-    $$PWD/spectrogramseries.h
+    $$PWD/arraybuffer.h \
+    $$PWD/circularbuffer.h \
+    $$PWD/spectrogrambuffer.h
 
 SOURCES += \
-    $$PWD/arrayseries.cpp \
     $$PWD/chartmanager.cpp \
-    $$PWD/circularseries.cpp \
-    $$PWD/spectrogramseries.cpp
+    $$PWD/arraybuffer.cpp \
+    $$PWD/circularbuffer.cpp \
+    $$PWD/spectrogrambuffer.cpp

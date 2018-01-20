@@ -5,7 +5,7 @@
         <file>AudioSettings.qml</file>
         <file>ImageToolButton.qml</file>
         <file>MainTabBar.qml</file>
-        <file>ShortTimeAnalysisChart.qml</file>
+        <file>ChartView.qml</file>
         <file>TabImageButton.qml</file>
         <file>BeaconListDelegate.qml</file>
         <file>BeaconListDelegateForm.ui.qml</file>

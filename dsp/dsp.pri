@@ -33,7 +33,7 @@ HEADERS += \
     $$PWD/../eDSP/include/version.h \
     $$PWD/../eDSP/include/filters/dcremoval.h \
     $$PWD/../eDSP/include/algorithm/delay.h \
-    $$PWD/../eDSP/include/algorithm/echo.h.h \
+    $$PWD/../eDSP/include/algorithm/echo.h \
     $$PWD/../eDSP/include/algorithm/envelope_detector.h \
     $$PWD/../eDSP/include/algorithm/fadein.h \
     $$PWD/../eDSP/include/algorithm/fadeout.h \
