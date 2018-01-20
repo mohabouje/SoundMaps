@@ -2,25 +2,27 @@ RESOURCES += \
     $$PWD/qml/qml.qrc
 
 HEADERS += \
-    $$PWD/models/drawermodel.h \
-    $$PWD/models/tabbarmodel.h \
-    $$PWD/componentsmanager.h \
     $$PWD/thememanager.h \
-    $$PWD/models/beaconlistmodel.h \
     $$PWD/chart/arrayseries.h \
     $$PWD/chart/circularseries.h \
     $$PWD/chart/spectrogramseries.h \
-    $$PWD/models/tabbaritem.h \
-    $$PWD/models/draweritem.h
+    $$PWD/chart/chartmanager.h \
+    $$PWD/abstractmodel/abstractmodelmanager.h \
+    $$PWD/abstractmodel/beaconlistmodel.h \
+    $$PWD/abstractmodel/draweritem.h \
+    $$PWD/abstractmodel/drawermodel.h \
+    $$PWD/abstractmodel/tabbaritem.h \
+    $$PWD/abstractmodel/tabbarmodel.h
 
 SOURCES += \
-    $$PWD/models/drawermodel.cpp \
-    $$PWD/models/tabbarmodel.cpp \
-    $$PWD/componentsmanager.cpp \
     $$PWD/thememanager.cpp \
-    $$PWD/models/beaconlistmodel.cpp \
     $$PWD/chart/arrayseries.cpp \
     $$PWD/chart/circularseries.cpp \
     $$PWD/chart/spectrogramseries.cpp \
-    $$PWD/models/tabbaritem.cpp \
-    $$PWD/models/draweritem.cpp
+    $$PWD/chart/chartmanager.cpp \
+    $$PWD/abstractmodel/beaconlistmodel.cpp \
+    $$PWD/abstractmodel/draweritem.cpp \
+    $$PWD/abstractmodel/drawermodel.cpp \
+    $$PWD/abstractmodel/tabbaritem.cpp \
+    $$PWD/abstractmodel/tabbarmodel.cpp \
+    $$PWD/abstractmodel/abstractmodelmanager.cpp

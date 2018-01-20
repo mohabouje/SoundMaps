@@ -53,21 +53,21 @@ Item {
                     Layout.fillWidth: true
                     RadioButton {
                         id : lowProcessing
-                        checked: ComponentsManager.refreshRate == ComponentsManager.Low
-                        onClicked: ComponentsManager.refreshRate = (ComponentsManager.Low)
+                        checked: ChartManager.refreshRate == ChartManager.Low
+                        onClicked: ChartManager.refreshRate = (ChartManager.Low)
                         text: qsTr("Low (10 FPS)")
                     }
                     RadioButton {
                         id : mediumProcessing
-                        checked: ComponentsManager.refreshRate == ComponentsManager.Medium
-                        onClicked: ComponentsManager.refreshRate = (ComponentsManager.Medium)
+                        checked: ChartManager.refreshRate == ChartManager.Medium
+                        onClicked: ChartManager.refreshRate = (ChartManager.Medium)
                         text: qsTr("Medium (20 FPS)")
                     }
 
                     RadioButton {
                         id : highProcessing
-                        checked: ComponentsManager.refreshRate == ComponentsManager.Hight
-                        onClicked: ComponentsManager.refreshRate = (ComponentsManager.Hight)
+                        checked: ChartManager.refreshRate == ChartManager.Hight
+                        onClicked: ChartManager.refreshRate = (ChartManager.Hight)
                         text: qsTr("Hight (40 FPS)")
                     }
                 }

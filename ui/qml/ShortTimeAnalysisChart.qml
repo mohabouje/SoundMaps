@@ -27,16 +27,16 @@ Page {
 
             ValueAxis {
                 id: axisX
-                min: ComponentsManager.spectrogramSeries.axisMinX
-                max: ComponentsManager.spectrogramSeries.axisMaxX
+                min: ChartManager.spectrogramSeries.axisMinX
+                max: ChartManager.spectrogramSeries.axisMaxX
                 tickCount: 1
 
             }
 
             ValueAxis {
                 id: axisY
-                min: ComponentsManager.spectrogramSeries.axisMinY
-                max: ComponentsManager.spectrogramSeries.axisMaxY
+                min: ChartManager.spectrogramSeries.axisMinY
+                max: ChartManager.spectrogramSeries.axisMaxY
             }
 
             LineSeries {
@@ -48,17 +48,17 @@ Page {
 
         Timer {
             id: refreshTimer
-            interval: ComponentsManager.refreshRate
+            interval: ChartManager.refreshRate
             running: true
             repeat: true
             onTriggered: {
-                ComponentsManager.spectrogramSeries.update()
+                ChartManager.spectrogramSeries.update()
             }
         }
 
     }
     Component.onCompleted: {
-        ComponentsManager.spectrogramSeries.setSeries(series)
+        ChartManager.spectrogramSeries.setSeries(series)
         refreshTimer.start()
     }
 }

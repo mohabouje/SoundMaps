@@ -7,7 +7,7 @@
 
 #include "sm_config.h"
 
-class ComponentsManager;
+class AbstractModelManager;
 class AudioManager;
 class AppDelegatePrivate;
 class AppDelegate : public QObject
