@@ -39,7 +39,7 @@ Page {
                 max: ChartManager.spectrogramSeries.axisMaxY
             }
 
-            LineSeries {
+            LineSeries  {
                 id : series
                 axisX: axisX
                 axisY: axisY
@@ -57,6 +57,7 @@ Page {
         }
 
     }
+
     Component.onCompleted: {
         ChartManager.spectrogramSeries.setSeries(series)
         refreshTimer.start()

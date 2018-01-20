@@ -13,17 +13,19 @@ public:
     inline QString name() const { return _name; }
     inline QString icon() const { return _icon; }
     inline int counter() const { return _counter; }
-    void setName(const QString &name);
-    void setIcon(const QString &icon);
+public slots:
+    void setName(const QString& name);
+    void setIcon(const QString& icon);
     void setCounter(int counter);
 signals:
     void nameChanged(QString);
     void iconChanged(QString);
     void counterChanged(int);
+
 private:
     QString _name;
     QString _icon;
-    int     _counter;
+    int _counter;
 };
 
 #endif // DRAWERITEM_H
