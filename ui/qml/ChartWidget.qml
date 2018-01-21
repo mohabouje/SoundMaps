@@ -12,30 +12,30 @@ Page {
     ColumnLayout {
         anchors.fill: parent
 
-        RowLayout {
+        TabBar {
+            width: parent.width
             Layout.fillWidth: true
-            RadioButton {
-                id : lowProcessing
+            TabButton {
                 checked: ChartManager.type == ChartManager.WaveForm
                 onClicked: ChartManager.type = (ChartManager.WaveForm)
-                text: qsTr("Wave")
+                icon.source : "/icon/chart_icons/waveform.svg"
             }
-            RadioButton {
+            TabButton {
                 checked: ChartManager.type == ChartManager.Energy
                 onClicked: ChartManager.type = (ChartManager.Energy)
-                text: qsTr("Energy")
+                icon.source : "/icon/chart_icons/energy.svg"
             }
 
-            RadioButton {
+            TabButton {
                 checked: ChartManager.type == ChartManager.Pitch
                 onClicked: ChartManager.type = (ChartManager.Pitch)
-                text: qsTr("Pitch")
+                icon.source : "/icon/chart_icons/pitch.svg"
             }
 
-            RadioButton {
+            TabButton {
                 checked: ChartManager.type == ChartManager.Spectrogram
                 onClicked: ChartManager.type = (ChartManager.Spectrogram)
-                text: qsTr("Spectrogram")
+                icon.source : "/icon/chart_icons/spectrum.svg"
             }
         }
 

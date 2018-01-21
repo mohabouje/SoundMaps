@@ -27,5 +27,10 @@
         <file>icon/wifi_levels/if_ic_signal_wifi_1.svg</file>
         <file>icon/wifi_levels/if_ic_signal_wifi_4.svg</file>
         <file>icon/wifi_levels/if_ic_signal_wifi_3.svg</file>
+        <file>icon/chart_icons/energy.svg</file>
+        <file>icon/chart_icons/equalization.svg</file>
+        <file>icon/chart_icons/pitch.svg</file>
+        <file>icon/chart_icons/spectrum.svg</file>
+        <file>icon/chart_icons/waveform.svg</file>
     </qresource>
 </RCC>
