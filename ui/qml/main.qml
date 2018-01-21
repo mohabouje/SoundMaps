@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 import QtLocation 5.9
 import QtGraphicalEffects 1.0
 import QtCharts 2.2
+import QtPositioning 5.2
+import QtLocation 5.3
 import com.mohabouje.soundmaps 1.0
 ApplicationWindow {
     id: window
@@ -15,16 +17,14 @@ ApplicationWindow {
     header: ToolBar {
         id: toolBar;
         position: ToolBar.Header
-        background: Rectangle {
-            color: ThemeManager.accentColor()
-        }
 
         RowLayout {
             anchors.fill: parent
-            ImageToolButton {
-                iconSource:  "qrc:/icon/navigation_menu.svg"
-                iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
-                iconColor: "white"
+            TabButton {
+                checkable: false
+                icon.source:  "qrc:/icon/navigation_menu.svg"
+                icon.width: 0.45 * parent.height
+                icon.height: 0.45 * parent.height
                 onClicked: {
                     if (drawer.visible) {
                         drawer.close()
@@ -33,6 +33,7 @@ ApplicationWindow {
                     }
                 }
             }
+
             Label {
                 id: toolbarTitle
                 font.pixelSize: 20
@@ -43,17 +44,19 @@ ApplicationWindow {
 
             }
 
-            ImageToolButton {
-                iconSource: (AudioManager.recorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
-                iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
-                iconColor: "white"
+            TabButton {
+                checkable: false
+                icon.source: (AudioManager.recorder.active) ? "qrc:/icon/microphone-off.svg" : "qrc:/icon/microphone.svg"
+                icon.width: 0.45 * parent.height
+                icon.height: 0.45 * parent.height
                 onClicked: AudioManager.recorder.toggle();
             }
 
-            ImageToolButton {
-                iconSource:  "qrc:/icon/navigation_more_vert.svg"
-                iconSize: Qt.size(0.45 * parent.height, 0.45 * parent.height)
-                iconColor: "white"
+            TabButton {
+                checkable: false
+                icon.source:  "qrc:/icon/navigation_more_vert.svg"
+                icon.width: 0.45 * parent.height
+                icon.height: 0.45 * parent.height
                 onClicked: optionsMenu.open()
 
                 Menu {
@@ -96,29 +99,38 @@ ApplicationWindow {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
+        padding: 0
 
         ChartWidget {
+
         }
 
         Page {
 
-            ListView {
-                id: sampleListView
+
+        }
+
+        Page {
+
+            Plugin {
+               id: mapPlugin
+               name: "osm" // "mapboxgl", "esri", ...
+           }
+
+
+            PositionSource {
+                id: positionSource
+                updateInterval: 1000
+                active: true
+            }
+
+            Map {
+                id: map
                 anchors.fill: parent
-                model: AbstractModelManager.beaconListModel
-                delegate: BeaconListDelegate {
-                    beaconSnr: snr
-                    beaconName: name
-                    beaconState: state
-                    beaconPosition: position
-                }
-
-                spacing: 4
-              }
-
-        }
-
-        Page {
+                plugin: mapPlugin
+                center: positionSource.position.coordinate
+                zoomLevel: 14
+            }
 
         }
 
@@ -127,15 +139,21 @@ ApplicationWindow {
         }
     }
 
-    footer: MainTabBar {
+    footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
         position: TabBar.Footer
-        hightlightColor: ThemeManager.accentColor()
-        normalColor: ThemeManager.foregroundColor()
+        Repeater {
+            model: AbstractModelManager.tabBarModel
+            TabButton {
+                icon.source: model.icon
+            }
+        }
     }
+
 
     Component.onCompleted: {
         AudioManager.reset()
+        positionSource.start()
     }
 }

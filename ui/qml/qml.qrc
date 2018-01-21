@@ -3,8 +3,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>AudioSettings.qml</file>
-        <file>ImageToolButton.qml</file>
-        <file>MainTabBar.qml</file>
         <file>ChartWidget.qml</file>
         <file>TabImageButton.qml</file>
         <file>BeaconListDelegate.qml</file>

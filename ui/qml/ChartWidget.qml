@@ -4,11 +4,6 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import com.mohabouje.soundmaps 1.0
 Page {
-    width: 400
-    height: 400
-    padding: 10
-
-
     ColumnLayout {
         anchors.fill: parent
 
